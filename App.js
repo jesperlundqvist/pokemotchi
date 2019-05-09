@@ -20,7 +20,6 @@ export default class App extends React.Component {
                 this.state.cleanliness <= 0 ||
                 this.state.fun <= 0)
             {
-                alert("DÖD");
                 this.setState({
                     hunger: 0,
                     cleanliness: 0,
