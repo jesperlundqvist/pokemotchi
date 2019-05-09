@@ -9,31 +9,35 @@ export default class App extends React.Component {
             pokemonId: Math.floor(Math.random() * 10)+1,
             hunger: 100,
             cleanliness: 100,
-            fun: 100
+            fun: 100,
+            alive: true
         }
     }
 
 
     componentDidMount() {
         this._interval = setInterval(() => {
-            if (this.state.hunger <= 0 ||
-                this.state.cleanliness <= 0 ||
-                this.state.fun <= 0)
-            {
-                this.setState({
-                    hunger: 0,
-                    cleanliness: 0,
-                    fun: 0
-                });
+            if (this.state.alive) {
+                if (this.state.hunger <= 0 ||
+                    this.state.cleanliness <= 0 ||
+                    this.state.fun <= 0)
+                {
+                    this.setState({
+                        hunger: 0,
+                        cleanliness: 0,
+                        fun: 0,
+                        alive: false
+                    });
+                }
+                else {
+                    this.setState({
+                        hunger: this.state.hunger - 1,
+                        cleanliness: this.state.cleanliness - 1,
+                        fun: this.state.fun - 1
+                    });
+                }
             }
-            else {
-                this.setState({
-                    hunger: this.state.hunger - 1,
-                    cleanliness: this.state.cleanliness - 1,
-                    fun: this.state.fun - 1
-                });
-            }
-        }, 1000);
+        }, 250);
     }
 
     componentWillUnmount() {
@@ -41,6 +45,30 @@ export default class App extends React.Component {
     }
 
     render() {
+        let buttons = <View>
+            <Button title="Feed" onPress={() => { this.setState({hunger: this.state.hunger + 10}) }} />
+            <Button title="Clean" onPress={() => { this.setState({cleanliness: this.state.cleanliness + 10}) }} />
+            <Button title="Play" onPress={() => { this.setState({fun: this.state.fun + 10}) }} />
+        </View>;
+
+        if (!this.state.alive) {
+            buttons = <Button title="New Pokemon" onPress={() => {
+                let newPokemon = Math.floor(Math.random() * 10)+1;
+
+                while (newPokemon == this.state.pokemonId) {
+                    newPokemon = Math.floor(Math.random() * 10)+1;
+                }
+
+                this.setState({
+                    pokemonId: newPokemon,
+                    hunger: 100,
+                    cleanliness: 100,
+                    fun: 100,
+                    alive: true
+                });
+            }} />
+        }
+
         return (
           <SafeAreaView style={{
               flex: 1,
@@ -50,11 +78,10 @@ export default class App extends React.Component {
                 hunger={this.state.hunger}
                 cleanliness={this.state.cleanliness}
                 fun={this.state.fun}
+                alive={this.state.alive}
             />
             <View style={{flexDirection: "row", flexShrink: 1, justifyContent: "center"}}>
-                <Button title="Feed" onPress={() => { this.setState({hunger: this.state.hunger + 10}) }} />
-                <Button title="Clean" onPress={() => { this.setState({cleanliness: this.state.cleanliness + 10}) }} />
-                <Button title="Play" onPress={() => { this.setState({fun: this.state.fun + 10}) }} />
+                {buttons}
             </View>
           </SafeAreaView>
         );

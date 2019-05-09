@@ -16,11 +16,23 @@ export default class Pokemon extends React.Component {
         });
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.id !== prevProps.id) {
+            Model.getPokemonById(this.props.id).then((data) => {
+                this.setState({data: data});
+            });
+        }
+    }
+
     render() {
         let imageUri = "http://pokestadium.com/sprites/xy/" + this.state.data.name + ".gif";
         let name = this.state.data.name;
         if (name) {
             name = name.charAt(0).toUpperCase() + name.slice(1);
+        }
+
+        if (!this.props.alive) {
+            name = name + " [DEAD]";
         }
 
         return <View style={{
