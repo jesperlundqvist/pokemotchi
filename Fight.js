@@ -49,9 +49,9 @@ console.log("component...")
         // handle presence
         var action = p.action; // Can be join, leave, state-change or timeout
         var channelName = p.channel; // The channel for which the message belongs
-        /*this.setState({
+        this.setState({
           occupancy: p.occupancy
-        })*/
+        })
         var occupancy = p.occupancy; // No. of users connected with the channel
         var state = p.state; // User State
         var channelGroup = p.subscription; //  The channel group or wildcard subscription match (if exists)
@@ -59,7 +59,7 @@ console.log("component...")
         var timetoken = p.timetoken;  // Current timetoken
 
         //var uuid = p.uuid; // UUIDs of users who are connected with the channel
-      }
+      }.bind(this)
     })
 
     this.pubnub.hereNow(
