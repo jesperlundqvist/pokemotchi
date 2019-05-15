@@ -16,6 +16,7 @@ export default class App extends React.Component {
             <Button title="Feed" onPress={() => { this.setState({hunger: this.state.hunger + 10}) }} />
             <Button title="Clean" onPress={() => { this.setState({cleanliness: this.state.cleanliness + 10}) }} />
             <Button title="Play" onPress={() => { this.setState({fun: this.state.fun + 10}) }} />
+            <Button title="Fight"/>
         </View>;
 
         if (!this.state.pokemonAlive) {
