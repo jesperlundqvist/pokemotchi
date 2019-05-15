@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, Image } from 'react-native';
 import Model from './Model';
 
-export default class Pokemon extends React.Component {
+export default class Fight extends React.Component {
   constructor(props) {
       super(props);
       this.state = {
@@ -13,4 +13,12 @@ export default class Pokemon extends React.Component {
           alive: true
       };
   }
+
+  render() {
+    return (
+      <Text>FIGHT</Text>
+    )
+
+  }
+
 }
