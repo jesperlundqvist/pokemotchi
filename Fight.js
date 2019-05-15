@@ -98,22 +98,6 @@ console.log("component...")
 
     return (
       <View>
-        <Button title="Here now" onPress={() => {
-          this.pubnub.hereNow(
-            {
-                channels: ["Fight"],
-                includeUUIDs: true,
-                includeState: true
-            },
-            function (status, response) {
-                // handle status, response
-              console.log("button: ",response)
-              this.setState({
-                occupancy: response.totalOccupancy
-              })
-
-            }.bind(this));
-         }} />
         <Text>Users: {this.state.occupancy}</Text>
       <Text>FIGHT
       </Text>
