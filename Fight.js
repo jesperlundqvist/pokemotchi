@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image } from 'react-native';
+import { Text, View, Button } from 'react-native';
 import Model from './Model';
 import PubNub from 'pubnub';
 
@@ -20,21 +20,22 @@ export default class Fight extends React.Component {
 
   componentDidMount(){
 console.log("component...")
-    var pubnub = new PubNub({
+    this.pubnub = new PubNub({
       subscribeKey: "sub-c-ff0c5120-7702-11e9-945c-2ea711aa6b65",
       publishKey: "pub-c-ab1f1896-d4ac-4b70-aaf4-ca968c88c2f5",
       secretKey: "sec-c-NjI1MjhlNDEtNmEwYi00NjNmLWJkYTgtNDYwNzFhZDBkNmQz",
-      uuid: "machi",
-      ssl: true
+      ssl: true,
+      uuid: "joppo"
     })
-  
-    pubnub.addListener({
+
+    this.pubnub.addListener({
       status: function (s) {
         console.log("status")
+        console.log(s);
         if (s.category === "PNConnectedCategory") {
           ready = true;
         }
-      
+
         var affectedChannelGroups = s.affectedChannelGroups;
         var affectedChannels = s.affectedChannels;
         var category = s.category;
@@ -66,46 +67,25 @@ console.log("component...")
         //var uuid = p.uuid; // UUIDs of users who are connected with the channel
       }
     })
-  
-      console.log("subscribing...")
-    pubnub.subscribe({
-      channels: ["Fight"],
-      withPresence: true
-    });
 
-    pubnub.publish(
+    this.pubnub.hereNow(
       {
-          message: {
-              such: 'object'
-          },
-          channel: 'Fight',
-          sendByPost: false, // true to send via POST
-          storeInHistory: false, //override default storage options
-          meta: {
-              "cool": "meta"
-          } // publish extra meta with the request
-      },
-      function (status, response) {
-          // handle status, response
-      }
-  );
-
-    pubnub.hereNow(
-      {
-          channels: ["Fight", "west"], 
+          channels: ["Fight"],
           includeUUIDs: true,
           includeState: true
       },
       function (status, response) {
           // handle status, response
-        console.log("response: ",response)
-  
+        console.log(response)
+
       }
   );
 
+    this.pubnub.subscribe({
+      channels: ["Fight"],
+      withPresence: true
+    });
 
-
-  
   }
 
 
@@ -115,11 +95,24 @@ console.log("component...")
 
     return (
       <View>
+        <Button title="Here now" onPress={() => {
+          this.pubnub.hereNow(
+            {
+                channels: ["Fight"],
+                includeUUIDs: true,
+                includeState: true
+            },
+            function (status, response) {
+                // handle status, response
+              console.log(response)
+
+            });
+         }} />
         <Text>Users: {this.state.occupancy}</Text>
       <Text>FIGHT
       </Text>
       </View>
-    
+
     )
 
   }
