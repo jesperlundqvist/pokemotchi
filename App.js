@@ -1,6 +1,8 @@
 import React from 'react';
 import { SafeAreaView, View, Button } from 'react-native';
 import Pokemon from './Pokemon';
+import {AsyncStorage} from 'react-native';
+
 
 export default class App extends React.Component {
     constructor(props) {
@@ -12,25 +14,7 @@ export default class App extends React.Component {
     }
 
     render() {
-        let buttons = <View>
-            <Button title="Feed" onPress={() => { this.setState({hunger: this.state.hunger + 10}) }} />
-            <Button title="Clean" onPress={() => { this.setState({cleanliness: this.state.cleanliness + 10}) }} />
-            <Button title="Play" onPress={() => { this.setState({fun: this.state.fun + 10}) }} />
-        </View>;
 
-        if (!this.state.pokemonAlive) {
-            buttons = <Button title="New Pokemon" onPress={() => {
-                let newPokemon = Math.floor(Math.random() * 10)+1;
-
-                while (newPokemon == this.state.pokemonId) {
-                    newPokemon = Math.floor(Math.random() * 10)+1;
-                }
-
-                this.setState({
-                    pokemonId: newPokemon
-                });
-            }} />
-        }
 
         return (
           <SafeAreaView style={{
