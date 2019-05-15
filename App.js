@@ -1,31 +1,19 @@
 import React from 'react';
 import { SafeAreaView, View, Button } from 'react-native';
+import {createStackNavigator, createAppContainer} from 'react-navigation'
 import Pokemon from './Pokemon';
-import {AsyncStorage} from 'react-native';
+import Homescreen from './Homescreen'
+import Fight from './Fight'
 
+const MainNavigator = createStackNavigator({
+  Home: {screen: Homescreen},
+  Fight: {screen: Fight}
+});
+
+const AppContainer = createAppContainer(MainNavigator);
 
 export default class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            pokemonId: Math.floor(Math.random() * 10)+1,
-            pokemonAlive: true
-        }
-    }
-
-    render() {
-
-
-        return (
-          <SafeAreaView style={{
-              flex: 1,
-              flexDirection: 'column',
-            }}>
-            <Pokemon style={{flexGrow: 1}} id={this.state.pokemonId} onAliveChange={(alive) => this.setState({pokemonAlive: alive})} />
-            <View style={{flexDirection: "row", flexShrink: 1, justifyContent: "center"}}>
-                {buttons}
-            </View>
-          </SafeAreaView>
-        );
-    }
-}
+  render(){
+    return <AppContainer/>
+  }
+};

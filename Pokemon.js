@@ -1,8 +1,7 @@
 import React from 'react';
 import { Text, View, Image } from 'react-native';
 import Model from './Model';
-import {AsyncStorage} from 'react-native';
-
+import Sponge from './Sponge';
 
 export default class Pokemon extends React.Component {
     constructor(props) {
@@ -119,9 +118,10 @@ export default class Pokemon extends React.Component {
         }}>
             <Image source={{uri: imageUri}} style={{width: 200, height: 200, resizeMode: "contain"}}/>
             <Text style={{fontSize: 24}}>{name}</Text>
-            <Text style={{fontSize: 18}}>Hunger: {this.state.hunger}</Text>
-            <Text style={{fontSize: 18}}>Cleanliness: {this.state.cleanliness}</Text>
-            <Text style={{fontSize: 18}}>Fun: {this.state.fun}</Text>
+            <Text style={{fontSize: 18}}>Hunger: {Math.round(this.state.hunger)}</Text>
+            <Text style={{fontSize: 18}}>Cleanliness: {Math.round(this.state.cleanliness)}</Text>
+            <Text style={{fontSize: 18}}>Fun: {Math.round(this.state.fun)}</Text>
+            <Sponge onClean={() => {this.setState({cleanliness: this.state.cleanliness + 0.2})}}/>
         </View>;
     }
 }
