@@ -11,7 +11,7 @@ export default class Pokemon extends React.Component {
 
     componentDidMount() {
         this.state.pan.addListener((value) => {
-            if (value.x > 100 && value.x < 200 && value.y < -200 && value.y > -450) {
+            if (value.x > -100 && value.x < 100 && value.y < -150 && value.y > -400) {
                 this.props.onClean();
             }
         });
