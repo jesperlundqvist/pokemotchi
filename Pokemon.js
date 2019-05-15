@@ -11,13 +11,28 @@ export default class Pokemon extends React.Component {
             hunger: 100,
             cleanliness: 100,
             fun: 100,
-            alive: true
+            alive: true,
+            id: "",
         };
+
+
+        if (AsyncStorage.getItem("pokemon")) {
+          this.setState({ id: AsyncStorage.getItem("pokemon") });
+        }
     }
 
     componentDidMount() {
-        Model.getPokemonById(this.props.id).then((data) => {
+      if (this.state.id == "") {
+        this.state.id = Math.floor(Math.random() * 10)+1
+      }
+
+        Model.getPokemonById(this.state.id).then((data) => {
             this.setState({data: data});
+            console.log("pokemon");
+            console.log(this.state.data.id);
+            //Model.favPok(this.state.data);
+            AsyncStorage.setItem("pokemon", this.state.data.id)
+
         });
 
         this._interval = setInterval(() => {
@@ -42,6 +57,7 @@ export default class Pokemon extends React.Component {
                 }
             }
         }, 250);
+
     }
 
     componentWillUnmount() {
@@ -49,23 +65,29 @@ export default class Pokemon extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.props.id !== prevProps.id) {
-            Model.getPokemonById(this.props.id).then((data) => {
+        if (this.state.id !== prevState.id) {
+            Model.getPokemonById(this.state.id).then((data) => {
                 this.setState({
                     data: data,
                     hunger: 100,
                     cleanliness: 100,
                     fun: 100,
-                    alive: true
+                    alive: true,
                 });
             });
         }
 
-        if (prevState.alive != this.state.alive) {
+        /*if (prevState.alive != this.state.alive) {
             if (this.props.onAliveChange) {
                 this.props.onAliveChange(this.state.alive, prevState.alive);
             };
-        }
+        }*/
+
+      /*  if (!this.state.alive) {
+          this.setState ({id: Math.floor(Math.random() * 10)+1})
+        }*/
+
+
     }
 
     render() {
@@ -75,8 +97,18 @@ export default class Pokemon extends React.Component {
             name = name.charAt(0).toUpperCase() + name.slice(1);
         }
 
+        let buttons = <View>
+            <Button title="Feed" onPress={() => { this.setState({hunger: this.state.hunger + 10}) }} />
+            <Button title="Clean" onPress={() => { this.setState({cleanliness: this.state.cleanliness + 10}) }} />
+            <Button title="Play" onPress={() => { this.setState({fun: this.state.fun + 10}) }} />
+        </View>;
+
         if (!this.state.alive) {
-            name = name + " [DEAD]";
+          buttons = <Button title="New Pokemon" onPress={() => {
+            this.setState ({ id: (Math.floor(Math.random() * 10)+1) });
+            AsyncStorage.setItem("pokemon", this.state.id);
+          }} />
+          name = name + " [DEAD]";
         }
 
         return <View style={{
