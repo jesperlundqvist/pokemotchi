@@ -24,16 +24,17 @@ console.log("component...")
       subscribeKey: "sub-c-ff0c5120-7702-11e9-945c-2ea711aa6b65",
       publishKey: "pub-c-ab1f1896-d4ac-4b70-aaf4-ca968c88c2f5",
       secretKey: "sec-c-NjI1MjhlNDEtNmEwYi00NjNmLWJkYTgtNDYwNzFhZDBkNmQz",
-      ssl: true
+      ssl: true,
+      uuid: "lovol"
     })
-  
+
     pubnub.addListener({
       status: function (s) {
         console.log("status")
         if (s.category === "PNConnectedCategory") {
           ready = true;
         }
-      
+
         var affectedChannelGroups = s.affectedChannelGroups;
         var affectedChannels = s.affectedChannels;
         var category = s.category;
@@ -61,25 +62,26 @@ console.log("component...")
         //var uuid = p.uuid; // UUIDs of users who are connected with the channel
       }
     })
-  
+
+    pubnub.subscribe({
+      channels: ["Fight"],
+      withPresence: true
+    });
+
     pubnub.hereNow(
       {
-          channels: ["Fight"], 
+          channels: ["Fight"],
           includeUUIDs: true,
           includeState: true
       },
       function (status, response) {
           // handle status, response
         console.log(response)
-  
+
       }
   );
-  
-    pubnub.subscribe({
-      channels: ["Fight"],
-      withPresence: true
-    });
-  
+
+
   }
 
 
@@ -93,7 +95,7 @@ console.log("component...")
       <Text>FIGHT
       </Text>
       </View>
-    
+
     )
 
   }
