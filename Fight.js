@@ -25,7 +25,7 @@ console.log("component...")
       publishKey: "pub-c-ab1f1896-d4ac-4b70-aaf4-ca968c88c2f5",
       secretKey: "sec-c-NjI1MjhlNDEtNmEwYi00NjNmLWJkYTgtNDYwNzFhZDBkNmQz",
       ssl: true,
-      uuid: "joppo"
+      uuid: "lovol"
     })
 
     this.pubnub.addListener({
@@ -57,9 +57,7 @@ console.log("component...")
         var channelGroup = p.subscription; //  The channel group or wildcard subscription match (if exists)
         var publishTime = p.timestamp; // Publish timetoken
         var timetoken = p.timetoken;  // Current timetoken
-        this.setState({
-          occupancy: p.uuid
-        })
+
         //var uuid = p.uuid; // UUIDs of users who are connected with the channel
       }
     })
