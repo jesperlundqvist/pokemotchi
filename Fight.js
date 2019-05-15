@@ -57,9 +57,6 @@ console.log("component...")
         var channelGroup = p.subscription; //  The channel group or wildcard subscription match (if exists)
         var publishTime = p.timestamp; // Publish timetoken
         var timetoken = p.timetoken;  // Current timetoken
-        this.setState({
-          occupancy: p.uuid
-        })
         //var uuid = p.uuid; // UUIDs of users who are connected with the channel
       }
     })
