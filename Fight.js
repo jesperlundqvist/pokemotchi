@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image } from 'react-native';
+import { Text, View, Button } from 'react-native';
 import Model from './Model';
 import PubNub from 'pubnub';
 
@@ -20,17 +20,18 @@ export default class Fight extends React.Component {
 
   componentDidMount(){
 console.log("component...")
-    var pubnub = new PubNub({
+    this.pubnub = new PubNub({
       subscribeKey: "sub-c-ff0c5120-7702-11e9-945c-2ea711aa6b65",
       publishKey: "pub-c-ab1f1896-d4ac-4b70-aaf4-ca968c88c2f5",
       secretKey: "sec-c-NjI1MjhlNDEtNmEwYi00NjNmLWJkYTgtNDYwNzFhZDBkNmQz",
       ssl: true,
-      uuid: "lovol"
+      uuid: "joppo"
     })
 
-    pubnub.addListener({
+    this.pubnub.addListener({
       status: function (s) {
         console.log("status")
+        console.log(s);
         if (s.category === "PNConnectedCategory") {
           ready = true;
         }
@@ -63,12 +64,7 @@ console.log("component...")
       }
     })
 
-    pubnub.subscribe({
-      channels: ["Fight"],
-      withPresence: true
-    });
-
-    pubnub.hereNow(
+    this.pubnub.hereNow(
       {
           channels: ["Fight"],
           includeUUIDs: true,
@@ -81,6 +77,10 @@ console.log("component...")
       }
   );
 
+    this.pubnub.subscribe({
+      channels: ["Fight"],
+      withPresence: true
+    });
 
   }
 
@@ -91,6 +91,19 @@ console.log("component...")
 
     return (
       <View>
+        <Button title="Here now" onPress={() => {
+          this.pubnub.hereNow(
+            {
+                channels: ["Fight"],
+                includeUUIDs: true,
+                includeState: true
+            },
+            function (status, response) {
+                // handle status, response
+              console.log(response)
+
+            });
+         }} />
         <Text>Users: {this.state.occupancy}</Text>
       <Text>FIGHT
       </Text>
