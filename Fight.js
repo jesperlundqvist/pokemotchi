@@ -7,19 +7,6 @@ export default class Fight extends React.Component {
   constructor(props) {
     super(props);
     console.log("fight")
-    this.state = {
-      data: {},
-      hunger: 100,
-      cleanliness: 100,
-      fun: 100,
-      alive: true,
-      occupancy: null,
-      users: null
-    };
-
-  }
-
-  componentDidMount() {
     console.log("component...")
     this.pubnub = new PubNub({
       subscribeKey: "sub-c-ff0c5120-7702-11e9-945c-2ea711aa6b65",
@@ -28,8 +15,25 @@ export default class Fight extends React.Component {
       ssl: true,
       uuid: "machi"
     })
+    this.state = {
+      pubnub: this.pubnub,
+      data: {},
+      hunger: 100,
+      cleanliness: 100,
+      fun: 100,
+      alive: true,
+      occupancy: null,
+      users: null,
+      back: this.props.navigation
 
-    this.pubnub.addListener({
+    };
+
+  }
+
+  JoinBattleArena() {
+   
+
+    this.state.pubnub.addListener({
       status: function (s) {
         console.log("status")
         console.log(s);
@@ -73,7 +77,7 @@ export default class Fight extends React.Component {
       }.bind(this)
     })
 
-    this.pubnub.hereNow(
+    this.state.pubnub.hereNow(
       {
         channels: ["Fight"],
         includeUUIDs: true,
@@ -90,21 +94,29 @@ export default class Fight extends React.Component {
       }.bind(this)
     );
 
-    this.pubnub.subscribe({
+    this.state.pubnub.subscribe({
       channels: ["Fight"],
       withPresence: true
     });
 
   }
 
+  LeaveArena(){
+    this.state.pubnub.unsubscribe({
+      channels: ['Fight']
+  })
+  this.state.back.goBack()
+  }
+
   render() {
 
     return (
       <View>
-        <Button title="unsubscribe" onPress={() => {
-          this.pubnub.unsubscribe({
-            channels: ['Fight']
-        })
+        <Button title="Join battle arena" onPress={() => {
+          this.JoinBattleArena()
+         }} />
+        <Button title="Leave battle arena" onPress={() => {
+        this.LeaveArena()
          }} />
         <Text>
           Occupants: {this.state.occupancy}
