@@ -27,7 +27,7 @@ console.log("component...")
       ssl: true,
       uuid: "joppo"
     })
-  
+
     this.pubnub.addListener({
       status: function (s) {
         console.log("status")
@@ -35,7 +35,7 @@ console.log("component...")
         if (s.category === "PNConnectedCategory") {
           ready = true;
         }
-      
+
         var affectedChannelGroups = s.affectedChannelGroups;
         var affectedChannels = s.affectedChannels;
         var category = s.category;
@@ -60,25 +60,25 @@ console.log("component...")
         //var uuid = p.uuid; // UUIDs of users who are connected with the channel
       }.bind(this)
     })
-  
+
     this.pubnub.hereNow(
       {
-          channels: ["Fight"], 
+          channels: ["Fight"],
           includeUUIDs: true,
           includeState: true
       },
       function (status, response) {
           // handle status, response
         console.log(response)
-  
+
       }
   );
-  
+
     this.pubnub.subscribe({
       channels: ["Fight"],
       withPresence: true
     });
-  
+
   }
 
 
@@ -88,24 +88,24 @@ console.log("component...")
 
     return (
       <View>
-        <Button title="Here now" onPress={() => { 
+        <Button title="Here now" onPress={() => {
           this.pubnub.hereNow(
             {
-                channels: ["Fight"], 
+                channels: ["Fight"],
                 includeUUIDs: true,
                 includeState: true
             },
             function (status, response) {
                 // handle status, response
               console.log(response)
-        
+
             });
          }} />
         <Text>Users: {this.state.occupancy}</Text>
       <Text>FIGHT
       </Text>
       </View>
-    
+
     )
 
   }
