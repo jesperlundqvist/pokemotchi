@@ -13,7 +13,7 @@ export default class Fight extends React.Component {
       cleanliness: 100,
       fun: 100,
       alive: true,
-      occupancy: 0
+      occupancy: null
     };
 
   }
@@ -25,7 +25,7 @@ console.log("component...")
       publishKey: "pub-c-ab1f1896-d4ac-4b70-aaf4-ca968c88c2f5",
       secretKey: "sec-c-NjI1MjhlNDEtNmEwYi00NjNmLWJkYTgtNDYwNzFhZDBkNmQz",
       ssl: true,
-      uuid: "joppo"
+      uuid: "machi"
     })
 
     this.pubnub.addListener({
@@ -77,8 +77,11 @@ console.log("component...")
       function (status, response) {
           // handle status, response
         console.log(response)
+        this.setState({
+          occupancy: response.totalOccupancy
+        })
 
-      }
+      }.bind(this)
   );
 
     this.pubnub.subscribe({
@@ -104,9 +107,12 @@ console.log("component...")
             },
             function (status, response) {
                 // handle status, response
-              console.log(response)
+              console.log("button: ",response)
+              this.setState({
+                occupancy: response.totalOccupancy
+              })
 
-            });
+            }.bind(this));
          }} />
         <Text>Users: {this.state.occupancy}</Text>
       <Text>FIGHT
