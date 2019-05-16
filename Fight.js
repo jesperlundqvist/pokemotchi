@@ -1,10 +1,10 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Alert, ImageBackground, SafeAreaView } from 'react-native';
+import { Text, View, Button, TextInput, Alert, ImageBackground, SafeAreaView, Image, ActivityIndicator } from 'react-native';
 import Model from './Model';
 import Arena from './Arena';
 import PubNub from 'pubnub';
 
-const remote = 'https://pbs.twimg.com/media/DVMT-6OXcAE2rZY.jpg';
+
 
 export default class Fight extends React.Component {
   constructor(props) {
@@ -288,11 +288,15 @@ export default class Fight extends React.Component {
   }
 
   render() {
+    var remote = 'https://pbs.twimg.com/media/DVMT-6OXcAE2rZY.jpg';
     const resizeMode = 'center';
     let content = this.state.users.map(function (user) {
       if (this.state.username != user)
         return <Button title={user} key={user} onPress={() => { this.FightUser(user) }} />
     }.bind(this));
+
+    if(this.state.fightState == "pending") {
+      content = <ActivityIndicator size="large" color="#ffffff" /> }
 
     if (this.state.fightState == "fight") {
       content = <Arena myId={this.state.pokemonID} theirId={this.state.opponentPokemonID} onVictory={() => { this.victory() }} />;
