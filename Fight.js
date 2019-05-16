@@ -20,7 +20,8 @@ export default class Fight extends React.Component {
       back: this.props.navigation,
       inArena: false,
       username: this.props.navigation.getParam("username", "Username"),
-      pokemonID: this.props.navigation.getParam("pokemon", "pikachu")
+      pokemonID: this.props.navigation.getParam("pokemon", "1"),
+      fightState: "ready"
     };
 
   }
@@ -57,12 +58,30 @@ export default class Fight extends React.Component {
           var msg = m.message; // The Payload
           var publisher = m.publisher; //The Publisher
 
-          if (msg.user == this.state.username && msg.action == "fight") {
-              console.log(msg);
-              Model.getPokemonById(msg.my_pokemon).then((pokemon) => {
-                  alert("fight från " + publisher + "'s " + pokemon.name);
-              })
+          if (this.state.fightState == "ready") {
+              if (msg.user == this.state.username && msg.action == "fight") {
+                  Model.getPokemonById(msg.my_pokemon).then((pokemon) => {
+                      alert("fight från " + publisher + "'s " + pokemon.name);
 
+                      this.pubnub.publish(
+                        {
+                          message: {
+                            action: 'accept',
+                            my_pokemon: this.state.pokemonID,
+                            user: publisher
+                          },
+                          channel: 'Fight'
+                      });
+                  });
+              }
+          }
+
+          else if (this.state.fightState == "pending") {
+            if (msg.user == this.state.username && msg.action == "accept") {
+                alert("accepted fight");
+            }
+            else if (msg.user == this.state.username && msg.action == "decline") {
+            }
           }
       }.bind(this),
         presence: function (p) {
@@ -147,7 +166,9 @@ export default class Fight extends React.Component {
         } // publish extra meta with the request
       },
       function (status, response) {
-        // handle status, response
+         this.setState({
+             fightState: "pending"
+         });
       }
     );
   }
