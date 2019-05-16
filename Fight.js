@@ -272,6 +272,10 @@ export default class Fight extends React.Component {
 
       this.setState({fightState: "ready"});
 
+      this.pubnub.subscribe({
+          channels: ["Fight"]
+      })
+
       this.pubnub.unsubscribe({
           channels: [this.state.fightChannel]
       })
