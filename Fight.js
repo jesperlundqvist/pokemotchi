@@ -119,6 +119,27 @@ export default class Fight extends React.Component {
       })
   }
 
+  FightUser() {
+    this.state.pubnub.publish(
+      {
+        message: {
+          action: 'fight',
+          my_pokemon: 'pikachu',
+          user: 'joppe'
+        },
+        channel: 'Fight',
+        sendByPost: false, // true to send via POST
+        storeInHistory: false, //override default storage options
+        meta: {
+          "cool": "meta"
+        } // publish extra meta with the request
+      },
+      function (status, response) {
+        // handle status, response
+      }
+    );
+  }
+
   render() {
       let buttons = this.state.users.map((user) => {
           if (this.pubnub.uuid != user)
