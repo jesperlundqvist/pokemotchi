@@ -47,8 +47,8 @@ export default class Fight extends React.Component {
         },
         message: function (m) {
           // handle message
-          //console.log("message")
-          //console.log(m)
+          console.log("message")
+          console.log(m)
           var channelName = m.channel; // The channel for which the message belongs
           var channelGroup = m.subscription; // The channel group or wildcard subscription match (if exists)
           var pubTT = m.timetoken; // Publish timetoken
@@ -119,13 +119,14 @@ export default class Fight extends React.Component {
       })
   }
 
-  FightUser() {
-    this.state.pubnub.publish(
+  FightUser(p) {
+    console.log("inne i fight: ", p)
+    this.pubnub.publish(
       {
         message: {
           action: 'fight',
           my_pokemon: 'pikachu',
-          user: 'joppe'
+          user: p
         },
         channel: 'Fight',
         sendByPost: false, // true to send via POST
@@ -143,7 +144,7 @@ export default class Fight extends React.Component {
   render() {
       let buttons = this.state.users.map((user) => {
           if (this.pubnub.uuid != user)
-            return <Button title={user} key={user} onPress={() => {alert("fight");}} />
+            return <Button title={user} key={user} onPress={() => {this.FightUser(user)}} />
       });
 
     return (
