@@ -13,7 +13,7 @@ export default class Fight extends React.Component {
       publishKey: "pub-c-ab1f1896-d4ac-4b70-aaf4-ca968c88c2f5",
       secretKey: "sec-c-NjI1MjhlNDEtNmEwYi00NjNmLWJkYTgtNDYwNzFhZDBkNmQz",
       ssl: true,
-      uuid: "machi"
+      uuid: "Machi"
     })
     this.state = {
       pubnub: this.pubnub,
@@ -57,9 +57,10 @@ export default class Fight extends React.Component {
         var publisher = m.publisher; //The Publisher
       },
       presence: function (p) {
-        console.log("kör presence")
+        console.log("kör presence", p)
         console.log("users: ", p.uuid)
         console.log("action: ", p.action)
+        console.log("Channel: ", p.channel)
         // handle presence
         var action = p.action; // Can be join, leave, state-change or timeout
         var channelName = p.channel; // The channel for which the message belongs
@@ -67,7 +68,6 @@ export default class Fight extends React.Component {
           occupancy: p.occupancy,
           users: p.uuid
         })
-
         var occupancy = p.occupancy; // No. of users connected with the channel
         var state = p.state; // User State
         var publishTime = p.timestamp; // Publish timetoken
@@ -85,7 +85,7 @@ export default class Fight extends React.Component {
       },
       function (status, response) {
         // handle status, response
-        console.log(response)
+        console.log("response: ", response)
         //console.log("users2: ", response.uuid)
         this.setState({
           occupancy: response.totalOccupancy
@@ -124,9 +124,6 @@ export default class Fight extends React.Component {
         <Text>
           Users: {this.state.users}
         </Text>
-        <Text>
-          FIGHT
-      </Text>
       </View>
 
     )
