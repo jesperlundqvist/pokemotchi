@@ -12,8 +12,7 @@ export default class Pokemon extends React.Component {
             hunger: 100,
             cleanliness: 100,
             fun: 100,
-            alive: true,
-            id: "",
+            alive: true
         };
 
 
@@ -23,11 +22,7 @@ export default class Pokemon extends React.Component {
     }
 
     componentDidMount() {
-      if (this.state.id == "") {
-        this.state.id = Math.floor(Math.random() * 10)+1
-      }
-
-        Model.getPokemonById(this.state.id).then((data) => {
+        Model.getPokemonById(this.props.id).then((data) => {
             this.setState({data: data});
             console.log("pokemon");
             console.log(this.state.data.id);
@@ -66,8 +61,8 @@ export default class Pokemon extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.state.id !== prevState.id) {
-            Model.getPokemonById(this.state.id).then((data) => {
+        if (this.props.id !== prevProps.id) {
+            Model.getPokemonById(this.props.id).then((data) => {
                 this.setState({
                     data: data,
                     hunger: 100,
@@ -107,7 +102,7 @@ export default class Pokemon extends React.Component {
         if (!this.state.alive) {
           buttons = <Button title="New Pokemon" onPress={() => {
             this.setState ({ id: (Math.floor(Math.random() * 10)+1) });
-            AsyncStorage.setItem("pokemon", this.state.id);
+            AsyncStorage.setItem("pokemon", this.props.id);
           }} />
           name = name + " [DEAD]";
         }
