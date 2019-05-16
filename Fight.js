@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Alert } from 'react-native';
+import { Text, View, Button, TextInput, Alert, SafeAreaView } from 'react-native';
 import Model from './Model';
 import Arena from './Arena';
 import PubNub from 'pubnub';
@@ -292,10 +292,13 @@ export default class Fight extends React.Component {
       }
 
     return (
-      <View style={{flex:1}}>
+      <SafeAreaView style={{flex:1, justifyContent: "space-between"}}>
         <Text>{this.state.fightState}</Text>
+        <View>
         {content}
-      </View>
+        </View>
+        <Button title="Back" onPress={(() => this.props.navigation.goBack()).bind(this)} />
+      </SafeAreaView>
 
     )
 
