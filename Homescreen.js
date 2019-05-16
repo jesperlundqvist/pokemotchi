@@ -25,7 +25,7 @@ export default class Homescreen extends React.Component {
             <Button title="Fight" onPress={() => navigate('Fight', {username: "Machi", pokemon: this.state.pokemonId})}/>
         </View>;
 
-        if (!this.state.pokemonAlive) {
+        /*if (!this.state.pokemonAlive) {
             buttons = <Button title="New Pokemon" onPress={() => {
                 let newPokemon = Math.floor(Math.random() * 10)+1;
 
@@ -37,7 +37,7 @@ export default class Homescreen extends React.Component {
                     pokemonId: newPokemon
                 });
             }} />
-        }
+        }*/
 
         return (
           <SafeAreaView style={{

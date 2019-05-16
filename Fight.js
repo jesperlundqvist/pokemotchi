@@ -58,6 +58,7 @@ export default class Fight extends React.Component {
           var publisher = m.publisher; //The Publisher
 
           if (msg.user == this.state.username && msg.action == "fight") {
+              console.log(msg);
               Model.getPokemonById(msg.my_pokemon).then((pokemon) => {
                   alert("fight från " + publisher + "'s " + pokemon.name);
               })
