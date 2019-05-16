@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, Button, TextInput, Alert } from 'react-native';
 import Model from './Model';
+import Arena from './Arena';
 import PubNub from 'pubnub';
 
 export default class Fight extends React.Component {
@@ -21,6 +22,7 @@ export default class Fight extends React.Component {
       inArena: false,
       username: this.props.navigation.getParam("username", "Username"),
       pokemonID: this.props.navigation.getParam("pokemon", "1"),
+      opponentPokemonID: 0,
       fightState: "ready"
     };
 
@@ -62,7 +64,7 @@ export default class Fight extends React.Component {
               if (msg.user == this.state.username && msg.action == "fight") {
                   Model.getPokemonById(msg.my_pokemon).then((pokemon) => {
                       Alert.alert("Fight", "fight från " + publisher + "'s " + pokemon.name, [
-                      {text: "Yes!", onPress: () => {
+                      {text: "Yes!", onPress: (() => {
                           this.pubnub.publish(
                             {
                               message: {
@@ -72,7 +74,17 @@ export default class Fight extends React.Component {
                               },
                               channel: 'Fight'
                           });
-                      }},
+
+                          this.pubnub.unsubscribe({
+                              channels: ['Fight']
+                          })
+
+                          this.pubnub.subscribe({
+                            channels: [publisher + this.state.username]
+                          });
+
+                          this.setState({fightState: "fight", opponentPokemonID: msg.my_pokemon});
+                      }).bind(this)},
                       {text: "No!", onPress: (() => {
                           this.pubnub.publish(
                             {
@@ -95,10 +107,23 @@ export default class Fight extends React.Component {
           else if (this.state.fightState == "pending") {
             if (msg.user == this.state.username && msg.action == "accept") {
                 alert("accepted fight");
+                this.pubnub.unsubscribe({
+                    channels: ['Fight']
+                })
+
+                this.pubnub.subscribe({
+                  channels: [this.state.username + publisher]
+                });
+
+                this.setState({fightState: "fight"});
             }
             else if (msg.user == this.state.username && msg.action == "decline") {
                 alert("declined fight");
+                this.setState({fightState: "ready"});
             }
+          }
+
+          else if (this.state.fightState = "fight") {
           }
       }.bind(this),
         presence: function (p) {
@@ -191,14 +216,19 @@ export default class Fight extends React.Component {
   }
 
   render() {
-      let buttons = this.state.users.map(function (user) {
+      let content = this.state.users.map(function (user) {
           if (this.state.username != user)
             return <Button title={user} key={user} onPress={() => {this.FightUser(user)}} />
       }.bind(this));
 
+      if (this.state.fightState == "fight") {
+          content = <Arena myId={this.state.pokemonID} theirId={this.state.opponentPokemonID} />;
+      }
+
     return (
-      <View>
-        {buttons}
+      <View style={{flex:1}}>
+        <Text>{this.state.fightState}</Text>
+        {content}
       </View>
 
     )
