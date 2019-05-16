@@ -13,7 +13,7 @@ export default class Fight extends React.Component {
       publishKey: "pub-c-ab1f1896-d4ac-4b70-aaf4-ca968c88c2f5",
       secretKey: "sec-c-NjI1MjhlNDEtNmEwYi00NjNmLWJkYTgtNDYwNzFhZDBkNmQz",
       ssl: true,
-      uuid: "machi"
+      uuid: "joppe"
     })
     this.state = {
       pubnub: this.pubnub,
@@ -23,15 +23,10 @@ export default class Fight extends React.Component {
       fun: 100,
       alive: true,
       occupancy: null,
-      users: null,
-      back: this.props.navigation
-
+      users: [],
+      back: this.props.navigation,
+      inArena: false
     };
-
-  }
-
-  JoinBattleArena() {
-   
 
     this.state.pubnub.addListener({
       status: function (s) {
@@ -57,15 +52,26 @@ export default class Fight extends React.Component {
         var publisher = m.publisher; //The Publisher
       },
       presence: function (p) {
+          console.log(p)
         console.log("kör presence")
         console.log("users: ", p.uuid)
         console.log("action: ", p.action)
         // handle presence
         var action = p.action; // Can be join, leave, state-change or timeout
         var channelName = p.channel; // The channel for which the message belongs
+
+        if (p.action == "join") {
+            this.setState({users: this.state.users.concat([p.uuid])});
+        }
+        else if (p.action = "leave") {
+            let users = this.state.users;
+            var index = users.indexOf(p.uuid);
+            if (index !== -1) users.splice(index, 1);
+            this.setState({users: users});
+        }
+
         this.setState({
-          occupancy: p.occupancy,
-          users: p.uuid
+          occupancy: p.occupancy
         })
 
         var occupancy = p.occupancy; // No. of users connected with the channel
@@ -77,6 +83,14 @@ export default class Fight extends React.Component {
       }.bind(this)
     })
 
+  }
+
+  JoinBattleArena() {
+    this.state.pubnub.subscribe({
+      channels: ["Fight"],
+      withPresence: true
+    });
+
     this.state.pubnub.hereNow(
       {
         channels: ["Fight"],
@@ -84,45 +98,48 @@ export default class Fight extends React.Component {
         includeState: true
       },
       function (status, response) {
-        // handle status, response
-        console.log(response)
-        //console.log("users2: ", response.uuid)
         this.setState({
-          occupancy: response.totalOccupancy
+          occupancy: response.totalOccupancy,
+          users: response.channels.Fight.occupants
         })
 
       }.bind(this)
     );
 
-    this.state.pubnub.subscribe({
-      channels: ["Fight"],
-      withPresence: true
-    });
-
+    this.setState({inArena: true});
   }
 
   LeaveArena(){
     this.state.pubnub.unsubscribe({
       channels: ['Fight']
   })
-  this.state.back.goBack()
+  //this.state.back.goBack()
+  this.setState({inArena: false, users: []});
   }
 
   render() {
 
+      let buttons = <Button title="Join battle arena" onPress={() => {
+        this.JoinBattleArena()
+       }} />;
+
+      if (this.state.inArena) {
+          buttons = <Button title="Leave battle arena" onPress={() => {
+          this.LeaveArena()
+      }} />;
+      }
+
+      let users = this.state.users
+
     return (
       <View>
-        <Button title="Join battle arena" onPress={() => {
-          this.JoinBattleArena()
-         }} />
-        <Button title="Leave battle arena" onPress={() => {
-        this.LeaveArena()
-         }} />
+
+        {buttons}
         <Text>
           Occupants: {this.state.occupancy}
         </Text>
         <Text>
-          Users:
+          Users: {JSON.stringify(this.state.users)}
         </Text>
         <Text>
           FIGHT

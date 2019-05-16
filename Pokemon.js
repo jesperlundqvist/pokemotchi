@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image } from 'react-native';
+import { Text, View, Image, AsyncStorage, Button } from 'react-native';
 import Model from './Model';
 import Sponge from './Sponge';
 
@@ -16,9 +16,9 @@ export default class Pokemon extends React.Component {
         };
 
 
-        if (AsyncStorage.getItem("pokemon")) {
+        /*if (AsyncStorage.getItem("pokemon")) {
           this.setState({ id: AsyncStorage.getItem("pokemon") });
-        }
+        }*/
     }
 
     componentDidMount() {
@@ -31,7 +31,7 @@ export default class Pokemon extends React.Component {
             console.log("pokemon");
             console.log(this.state.data.id);
             //Model.favPok(this.state.data);
-            AsyncStorage.setItem("pokemon", this.state.data.id)
+            //AsyncStorage.setItem("pokemon", this.state.data.id)
 
         });
 
