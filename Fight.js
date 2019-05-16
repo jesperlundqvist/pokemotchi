@@ -19,7 +19,8 @@ export default class Fight extends React.Component {
       users: [],
       back: this.props.navigation,
       inArena: false,
-      username: this.props.navigation.getParam("username", "Username")
+      username: this.props.navigation.getParam("username", "Username"),
+      pokemonID: this.props.navigation.getParam("pokemon", "pikachu")
     };
 
   }
@@ -126,11 +127,12 @@ export default class Fight extends React.Component {
 
   FightUser(p) {
     console.log("inne i fight: ", p)
+    console.log("pokemonID: ", this.state.pokemonID)
     this.pubnub.publish(
       {
         message: {
           action: 'fight',
-          my_pokemon: 'pikachu',
+          my_pokemon: this.state.pokemonID,
           user: p
         },
         channel: 'Fight',
