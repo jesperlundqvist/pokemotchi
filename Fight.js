@@ -73,7 +73,7 @@ export default class Fight extends React.Component {
                               channel: 'Fight'
                           });
                       }},
-                      {text: "No!", onPress: () => {
+                      {text: "No!", onPress: (() => {
                           this.pubnub.publish(
                             {
                               message: {
@@ -83,7 +83,9 @@ export default class Fight extends React.Component {
                               },
                               channel: 'Fight'
                           });
-                      }}]);
+
+                          this.setState({fightState: "ready"});
+                      }).bind(this)}]);
 
 
                   });
