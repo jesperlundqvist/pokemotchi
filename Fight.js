@@ -140,16 +140,15 @@ export default class Fight extends React.Component {
                   });
               }
 
-              else {
-                  if (msg.user == this.state.username && msg.action == "exit") {
-                      this.setState({fightState: "ready"});
-                      this.pubnub.subscribe({
-                          channels: ["Fight"]
-                      });
-                      this.pubnub.unsubscribe({
-                        channels: this.state.fightChannel
-                      });
-                  }
+              else if (msg.user == this.state.username && msg.action == "victory") {
+                  alert("Du förlorade :(");
+                  this.setState({fightState: "ready"});
+                  this.pubnub.subscribe({
+                      channels: ["Fight"]
+                  });
+                  this.pubnub.unsubscribe({
+                    channels: this.state.fightChannel
+                  });
               }
           }
       }.bind(this),
@@ -255,7 +254,16 @@ export default class Fight extends React.Component {
   }
 
   victory(){
-      alert('Du vann!')
+      alert("Du vann!");
+      this.pubnub.publish(
+        {
+          message: {
+            action: 'victory',
+            my_pokemon: this.state.pokemonID,
+            user: this.state.opponentPokemonID
+          },
+          channel: 'Fight'
+      });
   }
 
   render() {
