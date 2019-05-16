@@ -33,158 +33,162 @@ export default class Fight extends React.Component {
   }
 
   componentDidMount() {
-      this.pubnub = new PubNub({
-        subscribeKey: "sub-c-ff0c5120-7702-11e9-945c-2ea711aa6b65",
-        publishKey: "pub-c-ab1f1896-d4ac-4b70-aaf4-ca968c88c2f5",
-        secretKey: "sec-c-NjI1MjhlNDEtNmEwYi00NjNmLWJkYTgtNDYwNzFhZDBkNmQz",
-        ssl: true,
-        uuid: this.state.username
-      })
+    this.pubnub = new PubNub({
+      subscribeKey: "sub-c-ff0c5120-7702-11e9-945c-2ea711aa6b65",
+      publishKey: "pub-c-ab1f1896-d4ac-4b70-aaf4-ca968c88c2f5",
+      secretKey: "sec-c-NjI1MjhlNDEtNmEwYi00NjNmLWJkYTgtNDYwNzFhZDBkNmQz",
+      ssl: true,
+      uuid: this.state.username
+    })
 
-      this.pubnub.addListener({
-        status: function (s) {
-          console.log("status")
-          console.log(s);
-          if (s.category === "PNConnectedCategory") {
-            ready = true;
+    this.pubnub.addListener({
+      status: function (s) {
+        console.log("status")
+        console.log(s);
+        if (s.category === "PNConnectedCategory") {
+          ready = true;
+        }
+
+        var affectedChannelGroups = s.affectedChannelGroups;
+        var affectedChannels = s.affectedChannels;
+        var category = s.category;
+        var operation = s.operation;
+      },
+      message: function (m) {
+        // handle message
+        console.log("message")
+        console.log(m)
+        var channelName = m.channel; // The channel for which the message belongs
+        var channelGroup = m.subscription; // The channel group or wildcard subscription match (if exists)
+        var pubTT = m.timetoken; // Publish timetoken
+        var msg = m.message; // The Payload
+        var publisher = m.publisher; //The Publisher
+
+        if (this.state.fightState == "ready") {
+          if (msg.user == this.state.username && msg.action == "fight") {
+            Model.getPokemonById(msg.my_pokemon).then((pokemon) => {
+              Alert.alert("Fight", "fight från " + publisher + "'s " + pokemon.name, [
+                {
+                  text: "Yes!", onPress: (() => {
+                    this.pubnub.publish(
+                      {
+                        message: {
+                          action: 'accept',
+                          my_pokemon: this.state.pokemonID,
+                          user: publisher
+                        },
+                        channel: 'Fight'
+                      });
+
+                    this.pubnub.unsubscribe({
+                      channels: ['Fight']
+                    })
+
+                    let channelName = publisher + this.state.username;
+
+                    this.pubnub.subscribe({
+                      channels: [channelName]
+                    });
+
+                    this.setState({ fightState: "fight", opponentPokemonID: msg.my_pokemon, opponent: publisher, fightChannel: channelName });
+                  }).bind(this)
+                },
+                {
+                  text: "No!", onPress: (() => {
+                    this.pubnub.publish(
+                      {
+                        message: {
+                          action: 'decline',
+                          my_pokemon: this.state.pokemonID,
+                          user: publisher
+                        },
+                        channel: 'Fight'
+                      });
+
+                    this.setState({ fightState: "ready" });
+                  }).bind(this)
+                }]);
+
+
+            });
+          }
+        }
+
+        else if (this.state.fightState == "pending") {
+          if (msg.user == this.state.username && msg.action == "accept") {
+            alert("accepted fight");
+            this.pubnub.unsubscribe({
+              channels: ['Fight']
+            })
+
+            let channelName = this.state.username + publisher;
+
+            this.pubnub.subscribe({
+              channels: [channelName]
+            });
+
+            this.setState({ fightState: "fight", opponentPokemonID: msg.my_pokemon, opponent: publisher, fightChannel: channelName });
+          }
+          else if (msg.user == this.state.username && msg.action == "decline") {
+            alert("declined fight");
+            this.setState({ fightState: "ready" });
+          }
+        }
+
+        else if (this.state.fightState = "fight") {
+          if (msg.user == this.state.username && msg.action == "exit") {
+            this.setState({ fightState: "ready" });
+            this.pubnub.subscribe({
+              channels: ["Fight"]
+            });
+            this.pubnub.unsubscribe({
+              channels: this.state.fightChannel
+            });
           }
 
-          var affectedChannelGroups = s.affectedChannelGroups;
-          var affectedChannels = s.affectedChannels;
-          var category = s.category;
-          var operation = s.operation;
-        },
-        message: function (m) {
-          // handle message
-          console.log("message")
-          console.log(m)
-          var channelName = m.channel; // The channel for which the message belongs
-          var channelGroup = m.subscription; // The channel group or wildcard subscription match (if exists)
-          var pubTT = m.timetoken; // Publish timetoken
-          var msg = m.message; // The Payload
-          var publisher = m.publisher; //The Publisher
-
-          if (this.state.fightState == "ready") {
-              if (msg.user == this.state.username && msg.action == "fight") {
-                  Model.getPokemonById(msg.my_pokemon).then((pokemon) => {
-                      Alert.alert("Fight", "fight från " + publisher + "'s " + pokemon.name, [
-                      {text: "Yes!", onPress: (() => {
-                          this.pubnub.publish(
-                            {
-                              message: {
-                                action: 'accept',
-                                my_pokemon: this.state.pokemonID,
-                                user: publisher
-                              },
-                              channel: 'Fight'
-                          });
-
-                          this.pubnub.unsubscribe({
-                              channels: ['Fight']
-                          })
-
-                          let channelName = publisher + this.state.username;
-
-                          this.pubnub.subscribe({
-                            channels: [channelName]
-                          });
-
-                          this.setState({fightState: "fight", opponentPokemonID: msg.my_pokemon, opponent: publisher, fightChannel: channelName});
-                      }).bind(this)},
-                      {text: "No!", onPress: (() => {
-                          this.pubnub.publish(
-                            {
-                              message: {
-                                action: 'decline',
-                                my_pokemon: this.state.pokemonID,
-                                user: publisher
-                              },
-                              channel: 'Fight'
-                          });
-
-                          this.setState({fightState: "ready"});
-                      }).bind(this)}]);
-
-
-                  });
-              }
+          else if (msg.user == this.state.username && msg.action == "victory") {
+            alert("Du förlorade :(");
+            this.setState({ fightState: "ready" });
+            this.pubnub.subscribe({
+              channels: ["Fight"]
+            });
+            this.pubnub.unsubscribe({
+              channels: [this.state.fightChannel]
+            });
           }
-
-          else if (this.state.fightState == "pending") {
-            if (msg.user == this.state.username && msg.action == "accept") {
-                alert("accepted fight");
-                this.pubnub.unsubscribe({
-                    channels: ['Fight']
-                })
-
-                let channelName = this.state.username + publisher;
-
-                this.pubnub.subscribe({
-                  channels: [channelName]
-                });
-
-                this.setState({fightState: "fight", opponentPokemonID: msg.my_pokemon, opponent: publisher, fightChannel: channelName});
-            }
-            else if (msg.user == this.state.username && msg.action == "decline") {
-                alert("declined fight");
-                this.setState({fightState: "ready"});
-            }
-          }
-
-          else if (this.state.fightState = "fight") {
-              if (msg.user == this.state.username && msg.action == "exit") {
-                  this.setState({fightState: "ready"});
-                  this.pubnub.subscribe({
-                      channels: ["Fight"]
-                  });
-                  this.pubnub.unsubscribe({
-                    channels: this.state.fightChannel
-                  });
-              }
-
-              else if (msg.user == this.state.username && msg.action == "victory") {
-                  alert("Du förlorade :(");
-                  this.setState({fightState: "ready"});
-                  this.pubnub.subscribe({
-                      channels: ["Fight"]
-                  });
-                  this.pubnub.unsubscribe({
-                    channels: [this.state.fightChannel]
-                  });
-              }
-          }
+        }
       }.bind(this),
-        presence: function (p) {
-            console.log(p)
-          console.log("kör presence")
-          console.log("users: ", p.uuid)
-          console.log("action: ", p.action)
-          // handle presence
-          var action = p.action; // Can be join, leave, state-change or timeout
-          var channelName = p.channel; // The channel for which the message belongs
+      presence: function (p) {
+        console.log(p)
+        console.log("kör presence")
+        console.log("users: ", p.uuid)
+        console.log("action: ", p.action)
+        // handle presence
+        var action = p.action; // Can be join, leave, state-change or timeout
+        var channelName = p.channel; // The channel for which the message belongs
 
-          if (p.action == "join") {
-              this.setState({users: this.state.users.concat([p.uuid])});
-          }
-          else if (p.action = "leave") {
-              let users = this.state.users;
-              var index = users.indexOf(p.uuid);
-              if (index !== -1) users.splice(index, 1);
-              this.setState({users: users});
-          }
+        if (p.action == "join") {
+          this.setState({ users: this.state.users.concat([p.uuid]) });
+        }
+        else if (p.action = "leave") {
+          let users = this.state.users;
+          var index = users.indexOf(p.uuid);
+          if (index !== -1) users.splice(index, 1);
+          this.setState({ users: users });
+        }
 
-          this.setState({
-            occupancy: p.occupancy
-          })
+        this.setState({
+          occupancy: p.occupancy
+        })
 
-          var occupancy = p.occupancy; // No. of users connected with the channel
-          var state = p.state; // User State
-          var publishTime = p.timestamp; // Publish timetoken
-          var timetoken = p.timetoken;  // Current timetoken
-          var uuid = p.uuid; // UUIDs of users who are connected with the channel
+        var occupancy = p.occupancy; // No. of users connected with the channel
+        var state = p.state; // User State
+        var publishTime = p.timestamp; // Publish timetoken
+        var timetoken = p.timetoken;  // Current timetoken
+        var uuid = p.uuid; // UUIDs of users who are connected with the channel
 
-        }.bind(this)
-      })
+      }.bind(this)
+    })
 
     this.pubnub.subscribe({
       channels: ["Fight"],
@@ -198,10 +202,10 @@ export default class Fight extends React.Component {
         includeState: true
       },
       function (status, response) {
-          let users = [];
-          response.channels.Fight.occupants.forEach((val) => {
-              users.push(val.uuid);
-          });
+        let users = [];
+        response.channels.Fight.occupants.forEach((val) => {
+          users.push(val.uuid);
+        });
 
         this.setState({
           occupancy: response.totalOccupancy,
@@ -213,26 +217,26 @@ export default class Fight extends React.Component {
   }
 
   componentWillUnmount() {
-      if (this.state.fightState == "fight") {
-          this.pubnub.publish(
-            {
-              message: {
-                action: 'exit',
-                my_pokemon: this.state.pokemonID,
-                user: this.state.opponent
-              },
-              channel: 'Fight'
-          });
+    if (this.state.fightState == "fight") {
+      this.pubnub.publish(
+        {
+          message: {
+            action: 'exit',
+            my_pokemon: this.state.pokemonID,
+            user: this.state.opponent
+          },
+          channel: 'Fight'
+        });
 
-          this.pubnub.unsubscribe({
-              channels: [this.state.fightChannel]
-          })
-      }
-      else {
-          this.pubnub.unsubscribe({
-              channels: ['Fight']
-          })
-      }
+      this.pubnub.unsubscribe({
+        channels: [this.state.fightChannel]
+      })
+    }
+    else {
+      this.pubnub.unsubscribe({
+        channels: ['Fight']
+      })
+    }
   }
 
   FightUser(p) {
@@ -253,70 +257,70 @@ export default class Fight extends React.Component {
         } // publish extra meta with the request
       },
       function (status, response) {
-         this.setState({
-             fightState: "pending"
-         });
-     }.bind(this)
+        this.setState({
+          fightState: "pending"
+        });
+      }.bind(this)
     );
   }
 
-  victory(){
-      alert("Du vann!");
-      this.pubnub.publish(
-        {
-          message: {
-            action: 'victory',
-            my_pokemon: this.state.pokemonID,
-            user: this.state.opponent
-          },
-          channel: this.state.fightChannel
+  victory() {
+    alert("Du vann!");
+    this.pubnub.publish(
+      {
+        message: {
+          action: 'victory',
+          my_pokemon: this.state.pokemonID,
+          user: this.state.opponent
+        },
+        channel: this.state.fightChannel
       });
 
-      this.setState({fightState: "ready"});
+    this.setState({ fightState: "ready" });
 
-      this.pubnub.subscribe({
-          channels: ["Fight"]
-      })
+    this.pubnub.subscribe({
+      channels: ["Fight"]
+    })
 
-      this.pubnub.unsubscribe({
-          channels: [this.state.fightChannel]
-      })
+    this.pubnub.unsubscribe({
+      channels: [this.state.fightChannel]
+    })
   }
 
   render() {
     const resizeMode = 'center';
-      let content = this.state.users.map(function (user) {
-          if (this.state.username != user)
-            return <Button title={user} key={user} onPress={() => {this.FightUser(user)}} />
-      }.bind(this));
+    let content = this.state.users.map(function (user) {
+      if (this.state.username != user)
+        return <Button title={user} key={user} onPress={() => { this.FightUser(user) }} />
+    }.bind(this));
 
-      if (this.state.fightState == "fight") {
-          content = <Arena myId={this.state.pokemonID} theirId={this.state.opponentPokemonID} onVictory={() => {this.victory()}} />;
-      }
+    if (this.state.fightState == "fight") {
+      content = <Arena myId={this.state.pokemonID} theirId={this.state.opponentPokemonID} onVictory={() => { this.victory() }} />;
+    }
 
     return (
       <ImageBackground
-      style={{
-        backgroundColor: '#ccc',
-        flex: 1,
-        resizeMode,
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        justifyContent: 'center',
-      }}
-      source={{ uri: remote }}
-    >
+        style={{
+          backgroundColor: '#ccc',
+          flex: 1,
+          resizeMode,
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          justifyContent: 'center',
+        }}
+        source={{ uri: remote }}
+      >
 
-<SafeAreaView style={{flex:1, justifyContent: "space-between", backgroundColor: 'transparent',}}>
-        <Text>{this.state.fightState}</Text>
-        <View>
-        {content}
-        </View>
-        <Button title="Back" onPress={(() => this.props.navigation.goBack()).bind(this)} />
-      </SafeAreaView>
-        </ImageBackground>
-        
+        <SafeAreaView style={{ flex: 1, justifyContent: "space-between", backgroundColor: 'transparent', }}>
+          <Text>{this.state.fightState}</Text>
+          <View>
+            {content}
+          </View>
+          <Button title="Back" onPress={(() => this.props.navigation.goBack()).bind(this)} />
+        </SafeAreaView>
+      </ImageBackground>
+
 
     )
 
