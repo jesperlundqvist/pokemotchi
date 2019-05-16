@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Alert, ImageBackground } from 'react-native';
+import { Text, View, Button, TextInput, Alert, ImageBackground, SafeAreaView } from 'react-native';
 import Model from './Model';
 import Arena from './Arena';
 import PubNub from 'pubnub';
@@ -274,6 +274,10 @@ export default class Fight extends React.Component {
 
       this.setState({fightState: "ready"});
 
+      this.pubnub.subscribe({
+          channels: ["Fight"]
+      })
+
       this.pubnub.unsubscribe({
           channels: [this.state.fightChannel]
       })
@@ -303,16 +307,14 @@ export default class Fight extends React.Component {
       }}
       source={{ uri: remote }}
     >
-        <Text style={{
-            backgroundColor: 'transparent',
-            textAlign: 'center',
-            fontSize: 30,
-            padding: 40,
-            color: '#fff'
-          }}>
-        {this.state.fightState}
-        </Text>
+
+<SafeAreaView style={{flex:1, justifyContent: "space-between", backgroundColor: 'transparent',}}>
+        <Text>{this.state.fightState}</Text>
+        <View>
         {content}
+        </View>
+        <Button title="Back" onPress={(() => this.props.navigation.goBack()).bind(this)} />
+      </SafeAreaView>
         </ImageBackground>
         
 
