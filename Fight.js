@@ -18,7 +18,8 @@ export default class Fight extends React.Component {
       occupancy: null,
       users: [],
       back: this.props.navigation,
-      inArena: false
+      inArena: false,
+      username: this.props.navigation.getParam("username", "Username")
     };
 
   }
@@ -29,7 +30,7 @@ export default class Fight extends React.Component {
         publishKey: "pub-c-ab1f1896-d4ac-4b70-aaf4-ca968c88c2f5",
         secretKey: "sec-c-NjI1MjhlNDEtNmEwYi00NjNmLWJkYTgtNDYwNzFhZDBkNmQz",
         ssl: true,
-        uuid: this.props.navigation.getParam("username", "Username")
+        uuid: this.state.username
       })
 
       this.pubnub.addListener({
@@ -54,7 +55,11 @@ export default class Fight extends React.Component {
           var pubTT = m.timetoken; // Publish timetoken
           var msg = m.message; // The Payload
           var publisher = m.publisher; //The Publisher
-        },
+
+          if (msg.user == this.state.username && msg.action == "fight") {
+              alert("fight från " + publisher + "'s " + msg.my_pokemon);
+          }
+      }.bind(this),
         presence: function (p) {
             console.log(p)
           console.log("kör presence")
@@ -142,10 +147,10 @@ export default class Fight extends React.Component {
   }
 
   render() {
-      let buttons = this.state.users.map((user) => {
-          if (this.pubnub.uuid != user)
+      let buttons = this.state.users.map(function (user) {
+          if (this.state.username != user)
             return <Button title={user} key={user} onPress={() => {this.FightUser(user)}} />
-      });
+      }.bind(this));
 
     return (
       <View>
