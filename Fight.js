@@ -147,7 +147,7 @@ export default class Fight extends React.Component {
                       channels: ["Fight"]
                   });
                   this.pubnub.unsubscribe({
-                    channels: this.state.fightChannel
+                    channels: [this.state.fightChannel]
                   });
               }
           }
