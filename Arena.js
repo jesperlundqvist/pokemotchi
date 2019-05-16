@@ -48,28 +48,12 @@ export default class Arena extends React.Component {
         let theirImageUri = "http://pokestadium.com/sprites/xy/" + this.state.theirPokemon.name + ".gif";
 
         return (
-
-            <ImageBackground
-                style={{
-                    backgroundColor: '#ccc',
-                    flex: 1,
-                    resizeMode,
-                    position: 'absolute',
-                    width: '100%',
-                    height: '100%',
-                    justifyContent: 'center',
-                }}
-                source={{ uri: remote }}>
-                <View style={{
-                    flex: 1,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: 'transparent',
-                }}>
-                    <TouchableHighlight style={{ alignSelf: 'flex-end' }} onPress={this.onPress}><Image source={{ uri: theirImageUri }} style={{ width: 125, height: 125, resizeMode: "contain" }} /></TouchableHighlight>
-                    <Image source={{ uri: myImageUri }} style={{ width: 250, height: 250, resizeMode: "contain", alignSelf: 'flex-start' }} />
-                </View>
-            </ImageBackground>
+            <View style={{
+                paddingTop: 200
+            }}>
+                <TouchableHighlight style={{ alignSelf: 'flex-end' }} onPress={this.onPress}><Image source={{ uri: theirImageUri }} style={{ width: 125, height: 125, resizeMode: "contain" }} /></TouchableHighlight>
+                <Image source={{ uri: myImageUri }} style={{ width: 250, height: 250, resizeMode: "contain", alignSelf: 'flex-start' }} />
+            </View>
         )
     }
 }

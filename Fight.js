@@ -300,26 +300,25 @@ export default class Fight extends React.Component {
 
     return (
       <ImageBackground
-        style={{
-          backgroundColor: '#ccc',
-          flex: 1,
-          resizeMode,
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          justifyContent: 'center',
-        }}
-        source={{ uri: remote }}
-      >
-
-        <SafeAreaView style={{ flex: 1, justifyContent: "space-between", backgroundColor: 'transparent', }}>
-          <Text>{this.state.fightState}</Text>
-          <View>
-            {content}
-          </View>
-          <Button title="Back" onPress={(() => this.props.navigation.goBack()).bind(this)} />
+      style={{
+        backgroundColor: '#ccc',
+        flex: 1,
+        resizeMode,
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+      }}
+      source={{ uri: remote }}
+    >
+        <SafeAreaView style={{flex:1, justifyContent: "space-between", flexDirection: 'column', backgroundColor: 'transparent'}}>
+            <Text>{this.state.fightState}</Text>
+            <View>
+            <Arena myId={1} theirId={1} />
+            </View>
+            <Button title="Back" onPress={(() => this.props.navigation.goBack()).bind(this)} />
         </SafeAreaView>
-      </ImageBackground>
+    </ImageBackground>
 
 
     )
