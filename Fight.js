@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Button, TextInput } from 'react-native';
+import { Text, View, Button, TextInput, Alert } from 'react-native';
 import Model from './Model';
 import PubNub from 'pubnub';
 
@@ -61,17 +61,31 @@ export default class Fight extends React.Component {
           if (this.state.fightState == "ready") {
               if (msg.user == this.state.username && msg.action == "fight") {
                   Model.getPokemonById(msg.my_pokemon).then((pokemon) => {
-                      alert("fight från " + publisher + "'s " + pokemon.name);
+                      Alert.alert("Fight", "fight från " + publisher + "'s " + pokemon.name, [
+                      {text: "Yes!", onPress: () => {
+                          this.pubnub.publish(
+                            {
+                              message: {
+                                action: 'accept',
+                                my_pokemon: this.state.pokemonID,
+                                user: publisher
+                              },
+                              channel: 'Fight'
+                          });
+                      }},
+                      {text: "No!", onPress: () => {
+                          this.pubnub.publish(
+                            {
+                              message: {
+                                action: 'decline',
+                                my_pokemon: this.state.pokemonID,
+                                user: publisher
+                              },
+                              channel: 'Fight'
+                          });
+                      }}]);
 
-                      this.pubnub.publish(
-                        {
-                          message: {
-                            action: 'accept',
-                            my_pokemon: this.state.pokemonID,
-                            user: publisher
-                          },
-                          channel: 'Fight'
-                      });
+
                   });
               }
           }
@@ -81,6 +95,7 @@ export default class Fight extends React.Component {
                 alert("accepted fight");
             }
             else if (msg.user == this.state.username && msg.action == "decline") {
+                alert("declined fight");
             }
           }
       }.bind(this),
