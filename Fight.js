@@ -22,8 +22,10 @@ export default class Fight extends React.Component {
       inArena: false,
       username: this.props.navigation.getParam("username", "Username"),
       pokemonID: this.props.navigation.getParam("pokemon", "1"),
+      opponent: "",
       opponentPokemonID: 0,
-      fightState: "ready"
+      fightState: "ready",
+      fightChannel: ""
     };
 
   }
@@ -79,11 +81,13 @@ export default class Fight extends React.Component {
                               channels: ['Fight']
                           })
 
+                          let channelName = publisher + this.state.username;
+
                           this.pubnub.subscribe({
-                            channels: [publisher + this.state.username]
+                            channels: [channelName]
                           });
 
-                          this.setState({fightState: "fight", opponentPokemonID: msg.my_pokemon});
+                          this.setState({fightState: "fight", opponentPokemonID: msg.my_pokemon, opponent: publisher, fightChannel: channelName});
                       }).bind(this)},
                       {text: "No!", onPress: (() => {
                           this.pubnub.publish(
@@ -111,11 +115,13 @@ export default class Fight extends React.Component {
                     channels: ['Fight']
                 })
 
+                let channelName = this.state.username + publisher;
+
                 this.pubnub.subscribe({
-                  channels: [this.state.username + publisher]
+                  channels: [channelName]
                 });
 
-                this.setState({fightState: "fight", opponentPokemonID: msg.my_pokemon});
+                this.setState({fightState: "fight", opponentPokemonID: msg.my_pokemon, opponent: publisher, fightChannel: channelName});
             }
             else if (msg.user == this.state.username && msg.action == "decline") {
                 alert("declined fight");
@@ -124,6 +130,27 @@ export default class Fight extends React.Component {
           }
 
           else if (this.state.fightState = "fight") {
+              if (msg.user == this.state.username && msg.action == "exit") {
+                  this.setState({fightState: "ready"});
+                  this.pubnub.subscribe({
+                      channels: ["Fight"]
+                  });
+                  this.pubnub.unsubscribe({
+                    channels: this.state.fightChannel
+                  });
+              }
+
+              else {
+                  if (msg.user == this.state.username && msg.action == "exit") {
+                      this.setState({fightState: "ready"});
+                      this.pubnub.subscribe({
+                          channels: ["Fight"]
+                      });
+                      this.pubnub.unsubscribe({
+                        channels: this.state.fightChannel
+                      });
+                  }
+              }
           }
       }.bind(this),
         presence: function (p) {
@@ -185,6 +212,18 @@ export default class Fight extends React.Component {
   }
 
   componentWillUnmount() {
+      if (this.state.fightState == "fight") {
+          this.pubnub.publish(
+            {
+              message: {
+                action: 'exit',
+                my_pokemon: this.state.pokemonID,
+                user: this.state.opponentPokemonID
+              },
+              channel: 'Fight'
+          });
+      }
+
       this.pubnub.unsubscribe({
           channels: ['Fight']
       })
