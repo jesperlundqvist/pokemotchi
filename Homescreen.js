@@ -22,7 +22,7 @@ export default class Homescreen extends React.Component {
         const {navigate} = this.props.navigation;
 
         let buttons = <View>
-            <Button title="Fight" onPress={() => navigate('Fight', {username: "Joppe"})}/>
+            <Button title="Fight" onPress={() => navigate('Fight', {username: "Machi", pokemon: this.state.pokemonId})}/>
         </View>;
 
         if (!this.state.pokemonAlive) {
