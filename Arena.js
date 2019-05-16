@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, AsyncStorage, Button } from 'react-native';
+import { Text, View, Image, AsyncStorage, Button, TouchableHighlight } from 'react-native';
 import Model from './Model';
 import Sponge from './Sponge';
 
