@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, View, Button } from 'react-native';
+import { SafeAreaView, View, Button, TextInput} from 'react-native';
 import {createStackNavigator, createAppContainer} from 'react-navigation'
 import Pokemon from './Pokemon';
 
@@ -22,10 +22,10 @@ export default class Homescreen extends React.Component {
         const {navigate} = this.props.navigation;
 
         let buttons = <View>
-            <Button title="Fight" onPress={() => navigate('Fight')}/>
+            <Button title="Fight" onPress={() => navigate('Fight', {username: "Machi", pokemon: this.state.pokemonId})}/>
         </View>;
 
-        if (!this.state.pokemonAlive) {
+        /*if (!this.state.pokemonAlive) {
             buttons = <Button title="New Pokemon" onPress={() => {
                 let newPokemon = Math.floor(Math.random() * 10)+1;
 
@@ -37,7 +37,7 @@ export default class Homescreen extends React.Component {
                     pokemonId: newPokemon
                 });
             }} />
-        }
+        }*/
 
         return (
           <SafeAreaView style={{

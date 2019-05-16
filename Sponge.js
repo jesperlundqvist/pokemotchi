@@ -5,7 +5,8 @@ export default class Pokemon extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pan: new Animated.ValueXY()
+            pan: new Animated.ValueXY(),
+            size: new Animated.Value(1)
         };
     }
 
@@ -19,6 +20,9 @@ export default class Pokemon extends React.Component {
 
     componentWillMount() {
         this.panResponder = PanResponder.create({
+            onPanResponderStart: () => {
+                Animated.spring(this.state.size, {toValue: 1.2}).start();
+            },
             onStartShouldSetPanResponder: () => true,
             onPanResponderMove: Animated.event([null,{ // <--- When moving
                 dx : this.state.pan.x,
@@ -30,6 +34,8 @@ export default class Pokemon extends React.Component {
                     this.state.pan,
                     {toValue: {x: 0, y: 0}},
                   ).start();
+                
+                Animated.spring(this.state.size, {toValue: 1.0}).start();
             } // <--- callback when dropped
         });        
     }
@@ -38,13 +44,15 @@ export default class Pokemon extends React.Component {
         return <Animated.View 
         {...this.panResponder.panHandlers}  
          style={[this.state.pan.getLayout()]}>  
-            <View
+            <Animated.View
             style={{
                 backgroundColor: "skyblue",
                 width: 50 * 2,
                 height: 50 * 2,
-                borderRadius: 50
-            }}/>
+                borderRadius: 50,
+                transform: [{scaleX: this.state.size}, {scaleY: this.state.size}]
+            }}
+            />
         </Animated.View>;
     }
 }
