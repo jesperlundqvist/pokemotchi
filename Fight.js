@@ -215,6 +215,10 @@ export default class Fight extends React.Component {
     );
   }
 
+  victory(){
+      alert('Du vann!')
+  }
+
   render() {
       let content = this.state.users.map(function (user) {
           if (this.state.username != user)
@@ -222,7 +226,7 @@ export default class Fight extends React.Component {
       }.bind(this));
 
       if (this.state.fightState == "fight") {
-          content = <Arena myId={this.state.pokemonID} theirId={this.state.opponentPokemonID} />;
+          content = <Arena myId={this.state.pokemonID} theirId={this.state.opponentPokemonID} onVictory={() => {this.victory()}} />;
       }
 
     return (
