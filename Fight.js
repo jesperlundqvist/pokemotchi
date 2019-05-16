@@ -169,7 +169,7 @@ export default class Fight extends React.Component {
          this.setState({
              fightState: "pending"
          });
-      }
+     }.bind(this)
     );
   }
 
