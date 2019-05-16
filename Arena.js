@@ -9,8 +9,11 @@ export default class Arena extends React.Component {
         super(props);
         this.state = {
             myPokemon: {},
-            theirPokemon: {}
+            theirPokemon: {},
+            count: 0
+
         };
+
     }
 
     componentDidMount() {
@@ -26,6 +29,18 @@ export default class Arena extends React.Component {
     componentWillUnmount() {
     }
 
+    onPress = () => {
+      this.setState({
+        count: this.state.count+1
+      })
+      console.log(this.state.count)
+
+      if (this.state.count == 20)
+        this.props.onVictory()
+
+    }
+
+
     render() {
         let myImageUri = "http://pokestadium.com/sprites/xy/back/" + this.state.myPokemon.name + ".gif";
         let theirImageUri = "http://pokestadium.com/sprites/xy/" + this.state.theirPokemon.name + ".gif";
@@ -35,7 +50,7 @@ export default class Arena extends React.Component {
             alignItems: 'center',
             justifyContent: 'center',
         }}>
-            <Image source={{uri: theirImageUri}} style={{width: 125, height: 125, resizeMode: "contain", alignSelf: 'flex-end'}}/>
+            <TouchableHighlight style={{alignSelf: 'flex-end'}} onPress={this.onPress}><Image source={{uri: theirImageUri}} style={{width: 125, height: 125, resizeMode: "contain"}}/></TouchableHighlight>
             <Image source={{uri: myImageUri}} style={{width: 250, height: 250, resizeMode: "contain", alignSelf: 'flex-start'}}/>
         </View>;
     }
