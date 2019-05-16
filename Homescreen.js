@@ -12,7 +12,7 @@ export default class Homescreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pokemonId: Math.floor(Math.random() * 10)+1,
+            pokemonId: Math.floor(Math.random() * 100)+1,
             pokemonAlive: true
         }
     }
@@ -21,8 +21,10 @@ export default class Homescreen extends React.Component {
 
         const {navigate} = this.props.navigation;
 
+        console.log('skickar in i fight')
+        console.log(this.state.pokemonId)
         let buttons = <View>
-            <Button title="Fight" onPress={() => navigate('Fight', {username: "Machi", pokemon: this.state.pokemonId})}/>
+            <Button title="Fight" onPress={() => navigate('Fight', {username: "Lovi", pokemon: this.state.pokemonId})}/>
         </View>;
 
         /*if (!this.state.pokemonAlive) {

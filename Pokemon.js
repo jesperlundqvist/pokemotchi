@@ -23,9 +23,7 @@ export default class Pokemon extends React.Component {
     }
 
     componentDidMount() {
-      if (this.state.id == "") {
-        this.state.id = Math.floor(Math.random() * 10)+1
-      }
+
 
         Model.getPokemonById(this.state.id).then((data) => {
             this.setState({data: data});
