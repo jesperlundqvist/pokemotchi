@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, View, Button } from 'react-native';
+import { SafeAreaView, View, Button, TextInput} from 'react-native';
 import {createStackNavigator, createAppContainer} from 'react-navigation'
 import Pokemon from './Pokemon';
 
@@ -22,7 +22,7 @@ export default class Homescreen extends React.Component {
         const {navigate} = this.props.navigation;
 
         let buttons = <View>
-            <Button title="Fight" onPress={() => navigate('Fight')}/>
+            <Button title="Fight" onPress={() => navigate('Fight', {username: "Joppe"})}/>
         </View>;
 
         if (!this.state.pokemonAlive) {
