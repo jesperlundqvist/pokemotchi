@@ -45,6 +45,7 @@ export default class Fight extends React.Component {
         // handle message
         //console.log("message")
         //console.log(m)
+        console.log("message: ", m.message)
         var channelName = m.channel; // The channel for which the message belongs
         var channelGroup = m.subscription; // The channel group or wildcard subscription match (if exists)
         var pubTT = m.timetoken; // Publish timetoken
@@ -52,7 +53,7 @@ export default class Fight extends React.Component {
         var publisher = m.publisher; //The Publisher
       },
       presence: function (p) {
-          console.log(p)
+        console.log(p)
         console.log("kör presence")
         console.log("users: ", p.uuid)
         console.log("action: ", p.action)
@@ -62,13 +63,13 @@ export default class Fight extends React.Component {
         var channelName = p.channel; // The channel for which the message belongs
 
         if (p.action == "join") {
-            this.setState({users: this.state.users.concat([p.uuid])});
+          this.setState({ users: this.state.users.concat([p.uuid]) });
         }
         else if (p.action = "leave") {
-            let users = this.state.users;
-            var index = users.indexOf(p.uuid);
-            if (index !== -1) users.splice(index, 1);
-            this.setState({users: users});
+          let users = this.state.users;
+          var index = users.indexOf(p.uuid);
+          if (index !== -1) users.splice(index, 1);
+          this.setState({ users: users });
         }
 
         this.setState({
@@ -106,30 +107,56 @@ export default class Fight extends React.Component {
       }.bind(this)
     );
 
-    this.setState({inArena: true});
+    this.setState({ inArena: true });
   }
 
-  LeaveArena(){
+  LeaveArena() {
     this.state.pubnub.unsubscribe({
       channels: ['Fight']
-  })
-  //this.state.back.goBack()
-  this.setState({inArena: false, users: []});
+    })
+    //this.state.back.goBack()
+    this.setState({ inArena: false, users: [] });
+  }
+
+  FightUser() {
+    this.state.pubnub.publish(
+      {
+        message: {
+          action: 'fight',
+          my_pokemon: 'pikachu',
+          user: 'joppe'
+        },
+        channel: 'Fight',
+        sendByPost: false, // true to send via POST
+        storeInHistory: false, //override default storage options
+        meta: {
+          "cool": "meta"
+        } // publish extra meta with the request
+      },
+      function (status, response) {
+        // handle status, response
+      }
+    );
   }
 
   render() {
 
-      let buttons = <Button title="Join battle arena" onPress={() => {
-        this.JoinBattleArena()
-       }} />;
+    let buttons = <Button title="Join battle arena" onPress={() => {
+      this.JoinBattleArena()
+    }} />;
 
-      if (this.state.inArena) {
-          buttons = <Button title="Leave battle arena" onPress={() => {
+    if (this.state.inArena) {
+      buttons = <View>
+        <Button title="Send message" onPress={() => {
+          this.FightUser()
+        }} />
+        <Button title="Leave battle arena" onPress={() => {
           this.LeaveArena()
-      }} />;
-      }
+        }} />
+      </View>;
+    }
 
-      let users = this.state.users
+    let users = this.state.users
 
     return (
       <View>
