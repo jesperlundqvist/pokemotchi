@@ -115,7 +115,7 @@ export default class Fight extends React.Component {
                   channels: [this.state.username + publisher]
                 });
 
-                this.setState({fightState: "fight"});
+                this.setState({fightState: "fight", opponentPokemonID: msg.my_pokemon});
             }
             else if (msg.user == this.state.username && msg.action == "decline") {
                 alert("declined fight");
