@@ -141,10 +141,12 @@ export default class Fight extends React.Component {
   }
 
   render() {
-      let buttons = this.state.users.map((user) => {
-          if (this.pubnub.uuid != user)
+      let buttons = this.state.users.map(function (user) {
+          console.log(user);
+          console.log(this.pubnub.getUUID());
+          if (this.pubnub.getUUID() != user)
             return <Button title={user} key={user} onPress={() => {alert("fight");}} />
-      });
+      }.bind(this));
 
     return (
       <View>
