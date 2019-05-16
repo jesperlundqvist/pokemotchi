@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, View, Image } from 'react-native';
+import { Text, View, Image, AsyncStorage, Button } from 'react-native';
 import Model from './Model';
 import Sponge from './Sponge';
+
 
 export default class Pokemon extends React.Component {
     constructor(props) {

@@ -122,7 +122,7 @@ export default class Fight extends React.Component {
           Occupants: {this.state.occupancy}
         </Text>
         <Text>
-          Users:
+          Users: {this.state.users}
         </Text>
         <Text>
           FIGHT
