@@ -1,8 +1,10 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Alert } from 'react-native';
+import { Text, View, Button, TextInput, Alert, ImageBackground } from 'react-native';
 import Model from './Model';
 import Arena from './Arena';
 import PubNub from 'pubnub';
+
+const remote = 'https://pbs.twimg.com/media/DVMT-6OXcAE2rZY.jpg';
 
 export default class Fight extends React.Component {
   constructor(props) {
@@ -278,6 +280,7 @@ export default class Fight extends React.Component {
   }
 
   render() {
+    const resizeMode = 'center';
       let content = this.state.users.map(function (user) {
           if (this.state.username != user)
             return <Button title={user} key={user} onPress={() => {this.FightUser(user)}} />
@@ -288,10 +291,30 @@ export default class Fight extends React.Component {
       }
 
     return (
-      <View style={{flex:1}}>
-        <Text>{this.state.fightState}</Text>
+      <ImageBackground
+      style={{
+        backgroundColor: '#ccc',
+        flex: 1,
+        resizeMode,
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+      }}
+      source={{ uri: remote }}
+    >
+        <Text style={{
+            backgroundColor: 'transparent',
+            textAlign: 'center',
+            fontSize: 30,
+            padding: 40,
+            color: '#fff'
+          }}>
+        {this.state.fightState}
+        </Text>
         {content}
-      </View>
+        </ImageBackground>
+        
 
     )
 
