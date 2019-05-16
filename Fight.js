@@ -262,7 +262,7 @@ export default class Fight extends React.Component {
             my_pokemon: this.state.pokemonID,
             user: this.state.opponentPokemonID
           },
-          channel: 'Fight'
+          channel: this.state.fightChannel
       });
   }
 
