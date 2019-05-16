@@ -217,15 +217,20 @@ export default class Fight extends React.Component {
               message: {
                 action: 'exit',
                 my_pokemon: this.state.pokemonID,
-                user: this.state.opponentPokemonID
+                user: this.state.opponent
               },
               channel: 'Fight'
           });
-      }
 
-      this.pubnub.unsubscribe({
-          channels: ['Fight']
-      })
+          this.pubnub.unsubscribe({
+              channels: [this.state.fightChannel]
+          })
+      }
+      else {
+          this.pubnub.unsubscribe({
+              channels: ['Fight']
+          })
+      }
   }
 
   FightUser(p) {
@@ -260,10 +265,16 @@ export default class Fight extends React.Component {
           message: {
             action: 'victory',
             my_pokemon: this.state.pokemonID,
-            user: this.state.opponentPokemonID
+            user: this.state.opponent
           },
           channel: this.state.fightChannel
       });
+
+      this.setState({fightState: "ready"});
+
+      this.pubnub.unsubscribe({
+          channels: [this.state.fightChannel]
+      })
   }
 
   render() {
