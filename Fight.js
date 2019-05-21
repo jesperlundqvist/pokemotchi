@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Alert, ImageBackground, SafeAreaView, Image, ActivityIndicator } from 'react-native';
+import { Text, View, Button, TextInput, Alert, ImageBackground, SafeAreaView, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
 import Model from './Model';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Arena from './Arena';
 import PubNub from 'pubnub';
 
@@ -323,6 +324,7 @@ export default class Fight extends React.Component {
       }}
       source={{ uri: remote }}
     >
+        <TouchableOpacity style={{padding: 15, alignSelf: 'flex-end'}} activeOpacity={0.5} ><MaterialCommunityIcons name="information-outline" size={30} color="black" /></TouchableOpacity>
         <SafeAreaView style={{flex:1, justifyContent: "space-between", flexDirection: 'column', backgroundColor: 'transparent'}}>
             <Text>{this.state.fightState}</Text>
             <View>
