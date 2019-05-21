@@ -13,9 +13,9 @@ export default class Pokemon extends React.Component {
         this.whenDeadUpdate = this.whenDeadUpdate.bind(this);
         this.state = {
             data: {},
-            hunger: 100,
-            cleanliness: 100,
-            fun: 100,
+            hunger: "",
+            cleanliness: "",
+            fun: "",
             alive: true,
             id: "x",
             update: "",
@@ -59,6 +59,15 @@ export default class Pokemon extends React.Component {
                         cleanliness: this.state.cleanliness - 1,
                         fun: this.state.fun - 1
                     });
+
+                  if (this.state.hunger == 75) {
+                    this.savePokStats(this.state);
+                  }
+
+                  if (this.state.hunger == 50) {
+                    this.savePokStats(this.state);
+                  }
+
                 }
             }
         }, 250);
@@ -77,9 +86,9 @@ export default class Pokemon extends React.Component {
             Model.getPokemonById(this.state.id).then((data) => {
                 this.setState({
                     data: data,
-                    hunger: 100,
-                    cleanliness: 100,
-                    fun: 100,
+                    hunger: "",
+                    cleanliness: "",
+                    fun: "",
                     alive: true,
                     update: ""
                 });
@@ -132,6 +141,13 @@ export default class Pokemon extends React.Component {
                 fun: fun,
                 alive: alive,
             })
+        } else {
+          this.setState({
+              hunger: 100,
+              cleanliness: 100,
+              fun: 100,
+              alive: true,
+          });
         }
 
         return "resolved"
@@ -151,7 +167,6 @@ export default class Pokemon extends React.Component {
 
 
     savePokStats = async (state) => {
-      console.log("savePokStats");
         let hunger = String(state.hunger);
         let clean = String(state.cleanliness);
         let fun = String(state.fun);
@@ -171,9 +186,7 @@ export default class Pokemon extends React.Component {
 
 
     componentWillUnmount() {
-      console.log("componentWillUnmount");
         clearInterval(this._interval);
-        this.savePokStats();
     }
 
     whenDeadUpdate() {
@@ -241,7 +254,6 @@ export default class Pokemon extends React.Component {
         }}>
             {buttons}
             {action}
-            {buttons}
         </View>;
     }
 }
