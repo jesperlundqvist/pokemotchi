@@ -1,12 +1,14 @@
 import React from 'react';
-import { Text, View, Image } from 'react-native';
+import { Text, View, Image, Button } from 'react-native';
 import Model from './Model';
 import Sponge from './Sponge';
 import { AsyncStorage } from 'react-native';
 
+
 export default class Pokemon extends React.Component {
     constructor(props) {
         super(props);
+        this.whenDeadUpdate = this.whenDeadUpdate.bind(this);
         this.state = {
             data: {},
             hunger: 100,
@@ -14,6 +16,7 @@ export default class Pokemon extends React.Component {
             fun: 100,
             alive: true,
             id: "x",
+            update: "",
         };
     }
 
@@ -21,27 +24,6 @@ export default class Pokemon extends React.Component {
         //AsyncStorage.clear();
         //console.log(typeof this.state.id);
         //this.print()
-
-        //Working promise example
-        let promisetest = new Promise((resolved, unresolved) => {
-
-            setTimeout(() => {
-                resolved();
-            }, 3000) //3 seconds
-        })
-
-        /*   promisetest.then(() => console.log("Finished"))
-       .then(() => console.log("Finished 2"))
-       .catch(() => console.log("Darnit    , it failed :("))
-
-
-
-       let promisetest = new Promise((resolved, unresolved) => {
-
-           setTimeout(() => {
-               resolved();
-           }, 3000) //3 seconds
-       })*/
 
         let promise1 = new Promise((resolved, unresolved) => {
 
@@ -79,6 +61,26 @@ export default class Pokemon extends React.Component {
         }, 250);
     }
 
+//hej hshs hj jfld
+
+    componentDidUpdate(prevProps, prevState) {
+
+      //om state.update inte är lika med det update i state som var innan setState kördes
+      if (this.state.update !== prevState.update) {
+        console.log("i componentDidUpdate");
+        console.log(this.state.id);
+        Model.getPokemonById(this.state.id).then((data) => {
+          this.setState({
+              data: data,
+              hunger: 100,
+              cleanliness: 100,
+              fun: 100,
+              alive: true,
+          });
+        })
+      }
+    }
+
     randomId() {
         this.setState({ id: Math.floor(Math.random() * 10) + 1 })
         this.save(this.state.id);
@@ -98,9 +100,7 @@ export default class Pokemon extends React.Component {
         });
     }
 
-
     load = async () => {
-        //console.log("börjar load");
         const id = await AsyncStorage.getItem("pokemon");
 
         if (id == "x" || id == null) {
@@ -112,7 +112,6 @@ export default class Pokemon extends React.Component {
             this.save(this.state.id);
 
         }
-        //console.log("load slutar");
         return "resolved"
     }
 
@@ -131,35 +130,14 @@ export default class Pokemon extends React.Component {
         clearInterval(this._interval);
     }
 
-    /*componentDidUpdate(prevProps, prevState) {
+    whenDeadUpdate () {
+      //this.setState ({ id: (Math.floor(Math.random() * 10)+1) });
+      //this.setState ({ update: "updated" });
+      //this.save(this.state.id);
+      this.forceUpdate();
+      console.log("foreced update");
+    }
 
-        if (this.state.id !== prevState.id) {
-          console.log("prev id");
-          console.log(prevState.id);
-          console.log("i update");
-          console.log(this.state.id);
-            Model.getPokemonById(this.state.id).then((data) => {
-                this.setState({
-                    data: data,
-                    hunger: 100,
-                    cleanliness: 100,
-                    fun: 100,
-                    alive: true,
-                });
-            });
-        }
-
-       if (prevState.alive != this.state.alive) {
-            if (this.props.onAliveChange) {
-                this.props.onAliveChange(this.state.alive, prevState.alive);
-            };
-        }
-
-        if (!this.state.alive) {
-          this.setState ({id: Math.floor(Math.random() * 10)+1})
-        }
-
-    }*/
 
     render() {
         let imageUri = "http://pokestadium.com/sprites/xy/" + this.state.data.name + ".gif";
@@ -168,19 +146,27 @@ export default class Pokemon extends React.Component {
             name = name.charAt(0).toUpperCase() + name.slice(1);
         }
 
-        /*  let buttons = <View>
+
+          let buttons = <View>
               <Button title="Feed" onPress={() => { this.setState({hunger: this.state.hunger + 10}) }} />
               <Button title="Clean" onPress={() => { this.setState({cleanliness: this.state.cleanliness + 10}) }} />
               <Button title="Play" onPress={() => { this.setState({fun: this.state.fun + 10}) }} />
-          </View>;*/
+          </View>;
 
         if (!this.state.alive) {
-          /*buttons = <Button title="New Pokemon" onPress={() => {
-            this.setState ({ id: (Math.floor(Math.random() * 10)+1) });
-            AsyncStorage.setItem("pokemon", this.state.id);
-          }} />*/
-            name = name + " [DEAD]";
+          buttons = <Button title="New Pokemon" onPress={() => {
+            let newID = (Math.floor(Math.random() * 10)+1);
+            this.save(newID);
+
+            this.setState ({
+              id:  newID,
+              update: "updated",
+            });
+          }} />
+          /*buttons = <Button title="New Pokemon" onPress={this.whenDeadUpdate}/>*/
+          name = name + " [DEAD]";
         }
+
 
         return (
 
@@ -197,6 +183,8 @@ export default class Pokemon extends React.Component {
                 <Text style={{ fontSize: 18 }}>Cleanliness: {Math.round(this.state.cleanliness)} </Text>
                 <Text style={{ fontSize: 18 }}>Fun: {Math.round(this.state.fun)} </Text>
                 <Sponge onClean={() => { this.setState({ cleanliness: this.state.cleanliness + 0.2 }) }} />
+
+                {buttons}
             </View>
         )
     }
