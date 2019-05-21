@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, Button, TouchableOpacity } from 'react-native';
+import { Text, View, Image, Button, TouchableOpacity, Platform } from 'react-native';
 import Model from './Model';
 import Sponge from './Sponge';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -242,7 +242,11 @@ export default class Pokemon extends React.Component {
                         id: newID,
                         update: "updated",
                     });
-                    Haptic.selection();
+
+                    if (Platform.OS === 'ios') {
+                        Haptic.selection();
+                    }
+
                     name = name + " [DEAD]";
                 }}>
                     <Text style={{ paddingHorizontal: 15, color: "black", fontSize: 20, fontWeight: "bold" }}>Your Pokémon died</Text>
