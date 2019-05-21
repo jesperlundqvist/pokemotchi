@@ -11,12 +11,11 @@ import { Haptic, Audio } from 'expo';
 export default class Pokemon extends React.Component {
     constructor(props) {
         super(props);
-        this.whenDeadUpdate = this.whenDeadUpdate.bind(this);
         this.state = {
             data: {},
-            hunger: 100,
-            cleanliness: 100,
-            fun: 100,
+            hunger: "",
+            cleanliness: "",
+            fun: "",
             alive: true,
             id: "x",
             update: "",
@@ -60,19 +59,13 @@ export default class Pokemon extends React.Component {
                         fun: this.state.fun - 1
                     });
 
-                  if (this.state.hunger == 75) {
-                    this.savePokStats(this.state);
-                  }
-
-                  if (this.state.hunger == 50) {
+                  if (this.state.hunger % 10 == 0) {
                     this.savePokStats(this.state);
                   }
 
                 }
             }
-        }, 150);
-
-        this.print();
+        }, 2000);
     }
 
     //hej hshs hj jfld
