@@ -264,6 +264,8 @@ export default class Pokemon extends React.Component {
                     <MaterialCommunityIcons name="egg" size={150} color="floralwhite" />
                     <Text style={{ paddingHorizontal: 15, color: "black", fontSize: 20 }}>Press to hatch a new Pokémon</Text>
                 </TouchableOpacity>
+
+            action = <View></View>;
         }
 
         return <View style={{
