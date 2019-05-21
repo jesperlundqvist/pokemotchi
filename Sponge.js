@@ -16,6 +16,7 @@ export default class Sponge extends React.Component {
             if (value.x > -100 && value.x < 100 && value.y < -150 && value.y > -400) {
                 Haptic.selection();
                 this.props.onClean();
+
             }
         });
     }
