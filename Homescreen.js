@@ -102,7 +102,9 @@ export default class Homescreen extends React.Component {
             </TouchableOpacity>
         </View>;
 
-
+        if (!this.state.pokemonAlive) {
+            buttons = <View></View>;
+        }
 
         /*if (!this.state.pokemonAlive) {
             buttons = <Button title="New Pokemon" onPress={() => {
