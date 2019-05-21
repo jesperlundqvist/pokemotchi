@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, View, Button, TextInput, Text, ImageBackground } from 'react-native';
+import { SafeAreaView, View, Button, TextInput, Text, ImageBackground, StatusBar } from 'react-native';
 import { TouchableOpacity } from 'react-native'
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
@@ -7,11 +7,16 @@ import Pokemon from './Pokemon';
 import { Haptic } from 'expo';
 
 export default class Homescreen extends React.Component {
-    static navigationOptions = {
-        headerTransparent: true,
-        headerTintColor: "white",
-        headerRight: <TouchableOpacity style={{marginRight: 10}} activeOpacity={0.5} ><MaterialCommunityIcons name="information-outline" size={30} color="white" /></TouchableOpacity>
-    };
+    static navigationOptions = ({navigation}) => {
+        return {
+            headerTransparent: true,
+            headerTintColor: "white",
+            headerRight:
+            <TouchableOpacity style={{marginRight: 10}} activeOpacity={0.5} onPress={() => navigation.navigate("Info")}>
+                <MaterialCommunityIcons name="information-outline" size={30} color="white" />
+            </TouchableOpacity>
+        }
+    }
 
     constructor(props) {
         super(props);
@@ -37,7 +42,7 @@ export default class Homescreen extends React.Component {
                 this.setState({ action: "feed" });
                 }
             }}>
-                <MaterialCommunityIcons name="food-apple" size={60} color="green" />
+                <MaterialCommunityIcons name="food-apple" size={60} color="greenyellow" />
                 <Text style={{ paddingHorizontal: 15, color: "white" }}>Feed</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{ padding: 15 }} activeOpacity={0.5} onPress={() => {
@@ -65,10 +70,10 @@ export default class Homescreen extends React.Component {
                 <Text style={{ paddingHorizontal: 15, color: "white" }}>Play</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{ padding: 15 }} activeOpacity={0.5} onPress={() => {
-                navigate('Fight', { username: "Machi", pokemon: this.state.pokemonId })
+                navigate('Fight', { username: "Joppe", pokemon: this.state.pokemonId })
                 Haptic.selection();
             }}>
-                <MaterialCommunityIcons name="sword-cross" size={60} color="grey" />
+                <MaterialCommunityIcons name="sword-cross" size={60} color="lightgray" />
                 <Text style={{ paddingHorizontal: 15, color: "white" }}>Fight</Text>
             </TouchableOpacity>
         </View>;
@@ -102,11 +107,11 @@ export default class Homescreen extends React.Component {
                 }}
                 source={{ uri: remote }}
             >
-                <TouchableOpacity style={{ padding: 15, alignSelf: 'flex-end' }} activeOpacity={0.5} ><MaterialCommunityIcons name="information-outline" size={30} color="white" /></TouchableOpacity>
                 <SafeAreaView style={{
                     flex: 1,
                     flexDirection: 'column',
                 }}>
+                    <StatusBar backgroundColor="blue" barStyle="light-content" />
                     <Pokemon style={{ flexGrow: 1 }} id={this.state.pokemonId} action={this.state.action} onAliveChange={(alive) => this.setState({ pokemonAlive: alive })} />
                     <View style={{ flexDirection: "row", flexShrink: 1, justifyContent: "center" }}>
                         {buttons}

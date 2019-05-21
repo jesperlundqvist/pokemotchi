@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Alert, ImageBackground, SafeAreaView, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { Text, View, Button, TextInput, Alert, ImageBackground, SafeAreaView, Image, ActivityIndicator, TouchableOpacity, StatusBar } from 'react-native';
 import Model from './Model';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Arena from './Arena';
@@ -8,11 +8,16 @@ import PubNub from 'pubnub';
 
 
 export default class Fight extends React.Component {
-    static navigationOptions = {
-        headerTransparent: true,
-        headerTintColor: "white",
-        headerRight: <TouchableOpacity style={{marginRight: 10}} activeOpacity={0.5} ><MaterialCommunityIcons name="information-outline" size={30} color="white" /></TouchableOpacity>
-    };
+    static navigationOptions = ({navigation}) => {
+        return {
+            headerTransparent: true,
+            headerTintColor: "white",
+            headerRight:
+            <TouchableOpacity style={{marginRight: 10}} activeOpacity={0.5} onPress={() => navigation.navigate("Info")}>
+                <MaterialCommunityIcons name="information-outline" size={30} color="white" />
+            </TouchableOpacity>
+        }
+    }
 
   constructor(props) {
     super(props);
@@ -310,6 +315,11 @@ export default class Fight extends React.Component {
         return <Button title={user} key={user} onPress={() => { this.FightUser(user) }} />
     }.bind(this));
 
+    console.log("length: ", this.state.users.length)
+    if (this.state.users.length <= 1) {
+      content = <Text>No current user in the arena</Text>
+    }
+
     if(this.state.fightState == "pending") {
       content = <ActivityIndicator size="large" color="#ffffff" /> }
 
@@ -330,9 +340,8 @@ export default class Fight extends React.Component {
       }}
       source={{ uri: remote }}
     >
-        <TouchableOpacity style={{padding: 15, alignSelf: 'flex-end'}} activeOpacity={0.5} ><MaterialCommunityIcons name="information-outline" size={30} color="white" /></TouchableOpacity>
+        <StatusBar backgroundColor="green" barStyle="light-content" />
         <SafeAreaView style={{flex:1, justifyContent: "space-between", flexDirection: 'column', backgroundColor: 'transparent'}}>
-            <Text>{this.state.fightState}</Text>
             <View>
             {content}
             </View>

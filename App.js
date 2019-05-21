@@ -4,10 +4,12 @@ import {createStackNavigator, createAppContainer} from 'react-navigation'
 import Pokemon from './Pokemon';
 import Homescreen from './Homescreen'
 import Fight from './Fight'
+import Info from './Info'
 
 const MainNavigator = createStackNavigator({
   Home: {screen: Homescreen},
-  Fight: {screen: Fight}
+  Fight: {screen: Fight},
+  Info: {screen: Info}
 });
 
 const AppContainer = createAppContainer(MainNavigator);
