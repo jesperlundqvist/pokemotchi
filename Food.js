@@ -1,5 +1,5 @@
 import React from 'react';
-import { Gyroscope } from 'expo';
+import { Gyroscope, Haptic } from 'expo';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 
