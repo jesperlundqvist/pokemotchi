@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, View, Image, Button } from 'react-native';
+import { Text, View, Image, Button, TouchableOpacity } from 'react-native';
 import Model from './Model';
 import Sponge from './Sponge';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AsyncStorage } from 'react-native';
 import Food from './Food';
 
@@ -65,25 +66,25 @@ export default class Pokemon extends React.Component {
         this.print();
     }
 
-//hej hshs hj jfld
+    //hej hshs hj jfld
 
     componentDidUpdate(prevProps, prevState) {
 
-      //om state.update inte är lika med det update i state som var innan setState kördes
-      if (this.state.update !== prevState.update) {
-        console.log("i componentDidUpdate");
-        console.log(this.state.id);
-        Model.getPokemonById(this.state.id).then((data) => {
-          this.setState({
-              data: data,
-              hunger: 100,
-              cleanliness: 100,
-              fun: 100,
-              alive: true,
-              update: ""
-          });
-        })
-      }
+        //om state.update inte är lika med det update i state som var innan setState kördes
+        if (this.state.update !== prevState.update) {
+            console.log("i componentDidUpdate");
+            console.log(this.state.id);
+            Model.getPokemonById(this.state.id).then((data) => {
+                this.setState({
+                    data: data,
+                    hunger: 100,
+                    cleanliness: 100,
+                    fun: 100,
+                    alive: true,
+                    update: ""
+                });
+            })
+        }
     }
 
     randomId() {
@@ -126,11 +127,11 @@ export default class Pokemon extends React.Component {
 
         if (hunger !== null) {
             this.setState({
-              hunger: hunger,
-              cleanliness: clean,
-              fun: fun,
-              alive: alive,
-             })
+                hunger: hunger,
+                cleanliness: clean,
+                fun: fun,
+                alive: alive,
+            })
         }
 
         return "resolved"
@@ -175,24 +176,24 @@ export default class Pokemon extends React.Component {
         this.savePokStats();
     }
 
-    whenDeadUpdate () {
-      //this.setState ({ id: (Math.floor(Math.random() * 10)+1) });
-      //this.setState ({ update: "updated" });
-      //this.save(this.state.id);
-      this.forceUpdate();
-      console.log("foreced update");
+    whenDeadUpdate() {
+        //this.setState ({ id: (Math.floor(Math.random() * 10)+1) });
+        //this.setState ({ update: "updated" });
+        //this.save(this.state.id);
+        this.forceUpdate();
+        console.log("foreced update");
     }
 
 
     render() {
         let action = <View></View>;
         if (this.props.action == "clean") {
-            action = <Sponge onClean={() => {this.setState({cleanliness: this.state.cleanliness + 0.2})}}/>
+            action = <Sponge onClean={() => { this.setState({ cleanliness: this.state.cleanliness + 0.2 }) }} />
 
         }
 
         if (this.props.action == "feed") {
-            action = <Food onFood={() => {this.setState({hunger: this.state.hunger + 0.2})}}/>
+            action = <Food onFood={() => { this.setState({ hunger: this.state.hunger + 0.2 }) }} />
 
         }
 
@@ -202,20 +203,35 @@ export default class Pokemon extends React.Component {
             name = name.charAt(0).toUpperCase() + name.slice(1);
         }
 
-        let buttons = <View></View>;
+        let buttons = <View style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+        }}>
+            <Text style={{ fontSize: 24, paddingVertical: 20 }}>{name}</Text>
+            <Image source={{ uri: imageUri }} style={{ width: 200, height: 200, resizeMode: "contain" }} />
+            <Text style={{ fontSize: 18 }}>Hunger: {Math.round(this.state.hunger)}</Text>
+            <Text style={{ fontSize: 18 }}>Cleanliness: {Math.round(this.state.cleanliness)}</Text>
+            <Text style={{ fontSize: 18 }}>Fun: {Math.round(this.state.fun)}</Text>
+        </View>;
 
         if (!this.state.alive) {
-          buttons = <Button title="New Pokemon" onPress={() => {
-            let newID = (Math.floor(Math.random() * 10)+1);
-            this.save(newID);
+            buttons =
+                <TouchableOpacity style={{ padding: 15, alignItems: 'center',
+                justifyContent: 'center'}} activeOpacity={0.5} onPress={() => {
+                    let newID = (Math.floor(Math.random() * 10) + 1);
+                    this.save(newID);
 
-            this.setState ({
-              id:  newID,
-              update: "updated",
-            });
-          }} />
-          /*buttons = <Button title="New Pokemon" onPress={this.whenDeadUpdate}/>*/
-          name = name + " [DEAD]";
+                    this.setState({
+                        id: newID,
+                        update: "updated",
+                    });
+                    Haptic.selection();
+                    name = name + " [DEAD]";
+                }}>
+                    <MaterialCommunityIcons name="egg" size={100} color="floralwhite" />
+                    <Text style={{ paddingHorizontal: 15, color: "black" }}>New Pokemon</Text>
+                </TouchableOpacity>
         }
 
         return <View style={{
@@ -223,11 +239,7 @@ export default class Pokemon extends React.Component {
             alignItems: 'center',
             justifyContent: 'center',
         }}>
-            <Text style={{fontSize: 24, paddingVertical: 20}}>{name}</Text>
-            <Image source={{uri: imageUri}} style={{width: 200, height: 200, resizeMode: "contain"}}/>
-            <Text style={{fontSize: 18}}>Hunger: {Math.round(this.state.hunger)}</Text>
-            <Text style={{fontSize: 18}}>Cleanliness: {Math.round(this.state.cleanliness)}</Text>
-            <Text style={{fontSize: 18}}>Fun: {Math.round(this.state.fun)}</Text>
+            {buttons}
             {action}
             {buttons}
         </View>;
