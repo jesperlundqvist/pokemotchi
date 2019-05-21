@@ -23,7 +23,6 @@ export default class Pokemon extends React.Component {
         };
     }
 
-
     componentDidMount() {
         //AsyncStorage.clear();
         //console.log(typeof this.state.id);
@@ -60,6 +59,15 @@ export default class Pokemon extends React.Component {
                         cleanliness: this.state.cleanliness - 1,
                         fun: this.state.fun - 1
                     });
+
+                  if (this.state.hunger == 75) {
+                    this.savePokStats(this.state);
+                  }
+
+                  if (this.state.hunger == 50) {
+                    this.savePokStats(this.state);
+                  }
+
                 }
             }
         }, 2000);
@@ -133,6 +141,13 @@ export default class Pokemon extends React.Component {
                 fun: fun,
                 alive: alive,
             })
+        } else {
+          this.setState({
+              hunger: 100,
+              cleanliness: 100,
+              fun: 100,
+              alive: true,
+          });
         }
 
         return "resolved"
@@ -152,7 +167,6 @@ export default class Pokemon extends React.Component {
 
 
     savePokStats = async (state) => {
-      console.log("savePokStats");
         let hunger = String(state.hunger);
         let clean = String(state.cleanliness);
         let fun = String(state.fun);
@@ -172,9 +186,7 @@ export default class Pokemon extends React.Component {
 
 
     componentWillUnmount() {
-      console.log("componentWillUnmount");
         clearInterval(this._interval);
-        this.savePokStats();
     }
 
     whenDeadUpdate() {
@@ -224,6 +236,7 @@ export default class Pokemon extends React.Component {
                 justifyContent: 'center'}} activeOpacity={0.5} onPress={() => {
                     let newID = (Math.floor(Math.random() * 10) + 1);
                     this.save(newID);
+                    this.savePokStats(this.state);
 
                     this.setState({
                         id: newID,

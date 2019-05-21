@@ -309,15 +309,25 @@ export default class Fight extends React.Component {
   render() {
     var remote = 'https://pbs.twimg.com/media/DVMT-6OXcAE2rZY.jpg';
     const resizeMode = 'center';
-    let content = this.state.users.map(function (user) {
+    users_online= this.state.users.map(function (user) {
       console.log("user: ", user)
       if (this.state.username != user)
-        return <Button title={user} key={user} onPress={() => { this.FightUser(user) }} />
+        return <TouchableOpacity style={{ flexDirection: "row" }} title={user} key={user} onPress={() => { this.FightUser(user) }} >
+        <MaterialCommunityIcons name="sword-cross" size={30} color="lightgray" />
+        <Text style={{fontSize: 25, color: "white", fontWeight: "bold", paddingHorizontal:15}}>{user}</Text>
+        </TouchableOpacity>
     }.bind(this));
+
+    let content = <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+    <Text style={{fontSize: 20, color: "white", fontWeight: "bold", paddingVertical:15}}>
+    Press on a user to start a fight!
+    </Text>
+    {users_online}
+    </View>;
 
     console.log("length: ", this.state.users.length)
     if (this.state.users.length <= 1) {
-      content = <Text>No current user in the arena</Text>
+      content = <Text style={{fontSize: 25, color: "white", fontWeight: "bold"}}>No current user in the arena</Text>
     }
 
     if(this.state.fightState == "pending") {
@@ -342,7 +352,7 @@ export default class Fight extends React.Component {
     >
         <StatusBar backgroundColor="green" barStyle="light-content" />
         <SafeAreaView style={{flex:1, justifyContent: "space-between", flexDirection: 'column', backgroundColor: 'transparent'}}>
-            <View>
+            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
             {content}
             </View>
         </SafeAreaView>
