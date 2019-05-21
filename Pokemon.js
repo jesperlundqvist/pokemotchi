@@ -77,6 +77,7 @@ export default class Pokemon extends React.Component {
               cleanliness: 100,
               fun: 100,
               alive: true,
+              update: ""
           });
         })
       }
@@ -103,6 +104,11 @@ export default class Pokemon extends React.Component {
 
     load = async () => {
         const id = await AsyncStorage.getItem("pokemon");
+        const hunger = await (AsyncStorage.getItem("pokemonHunger"));
+        const clean = await (AsyncStorage.getItem("pokemonClean"));
+        const fun = await (AsyncStorage.getItem("pokemonFun"));
+        const alive = await (AsyncStorage.getItem("pokemonAlive"))
+
 
         if (id == "x" || id == null) {
             this.randomId();
@@ -111,10 +117,20 @@ export default class Pokemon extends React.Component {
             this.setState({ id: id })
             //this.state.is = id;
             this.save(this.state.id);
-
         }
+
+        if (hunger !== null) {
+            this.setState({
+              hunger: hunger,
+              cleanliness: clean,
+              fun: fun,
+              alive: alive,
+             })
+        }
+
         return "resolved"
     }
+
 
     save = async (id) => {
         let stringID = String(id);
@@ -127,19 +143,29 @@ export default class Pokemon extends React.Component {
         }
     }
 
-    saveData = async (id) => {
-        let stringID = String(id);
+
+    savePokStats = async (state) => {
+        let hunger = String(state.hunger);
+        let clean = String(state.cleanliness);
+        let fun = String(state.fun);
+        let alive = String(state.alive);
+
         try {
-            await (AsyncStorage.setItem("pokemon", stringID))
-            this.setState({ id: stringID })
+            await (AsyncStorage.setItem("pokemonHunger", hunger))
+            await (AsyncStorage.setItem("pokemonClean", clean))
+            await (AsyncStorage.setItem("pokemonFun", fun))
+            await (AsyncStorage.setItem("pokemonAlive", alive))
+
 
         } catch (e) {
             console.error('Failed to save id.')
         }
     }
 
+
     componentWillUnmount() {
         clearInterval(this._interval);
+        this.savePokStats();
     }
 
     whenDeadUpdate () {
