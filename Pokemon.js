@@ -3,6 +3,7 @@ import { Text, View, Image, Button } from 'react-native';
 import Model from './Model';
 import Sponge from './Sponge';
 import { AsyncStorage } from 'react-native';
+import Food from './Food';
 
 
 export default class Pokemon extends React.Component {
@@ -189,3 +190,4 @@ export default class Pokemon extends React.Component {
         )
     }
 }
+//
