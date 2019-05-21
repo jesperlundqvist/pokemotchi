@@ -224,7 +224,7 @@ export default class Pokemon extends React.Component {
             alignItems: 'center',
             justifyContent: 'center',
         }}>
-            <Text style={{ fontSize: 24, paddingVertical: 20 }}>{name}</Text>
+            <Text style={{ fontSize: 24, paddingVertical: 20, fontWeight: "bold" }}>{name}</Text>
             <Image source={{ uri: imageUri }} style={{ width: 200, height: 200, resizeMode: "contain" }} />
             <Text style={{ fontSize: 18 }}>Hunger: {Math.round(this.state.hunger)}</Text>
             <Text style={{ fontSize: 18 }}>Cleanliness: {Math.round(this.state.cleanliness)}</Text>
