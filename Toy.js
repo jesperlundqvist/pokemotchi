@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Accelerometer } from 'expo';
+import { Accelerometer, Haptic } from 'expo';
 
 const THRESHOLD = 100;
 
@@ -29,6 +29,7 @@ export default class Toy extends React.Component {
                 let speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
 
                 if ( speed > THRESHOLD ) {
+                    Haptic.selection();
                     this.props.onFun(speed);
                 }
 
@@ -37,12 +38,6 @@ export default class Toy extends React.Component {
                 last_z = z;
             }
         });
-
-        Accelerometer.addListener(
-          accelerometerData => {
-            this.setState({ accelerometerData });
-          }
-        );
     }
 
     componentWillUnmount() {

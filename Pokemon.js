@@ -55,14 +55,14 @@ export default class Pokemon extends React.Component {
                     });
                 }
                 else {
-                    /*this.setState({
+                    this.setState({
                         hunger: this.state.hunger - 1,
                         cleanliness: this.state.cleanliness - 1,
                         fun: this.state.fun - 1
-                    });*/
+                    });
                 }
             }
-        }, 250);
+        }, 2000);
 
         this.print();
     }

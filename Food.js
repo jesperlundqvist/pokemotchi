@@ -53,6 +53,7 @@ export default class Food extends React.Component {
         let { x, y, z } = result;
         //console.log(result)
         if (x > 0.8 || x < -0.8)
+            Haptic.selection();
           this.props.onFood(
 
           );
