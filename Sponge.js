@@ -1,5 +1,5 @@
 import React from 'react';
-import { PanResponder, View, Animated } from 'react-native';
+import { PanResponder, View, Animated, Platform, Vibration } from 'react-native';
 import { Haptic } from 'expo';
 
 export default class Sponge extends React.Component {
@@ -14,9 +14,10 @@ export default class Sponge extends React.Component {
     componentDidMount() {
         this.state.pan.addListener((value) => {
             if (value.x > -100 && value.x < 100 && value.y < -150 && value.y > -400) {
-                Haptic.selection();
+                if (Platform.OS === 'ios') {
+                  Haptic.selection();
+                }
                 this.props.onClean();
-
             }
         });
     }

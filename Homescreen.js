@@ -5,6 +5,7 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import Pokemon from './Pokemon';
 import { Haptic } from 'expo';
+import { Vibration, Platform } from 'react-native';
 
 export default class Homescreen extends React.Component {
     static navigationOptions = ({navigation}) => {
@@ -34,7 +35,12 @@ export default class Homescreen extends React.Component {
 
         let buttons = <View style={{ flexDirection: "row" }}>
             <TouchableOpacity style={{ padding: 15 }} activeOpacity={0.5} onPress={() => {
-                Haptic.selection();
+                if (Platform.OS === 'android') {
+                  Vibration.vibrate(50);
+                } else if (Platform.OS === 'ios') {
+                  Haptic.selection();
+                }
+
                 if (this.state.action == "feed") {
                     this.setState({ action: "" });
                 }
@@ -47,7 +53,12 @@ export default class Homescreen extends React.Component {
             </TouchableOpacity>
 
             <TouchableOpacity style={{ padding: 15 }} activeOpacity={0.5} onPress={() => {
-                Haptic.selection();
+                if (Platform.OS === 'android') {
+                  Vibration.vibrate(50);
+                } else if (Platform.OS === 'ios') {
+                  Haptic.selection();
+                }
+
                 if (this.state.action == "clean") {
                     this.setState({ action: "" });
                 }
@@ -60,7 +71,12 @@ export default class Homescreen extends React.Component {
             </TouchableOpacity>
 
             <TouchableOpacity style={{ padding: 15 }} activeOpacity={0.5} onPress={() => {
-                Haptic.selection();
+                if (Platform.OS === 'android') {
+                    Vibration.vibrate(50);
+                } else if (Platform.OS === 'ios') {
+                    Haptic.selection();
+                }
+
                 if (this.state.action == "play") {
                     this.setState({ action: "" });
                 }
@@ -73,15 +89,22 @@ export default class Homescreen extends React.Component {
             </TouchableOpacity>
 
             <TouchableOpacity style={{ padding: 15 }} activeOpacity={0.5} onPress={() => {
+                if (Platform.OS === 'android') {
+                  Vibration.vibrate(50);
+                } else if (Platform.OS === 'ios') {
+                  Haptic.selection();
+                }
+
                 navigate('Fight', { username: "Joppe", pokemon: this.state.pokemonId })
-                Haptic.selection();
             }}>
                 <MaterialCommunityIcons name="sword-cross" size={60} color={this.state.action == "" ? "lightgray": "gray"} />
                 <Text style={{ paddingHorizontal: 15, color: "white" }}>Fight</Text>
             </TouchableOpacity>
         </View>;
 
-
+        if (!this.state.pokemonAlive) {
+            buttons = <View></View>;
+        }
 
         /*if (!this.state.pokemonAlive) {
             buttons = <Button title="New Pokemon" onPress={() => {

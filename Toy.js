@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Platform } from 'react-native';
 import { Accelerometer, Haptic } from 'expo';
 
 const THRESHOLD = 100;
@@ -29,7 +29,9 @@ export default class Toy extends React.Component {
                 let speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
 
                 if ( speed > THRESHOLD ) {
-                    Haptic.selection();
+                    if (Platform.OS === 'ios') {
+                      Haptic.selection();
+                    }
                     this.props.onFun(speed);
                 }
 
