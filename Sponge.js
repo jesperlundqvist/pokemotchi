@@ -1,7 +1,8 @@
 import React from 'react';
 import { PanResponder, View, Animated } from 'react-native';
+import { Haptic } from 'expo';
 
-export default class Pokemon extends React.Component {
+export default class Sponge extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -13,6 +14,7 @@ export default class Pokemon extends React.Component {
     componentDidMount() {
         this.state.pan.addListener((value) => {
             if (value.x > -100 && value.x < 100 && value.y < -150 && value.y > -400) {
+                Haptic.selection();
                 this.props.onClean();
             }
         });
@@ -34,16 +36,16 @@ export default class Pokemon extends React.Component {
                     this.state.pan,
                     {toValue: {x: 0, y: 0}},
                   ).start();
-                
+
                 Animated.spring(this.state.size, {toValue: 1.0}).start();
             } // <--- callback when dropped
-        });        
+        });
     }
 
     render() {
-        return <Animated.View 
-        {...this.panResponder.panHandlers}  
-         style={[this.state.pan.getLayout()]}>  
+        return <Animated.View
+        {...this.panResponder.panHandlers}
+         style={[this.state.pan.getLayout()]}>
             <Animated.View
             style={{
                 backgroundColor: "skyblue",
