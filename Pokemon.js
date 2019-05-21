@@ -4,7 +4,7 @@ import Model from './Model';
 import Sponge from './Sponge';
 import { AsyncStorage } from 'react-native';
 import Food from './Food';
-
+import Toy from './Toy';
 
 export default class Pokemon extends React.Component {
     constructor(props) {
@@ -53,11 +53,11 @@ export default class Pokemon extends React.Component {
                     });
                 }
                 else {
-                    this.setState({
+                    /*this.setState({
                         hunger: this.state.hunger - 1,
                         cleanliness: this.state.cleanliness - 1,
                         fun: this.state.fun - 1
-                    });
+                    });*/
                 }
             }
         }, 250);
@@ -182,12 +182,14 @@ export default class Pokemon extends React.Component {
         let action = <View></View>;
         if (this.props.action == "clean") {
             action = <Sponge onClean={() => {this.setState({cleanliness: this.state.cleanliness + 0.2})}}/>
-
         }
-        
+
         if (this.props.action == "feed") {
             action = <Food onFood={() => {this.setState({hunger: this.state.hunger + 0.2})}}/>
+        }
 
+        if (this.props.action == "play") {
+            action = <Toy onFun={(speed) => {this.setState({fun: this.state.fun + 0.005 * speed})}}/>
         }
 
         let imageUri = "http://pokestadium.com/sprites/xy/" + this.state.data.name + ".gif";
