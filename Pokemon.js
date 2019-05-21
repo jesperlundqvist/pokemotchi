@@ -6,7 +6,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AsyncStorage } from 'react-native';
 import Food from './Food';
 import Toy from './Toy';
-import { Haptic } from 'expo';
+import { Haptic, Audio } from 'expo';
 
 export default class Pokemon extends React.Component {
     constructor(props) {
