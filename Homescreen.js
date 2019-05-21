@@ -8,7 +8,9 @@ import { Haptic } from 'expo';
 
 export default class Homescreen extends React.Component {
     static navigationOptions = {
-        title: 'Welcome'
+        headerTransparent: true,
+        headerTintColor: "white",
+        headerRight: <TouchableOpacity style={{marginRight: 10}} activeOpacity={0.5} ><MaterialCommunityIcons name="information-outline" size={30} color="white" /></TouchableOpacity>
     };
 
     constructor(props) {

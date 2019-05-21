@@ -8,6 +8,12 @@ import PubNub from 'pubnub';
 
 
 export default class Fight extends React.Component {
+    static navigationOptions = {
+        headerTransparent: true,
+        headerTintColor: "white",
+        headerRight: <TouchableOpacity style={{marginRight: 10}} activeOpacity={0.5} ><MaterialCommunityIcons name="information-outline" size={30} color="white" /></TouchableOpacity>
+    };
+
   constructor(props) {
     super(props);
     console.log("fight")
@@ -324,13 +330,11 @@ export default class Fight extends React.Component {
       }}
       source={{ uri: remote }}
     >
-        <TouchableOpacity style={{padding: 15, alignSelf: 'flex-end'}} activeOpacity={0.5} ><MaterialCommunityIcons name="information-outline" size={30} color="black" /></TouchableOpacity>
         <SafeAreaView style={{flex:1, justifyContent: "space-between", flexDirection: 'column', backgroundColor: 'transparent'}}>
             <Text>{this.state.fightState}</Text>
             <View>
             {content}
             </View>
-            <Button title="Back" onPress={(() => this.props.navigation.goBack()).bind(this)} />
         </SafeAreaView>
     </ImageBackground>
 
