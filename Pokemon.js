@@ -70,7 +70,7 @@ export default class Pokemon extends React.Component {
 
                 }
             }
-        }, 2000);
+        }, 150);
 
         this.print();
     }
@@ -184,6 +184,16 @@ export default class Pokemon extends React.Component {
         }
     }
 
+    async playRecording() {
+
+        const { sound } = await Audio.Sound.createAsync({uri:'https://veekun.com/dex/media/pokemon/cries/1.ogg'});
+        
+        await sound.playAsync();
+      
+       //'https://veekun.com/dex/media/pokemon/cries/1.ogg'
+      
+    }
+
 
     componentWillUnmount() {
         clearInterval(this._interval);
@@ -243,6 +253,7 @@ export default class Pokemon extends React.Component {
                         update: "updated",
                     });
                     Haptic.selection();
+                    this.playRecording();
                     name = name + " [DEAD]";
                 }}>
                     <Text style={{ paddingHorizontal: 15, color: "black", fontSize: 20, fontWeight: "bold" }}>Your Pokémon died</Text>
