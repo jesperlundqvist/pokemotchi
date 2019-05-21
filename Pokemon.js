@@ -21,6 +21,7 @@ export default class Pokemon extends React.Component {
         };
     }
 
+
     componentDidMount() {
         //AsyncStorage.clear();
         //console.log(typeof this.state.id);
@@ -178,6 +179,17 @@ export default class Pokemon extends React.Component {
 
 
     render() {
+        let action = <View></View>;
+        if (this.props.action == "clean") {
+            action = <Sponge onClean={() => {this.setState({cleanliness: this.state.cleanliness + 0.2})}}/>
+
+        }
+        
+        if (this.props.action == "feed") {
+            action = <Food onFood={() => {this.setState({hunger: this.state.hunger + 0.2})}}/>
+
+        }
+
         let imageUri = "http://pokestadium.com/sprites/xy/" + this.state.data.name + ".gif";
         let name = this.state.data.name;
         if (name) {
@@ -200,25 +212,18 @@ export default class Pokemon extends React.Component {
           name = name + " [DEAD]";
         }
 
-
-        return (
-
-            <View
-                style={{
-                    flex: 1,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
-                <Image source={{ uri: imageUri }} style={{ width: 200, height: 200, resizeMode: "contain" }} />
-                <Text style={{ fontSize: 24 }}>{name} </Text>
-                <Text style={{ fontSize: 18 }}>Hunger: {Math.round(this.state.hunger)} </Text>
-                <Text style={{ fontSize: 18 }}>Cleanliness: {Math.round(this.state.cleanliness)} </Text>
-                <Text style={{ fontSize: 18 }}>Fun: {Math.round(this.state.fun)} </Text>
-
-                {buttons}
-            </View>
-        )
+        return <View style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+        }}>
+            <Text style={{fontSize: 24, color:"white", paddingVertical: 20}}>{name}</Text>
+            <Image source={{uri: imageUri}} style={{width: 200, height: 200, resizeMode: "contain"}}/>
+            <Text style={{fontSize: 18, color:"white"}}>Hunger: {Math.round(this.state.hunger)}</Text>
+            <Text style={{fontSize: 18, color:"white"}}>Cleanliness: {Math.round(this.state.cleanliness)}</Text>
+            <Text style={{fontSize: 18, color:"white"}}>Fun: {Math.round(this.state.fun)}</Text>
+            {action}
+        </View>;
     }
 }
 //
