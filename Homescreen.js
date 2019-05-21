@@ -37,7 +37,7 @@ export default class Homescreen extends React.Component {
                 this.setState({ action: "feed" });
                 }
             }}>
-                <MaterialCommunityIcons name="food-apple" size={60} color="green" />
+                <MaterialCommunityIcons name="food-apple" size={60} color="greenyellow" />
                 <Text style={{ paddingHorizontal: 15, color: "white" }}>Feed</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{ padding: 15 }} activeOpacity={0.5} onPress={() => {
@@ -68,7 +68,7 @@ export default class Homescreen extends React.Component {
                 navigate('Fight', { username: "Machi", pokemon: this.state.pokemonId })
                 Haptic.selection();
             }}>
-                <MaterialCommunityIcons name="sword-cross" size={60} color="grey" />
+                <MaterialCommunityIcons name="sword-cross" size={60} color="lightgray" />
                 <Text style={{ paddingHorizontal: 15, color: "white" }}>Fight</Text>
             </TouchableOpacity>
         </View>;
@@ -102,7 +102,6 @@ export default class Homescreen extends React.Component {
                 }}
                 source={{ uri: remote }}
             >
-                <TouchableOpacity style={{ padding: 15, alignSelf: 'flex-end' }} activeOpacity={0.5} ><MaterialCommunityIcons name="information-outline" size={30} color="white" /></TouchableOpacity>
                 <SafeAreaView style={{
                     flex: 1,
                     flexDirection: 'column',

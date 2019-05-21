@@ -310,6 +310,11 @@ export default class Fight extends React.Component {
         return <Button title={user} key={user} onPress={() => { this.FightUser(user) }} />
     }.bind(this));
 
+    console.log("length: ", this.state.users.length)
+    if (this.state.users.length <= 1) {
+      content = <Text>No current user in the arena</Text>
+    }
+
     if(this.state.fightState == "pending") {
       content = <ActivityIndicator size="large" color="#ffffff" /> }
 
@@ -330,9 +335,7 @@ export default class Fight extends React.Component {
       }}
       source={{ uri: remote }}
     >
-        <TouchableOpacity style={{padding: 15, alignSelf: 'flex-end'}} activeOpacity={0.5} ><MaterialCommunityIcons name="information-outline" size={30} color="white" /></TouchableOpacity>
         <SafeAreaView style={{flex:1, justifyContent: "space-between", flexDirection: 'column', backgroundColor: 'transparent'}}>
-            <Text>{this.state.fightState}</Text>
             <View>
             {content}
             </View>
