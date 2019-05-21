@@ -5,6 +5,7 @@ import Sponge from './Sponge';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AsyncStorage } from 'react-native';
 import Food from './Food';
+import { Haptic } from 'expo';
 
 
 export default class Pokemon extends React.Component {
@@ -223,8 +224,9 @@ export default class Pokemon extends React.Component {
                     Haptic.selection();
                     name = name + " [DEAD]";
                 }}>
-                    <MaterialCommunityIcons name="egg" size={100} color="floralwhite" />
-                    <Text style={{ paddingHorizontal: 15, color: "black" }}>New Pokemon</Text>
+                    <Text style={{ paddingHorizontal: 15, color: "black", fontSize: 20, fontWeight: "bold" }}>Your Pokémon died</Text>
+                    <MaterialCommunityIcons name="egg" size={150} color="floralwhite" />
+                    <Text style={{ paddingHorizontal: 15, color: "black", fontSize: 20 }}>Press to hatch a new Pokémon</Text>
                 </TouchableOpacity>
         }
 
@@ -233,7 +235,6 @@ export default class Pokemon extends React.Component {
             alignItems: 'center',
             justifyContent: 'center',
         }}>
-            {buttons}
             {action}
             {buttons}
         </View>;
