@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, Button, TouchableOpacity } from 'react-native';
+import { Text, View, Image, Button, TouchableOpacity, TouchableHighlight, Platform } from 'react-native';
 import Model from './Model';
 import Sponge from './Sponge';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -186,7 +186,7 @@ export default class Pokemon extends React.Component {
 
     async playRecording() {
 
-        const { sound } = await Audio.Sound.createAsync({uri:'https://veekun.com/dex/media/pokemon/cries/1.ogg'});
+        const { sound } = await Audio.Sound.createAsync({uri:'https://veekun.com/dex/media/pokemon/cries/' + String(this.state.id) + '.ogg'});
         
         await sound.playAsync();
       
@@ -234,7 +234,9 @@ export default class Pokemon extends React.Component {
             justifyContent: 'center',
         }}>
             <Text style={{ fontSize: 24, paddingVertical: 20, fontWeight: "bold" }}>{name}</Text>
+            <TouchableHighlight onPress={() => this.playRecording()}>
             <Image source={{ uri: imageUri }} style={{ width: 200, height: 200, resizeMode: "contain" }} />
+            </TouchableHighlight>
             <Text style={{ fontSize: 18 }}>Hunger: {Math.round(this.state.hunger)}</Text>
             <Text style={{ fontSize: 18 }}>Cleanliness: {Math.round(this.state.cleanliness)}</Text>
             <Text style={{ fontSize: 18 }}>Fun: {Math.round(this.state.fun)}</Text>
@@ -252,8 +254,12 @@ export default class Pokemon extends React.Component {
                         id: newID,
                         update: "updated",
                     });
-                    Haptic.selection();
-                    this.playRecording();
+                    
+
+                    if (Platform.OS === 'ios') {
+                        Haptic.selection();
+                    }
+
                     name = name + " [DEAD]";
                 }}>
                     <Text style={{ paddingHorizontal: 15, color: "black", fontSize: 20, fontWeight: "bold" }}>Your Pokémon died</Text>
