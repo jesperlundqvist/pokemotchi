@@ -14,6 +14,7 @@ export default class Sponge extends React.Component {
         this.state.pan.addListener((value) => {
             if (value.x > -100 && value.x < 100 && value.y < -150 && value.y > -400) {
                 this.props.onClean();
+
             }
         });
     }

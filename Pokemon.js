@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, Image, AsyncStorage, Button } from 'react-native';
 import Model from './Model';
 import Sponge from './Sponge';
+import Food from './Food';
 
 
 export default class Pokemon extends React.Component {
@@ -121,7 +122,9 @@ export default class Pokemon extends React.Component {
             <Text style={{fontSize: 18}}>Cleanliness: {Math.round(this.state.cleanliness)}</Text>
             <Text style={{fontSize: 18}}>Fun: {Math.round(this.state.fun)}</Text>
             <Sponge onClean={() => {this.setState({cleanliness: this.state.cleanliness + 0.2})}}/>
+            <Food onFood={() => {this.setState({hunger: this.state.hunger + 0.2})}}/>
 
         </View>;
     }
 }
+//
