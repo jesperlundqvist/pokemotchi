@@ -127,6 +127,17 @@ export default class Pokemon extends React.Component {
         }
     }
 
+    saveData = async (id) => {
+        let stringID = String(id);
+        try {
+            await (AsyncStorage.setItem("pokemon", stringID))
+            this.setState({ id: stringID })
+
+        } catch (e) {
+            console.error('Failed to save id.')
+        }
+    }
+
     componentWillUnmount() {
         clearInterval(this._interval);
     }
@@ -147,12 +158,7 @@ export default class Pokemon extends React.Component {
             name = name.charAt(0).toUpperCase() + name.slice(1);
         }
 
-
-          let buttons = <View>
-              <Button title="Feed" onPress={() => { this.setState({hunger: this.state.hunger + 10}) }} />
-              <Button title="Clean" onPress={() => { this.setState({cleanliness: this.state.cleanliness + 10}) }} />
-              <Button title="Play" onPress={() => { this.setState({fun: this.state.fun + 10}) }} />
-          </View>;
+        let buttons = <View></View>;
 
         if (!this.state.alive) {
           buttons = <Button title="New Pokemon" onPress={() => {
@@ -183,7 +189,6 @@ export default class Pokemon extends React.Component {
                 <Text style={{ fontSize: 18 }}>Hunger: {Math.round(this.state.hunger)} </Text>
                 <Text style={{ fontSize: 18 }}>Cleanliness: {Math.round(this.state.cleanliness)} </Text>
                 <Text style={{ fontSize: 18 }}>Fun: {Math.round(this.state.fun)} </Text>
-                <Sponge onClean={() => { this.setState({ cleanliness: this.state.cleanliness + 0.2 }) }} />
 
                 {buttons}
             </View>
