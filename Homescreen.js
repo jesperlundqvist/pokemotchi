@@ -73,7 +73,7 @@ export default class Homescreen extends React.Component {
             </TouchableOpacity>
 
             <TouchableOpacity style={{ padding: 15 }} activeOpacity={0.5} onPress={() => {
-                navigate('Fight', { username: "Joppe", pokemon: this.state.pokemonId })
+                navigate('Fight', { username: "Machi", pokemon: this.state.pokemonId })
                 Haptic.selection();
             }}>
                 <MaterialCommunityIcons name="sword-cross" size={60} color={this.state.action == "" ? "lightgray": "gray"} />
