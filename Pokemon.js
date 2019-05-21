@@ -235,6 +235,7 @@ export default class Pokemon extends React.Component {
         }}>
             {buttons}
             {action}
+            {buttons}
         </View>;
     }
 }
