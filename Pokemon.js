@@ -184,7 +184,7 @@ export default class Pokemon extends React.Component {
             action = <Sponge onClean={() => {this.setState({cleanliness: this.state.cleanliness + 0.2})}}/>
 
         }
-        
+
         if (this.props.action == "feed") {
             action = <Food onFood={() => {this.setState({hunger: this.state.hunger + 0.2})}}/>
 
@@ -223,6 +223,7 @@ export default class Pokemon extends React.Component {
             <Text style={{fontSize: 18, color:"white"}}>Cleanliness: {Math.round(this.state.cleanliness)}</Text>
             <Text style={{fontSize: 18, color:"white"}}>Fun: {Math.round(this.state.fun)}</Text>
             {action}
+            {buttons}
         </View>;
     }
 }
