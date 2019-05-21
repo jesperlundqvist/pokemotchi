@@ -33,6 +33,18 @@ export default class Homescreen extends React.Component {
         const resizeMode = 'center';
         const { navigate } = this.props.navigation;
 
+        let text = <View></View>;
+
+        if (this.state.action == "feed") {
+            text = <Text style={{fontSize: 16, textAlign: 'center', padding: 10, fontWeight: "bold", color: "white"}}>Hold your phone level to feed!</Text>
+        }
+        else if (this.state.action == "clean") {
+            text = <Text style={{fontSize: 16, textAlign: 'center', padding: 10, fontWeight: "bold", color: "white"}}>Rub the sponge on your Pokémon to clean!</Text>
+        }
+        else if (this.state.action == "play") {
+            text = <Text style={{fontSize: 16, textAlign: 'center', padding: 10, fontWeight: "bold", color: "white"}}>Shake your phone to play with your Pokémon!</Text>
+        }
+
         let buttons = <View style={{ flexDirection: "row" }}>
             <TouchableOpacity style={{ padding: 15 }} activeOpacity={0.5} onPress={() => {
                 if (Platform.OS === 'android') {
@@ -139,6 +151,7 @@ export default class Homescreen extends React.Component {
                 }}>
                     <StatusBar backgroundColor="blue" barStyle="light-content" />
                     <Pokemon style={{ flexGrow: 1 }} id={this.state.pokemonId} action={this.state.action} onAliveChange={(alive) => this.setState({ pokemonAlive: alive })} />
+                    {text}
                     <View style={{ flexDirection: "row", flexShrink: 1, justifyContent: "center" }}>
                         {buttons}
                     </View>

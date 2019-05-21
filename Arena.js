@@ -51,7 +51,7 @@ export default class Arena extends React.Component {
             <View style={{
                 paddingTop: 175
             }}>
-                <TouchableHighlight style={{ alignSelf: 'flex-end' }} onPress={this.onPress}><Image source={{ uri: theirImageUri }} style={{ width: 125, height: 125, resizeMode: "contain" }} /></TouchableHighlight>
+                <TouchableHighlight underlayColor={"transparent"} style={{ alignSelf: 'flex-end' }} onPress={this.onPress}><Image source={{ uri: theirImageUri }} style={{ width: 125, height: 125, resizeMode: "contain" }} /></TouchableHighlight>
                 <Image source={{ uri: myImageUri }} style={{ width: 250, height: 250, resizeMode: "contain", alignSelf: 'flex-start' }} />
             </View>
         )

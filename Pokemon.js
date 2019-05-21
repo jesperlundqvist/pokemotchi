@@ -71,6 +71,11 @@ export default class Pokemon extends React.Component {
     //hej hshs hj jfld
 
     componentDidUpdate(prevProps, prevState) {
+        if (this.state.alive != prevState.alive) {
+            if (this.props.onAliveChange) {
+                this.props.onAliveChange(this.state.alive);
+            }
+        }
 
         //om state.update inte är lika med det update i state som var innan setState kördes
         if (this.state.update !== prevState.update) {
@@ -180,11 +185,11 @@ export default class Pokemon extends React.Component {
     async playRecording() {
 
         const { sound } = await Audio.Sound.createAsync({uri:'https://veekun.com/dex/media/pokemon/cries/' + String(this.state.id) + '.ogg'});
-        
+
         await sound.playAsync();
-      
+
        //'https://veekun.com/dex/media/pokemon/cries/1.ogg'
-      
+
     }
 
 
@@ -247,7 +252,7 @@ export default class Pokemon extends React.Component {
                         id: newID,
                         update: "updated",
                     });
-                    
+
 
                     if (Platform.OS === 'ios') {
                         Haptic.selection();
