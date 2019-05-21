@@ -5,7 +5,8 @@ import Sponge from './Sponge';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AsyncStorage } from 'react-native';
 import Food from './Food';
-
+import Toy from './Toy';
+import { Haptic } from 'expo';
 
 export default class Pokemon extends React.Component {
     constructor(props) {
@@ -70,7 +71,7 @@ export default class Pokemon extends React.Component {
 
                 }
             }
-        }, 250);
+        }, 2000);
 
         this.print();
     }
@@ -201,13 +202,15 @@ export default class Pokemon extends React.Component {
     render() {
         let action = <View></View>;
         if (this.props.action == "clean") {
-            action = <Sponge onClean={() => { this.setState({ cleanliness: this.state.cleanliness + 0.2 }) }} />
-
+            action = <Sponge onClean={() => {this.setState({cleanliness: this.state.cleanliness + 0.2})}}/>
         }
 
         if (this.props.action == "feed") {
-            action = <Food onFood={() => { this.setState({ hunger: this.state.hunger + 0.2 }) }} />
+            action = <Food onFood={() => {this.setState({hunger: this.state.hunger + 0.2})}}/>
+        }
 
+        if (this.props.action == "play") {
+            action = <Toy onFun={(speed) => {this.setState({fun: this.state.fun + 0.005 * speed})}}/>
         }
 
         let imageUri = "http://pokestadium.com/sprites/xy/" + this.state.data.name + ".gif";
@@ -242,8 +245,9 @@ export default class Pokemon extends React.Component {
                     Haptic.selection();
                     name = name + " [DEAD]";
                 }}>
-                    <MaterialCommunityIcons name="egg" size={100} color="floralwhite" />
-                    <Text style={{ paddingHorizontal: 15, color: "black" }}>New Pokemon</Text>
+                    <Text style={{ paddingHorizontal: 15, color: "black", fontSize: 20, fontWeight: "bold" }}>Your Pokémon died</Text>
+                    <MaterialCommunityIcons name="egg" size={150} color="floralwhite" />
+                    <Text style={{ paddingHorizontal: 15, color: "black", fontSize: 20 }}>Press to hatch a new Pokémon</Text>
                 </TouchableOpacity>
         }
 

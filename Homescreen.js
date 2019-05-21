@@ -23,7 +23,7 @@ export default class Homescreen extends React.Component {
         this.state = {
             pokemonId: Math.floor(Math.random() * 100) + 1,
             pokemonAlive: true,
-            action: "neutral"
+            action: ""
         }
     }
 
@@ -42,9 +42,10 @@ export default class Homescreen extends React.Component {
                 this.setState({ action: "feed" });
                 }
             }}>
-                <MaterialCommunityIcons name="food-apple" size={60} color="greenyellow" />
+                <MaterialCommunityIcons name="food-apple" size={60} color={this.state.action == "feed" || this.state.action == "" ? "greenyellow": "gray"} />
                 <Text style={{ paddingHorizontal: 15, color: "white" }}>Feed</Text>
             </TouchableOpacity>
+
             <TouchableOpacity style={{ padding: 15 }} activeOpacity={0.5} onPress={() => {
                 Haptic.selection();
                 if (this.state.action == "clean") {
@@ -54,9 +55,10 @@ export default class Homescreen extends React.Component {
                     this.setState({ action: "clean" });
                 }
             }}>
-                <Entypo name="water" size={60} color="skyblue" />
+                <Entypo name="water" size={60} color={this.state.action == "clean" || this.state.action == "" ? "skyblue": "gray"} />
                 <Text style={{ paddingHorizontal: 15, color: "white" }}>Clean</Text>
             </TouchableOpacity>
+
             <TouchableOpacity style={{ padding: 15 }} activeOpacity={0.5} onPress={() => {
                 Haptic.selection();
                 if (this.state.action == "play") {
@@ -66,14 +68,15 @@ export default class Homescreen extends React.Component {
                     this.setState({ action: "play" });
                 }
             }}>
-                <MaterialCommunityIcons name="basketball" size={60} color="orange" />
+                <MaterialCommunityIcons name="basketball" size={60} color={this.state.action == "play" || this.state.action == "" ? "orange": "gray"} />
                 <Text style={{ paddingHorizontal: 15, color: "white" }}>Play</Text>
             </TouchableOpacity>
+
             <TouchableOpacity style={{ padding: 15 }} activeOpacity={0.5} onPress={() => {
                 navigate('Fight', { username: "Joppe", pokemon: this.state.pokemonId })
                 Haptic.selection();
             }}>
-                <MaterialCommunityIcons name="sword-cross" size={60} color="lightgray" />
+                <MaterialCommunityIcons name="sword-cross" size={60} color={this.state.action == "" ? "lightgray": "gray"} />
                 <Text style={{ paddingHorizontal: 15, color: "white" }}>Fight</Text>
             </TouchableOpacity>
         </View>;
