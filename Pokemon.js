@@ -121,6 +121,7 @@ export default class Pokemon extends React.Component {
             <Text style={{fontSize: 18}}>Cleanliness: {Math.round(this.state.cleanliness)}</Text>
             <Text style={{fontSize: 18}}>Fun: {Math.round(this.state.fun)}</Text>
             <Sponge onClean={() => {this.setState({cleanliness: this.state.cleanliness + 0.2})}}/>
+
         </View>;
     }
 }
