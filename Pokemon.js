@@ -14,15 +14,14 @@ export default class Pokemon extends React.Component {
         this.whenDeadUpdate = this.whenDeadUpdate.bind(this);
         this.state = {
             data: {},
-            hunger: "",
-            cleanliness: "",
-            fun: "",
+            hunger: 100,
+            cleanliness: 100,
+            fun: 100,
             alive: true,
             id: "x",
             update: "",
         };
     }
-
 
     componentDidMount() {
         //AsyncStorage.clear();
@@ -87,9 +86,9 @@ export default class Pokemon extends React.Component {
             Model.getPokemonById(this.state.id).then((data) => {
                 this.setState({
                     data: data,
-                    hunger: "",
-                    cleanliness: "",
-                    fun: "",
+                    hunger: 100,
+                    cleanliness: 100,
+                    fun: 100,
                     alive: true,
                     update: ""
                 });
@@ -237,6 +236,7 @@ export default class Pokemon extends React.Component {
                 justifyContent: 'center'}} activeOpacity={0.5} onPress={() => {
                     let newID = (Math.floor(Math.random() * 10) + 1);
                     this.save(newID);
+                    this.savePokStats(this.state);
 
                     this.setState({
                         id: newID,
