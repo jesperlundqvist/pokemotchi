@@ -3,6 +3,7 @@ import { Text, View, Image } from 'react-native';
 import Model from './Model';
 import Sponge from './Sponge';
 import { AsyncStorage } from 'react-native';
+import Food from './Food';
 
 export default class Pokemon extends React.Component {
     constructor(props) {
@@ -22,7 +23,6 @@ export default class Pokemon extends React.Component {
         //console.log(typeof this.state.id);
         //this.print()
 
-
         //Working promise example
         let promisetest = new Promise((resolved, unresolved) => {
 
@@ -34,11 +34,11 @@ export default class Pokemon extends React.Component {
         /*   promisetest.then(() => console.log("Finished"))
        .then(() => console.log("Finished 2"))
        .catch(() => console.log("Darnit    , it failed :("))
-   
-   
-   
+
+
+
        let promisetest = new Promise((resolved, unresolved) => {
-               
+
            setTimeout(() => {
                resolved();
            }, 3000) //3 seconds
@@ -78,14 +78,11 @@ export default class Pokemon extends React.Component {
                 }
             }
         }, 250);
-
     }
 
     randomId() {
         this.setState({ id: Math.floor(Math.random() * 10) + 1 })
-
         this.save(this.state.id);
-
     }
 
     print = async () => {
@@ -104,7 +101,7 @@ export default class Pokemon extends React.Component {
 
 
     load = async () => {
-        console.log("börjar load");
+        //console.log("börjar load");
         const id = await AsyncStorage.getItem("pokemon");
 
         if (id == "x" || id == null) {
@@ -116,17 +113,11 @@ export default class Pokemon extends React.Component {
             this.save(this.state.id);
 
         }
-        console.log("load slutar");
+        //console.log("load slutar");
         return "resolved"
-
-
-
     }
 
-
     save = async (id) => {
-        console.log("save börjar ");
-
         let stringID = String(id);
         try {
             await (AsyncStorage.setItem("pokemon", stringID))
@@ -135,8 +126,6 @@ export default class Pokemon extends React.Component {
         } catch (e) {
             console.error('Failed to save id.')
         }
-        console.log("save slutar ");
-
     }
 
     componentWillUnmount() {
@@ -187,29 +176,27 @@ export default class Pokemon extends React.Component {
           </View>;*/
 
         if (!this.state.alive) {
-            /*  buttons = <Button title="New Pokemon" onPress={() => {
-                this.setState ({ id: (Math.floor(Math.random() * 10)+1) });
-                AsyncStorage.setItem("pokemon", this.state.id);
-              }} />*/
+          /*buttons = <Button title="New Pokemon" onPress={() => {
+            this.setState ({ id: (Math.floor(Math.random() * 10)+1) });
+            AsyncStorage.setItem("pokemon", this.state.id);
+          }} />*/
             name = name + " [DEAD]";
         }
 
-        return (
+        return <View style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+        }}>
+            <Image source={{uri: imageUri}} style={{width: 200, height: 200, resizeMode: "contain"}}/>
+            <Text style={{fontSize: 24}}>{name}</Text>
+            <Text style={{fontSize: 18}}>Hunger: {Math.round(this.state.hunger)}</Text>
+            <Text style={{fontSize: 18}}>Cleanliness: {Math.round(this.state.cleanliness)}</Text>
+            <Text style={{fontSize: 18}}>Fun: {Math.round(this.state.fun)}</Text>
+            <Sponge onClean={() => {this.setState({cleanliness: this.state.cleanliness + 0.2})}}/>
+            <Food onFood={() => {this.setState({hunger: this.state.hunger + 0.2})}}/>
 
-            <View
-                style={{
-                    flex: 1,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
-                <Image source={{ uri: imageUri }} style={{ width: 200, height: 200, resizeMode: "contain" }} />
-                <Text style={{ fontSize: 24 }}>{name} </Text>
-                <Text style={{ fontSize: 18 }}>Hunger: {Math.round(this.state.hunger)} </Text>
-                <Text style={{ fontSize: 18 }}>Cleanliness: {Math.round(this.state.cleanliness)} </Text>
-                <Text style={{ fontSize: 18 }}>Fun: {Math.round(this.state.fun)} </Text>
-                <Sponge onClean={() => { this.setState({ cleanliness: this.state.cleanliness + 0.2 }) }} />
-            </View>
-        )
+        </View>;
     }
 }
+//
