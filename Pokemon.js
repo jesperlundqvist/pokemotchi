@@ -8,6 +8,7 @@ import Food from './Food';
 export default class Pokemon extends React.Component {
     constructor(props) {
         super(props);
+        
         this.state = {
             data: {},
             hunger: 100,
@@ -17,6 +18,7 @@ export default class Pokemon extends React.Component {
             id: "x",
         };
     }
+
 
     componentDidMount() {
         //AsyncStorage.clear();
@@ -163,6 +165,17 @@ export default class Pokemon extends React.Component {
     }*/
 
     render() {
+        let action = <View></View>;
+        if (this.props.action == "clean") {
+            action = <Sponge onClean={() => {this.setState({cleanliness: this.state.cleanliness + 0.2})}}/>
+
+        }
+        
+        if (this.props.action == "feed") {
+            action = <Food onFood={() => {this.setState({hunger: this.state.hunger + 0.2})}}/>
+
+        }
+
         let imageUri = "http://pokestadium.com/sprites/xy/" + this.state.data.name + ".gif";
         let name = this.state.data.name;
         if (name) {
@@ -193,9 +206,7 @@ export default class Pokemon extends React.Component {
             <Text style={{fontSize: 18}}>Hunger: {Math.round(this.state.hunger)}</Text>
             <Text style={{fontSize: 18}}>Cleanliness: {Math.round(this.state.cleanliness)}</Text>
             <Text style={{fontSize: 18}}>Fun: {Math.round(this.state.fun)}</Text>
-            <Sponge onClean={() => {this.setState({cleanliness: this.state.cleanliness + 0.2})}}/>
-            <Food onFood={() => {this.setState({hunger: this.state.hunger + 0.2})}}/>
-
+            {action}
         </View>;
     }
 }
