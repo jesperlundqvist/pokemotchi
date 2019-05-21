@@ -191,11 +191,11 @@ export default class Pokemon extends React.Component {
             alignItems: 'center',
             justifyContent: 'center',
         }}>
+            <Text style={{fontSize: 24, color:"white", paddingVertical: 20}}>{name}</Text>
             <Image source={{uri: imageUri}} style={{width: 200, height: 200, resizeMode: "contain"}}/>
-            <Text style={{fontSize: 24}}>{name}</Text>
-            <Text style={{fontSize: 18}}>Hunger: {Math.round(this.state.hunger)}</Text>
-            <Text style={{fontSize: 18}}>Cleanliness: {Math.round(this.state.cleanliness)}</Text>
-            <Text style={{fontSize: 18}}>Fun: {Math.round(this.state.fun)}</Text>
+            <Text style={{fontSize: 18, color:"white"}}>Hunger: {Math.round(this.state.hunger)}</Text>
+            <Text style={{fontSize: 18, color:"white"}}>Cleanliness: {Math.round(this.state.cleanliness)}</Text>
+            <Text style={{fontSize: 18, color:"white"}}>Fun: {Math.round(this.state.fun)}</Text>
             {action}
         </View>;
     }

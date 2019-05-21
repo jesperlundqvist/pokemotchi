@@ -324,7 +324,7 @@ export default class Fight extends React.Component {
       }}
       source={{ uri: remote }}
     >
-        <TouchableOpacity style={{padding: 15, alignSelf: 'flex-end'}} activeOpacity={0.5} ><MaterialCommunityIcons name="information-outline" size={30} color="black" /></TouchableOpacity>
+        <TouchableOpacity style={{padding: 15, alignSelf: 'flex-end'}} activeOpacity={0.5} ><MaterialCommunityIcons name="information-outline" size={30} color="white" /></TouchableOpacity>
         <SafeAreaView style={{flex:1, justifyContent: "space-between", flexDirection: 'column', backgroundColor: 'transparent'}}>
             <Text>{this.state.fightState}</Text>
             <View>
