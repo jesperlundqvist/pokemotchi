@@ -97,7 +97,7 @@ export default class Pokemon extends React.Component {
     }
 
     randomId() {
-        this.setState({ id: Math.floor(Math.random() * 10) + 1 })
+        this.setState({ id: Math.floor(Math.random() * 100) + 1 })
         this.save(this.state.id);
     }
 
@@ -234,7 +234,7 @@ export default class Pokemon extends React.Component {
             buttons =
                 <TouchableOpacity style={{ padding: 15, alignItems: 'center',
                 justifyContent: 'center'}} activeOpacity={0.5} onPress={() => {
-                    let newID = (Math.floor(Math.random() * 10) + 1);
+                    let newID = (Math.floor(Math.random() * 100) + 1);
                     this.save(newID);
                     this.savePokStats(this.state);
 
