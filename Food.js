@@ -1,6 +1,6 @@
 import React from 'react';
 import { Gyroscope, Haptic } from 'expo';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Platform } from 'react-native';
 
 
 
@@ -20,62 +20,31 @@ export default class Food extends React.Component {
           }
       });*/
 
-      this._toggle();
+      Gyroscope.setUpdateInterval(16);
 
-    }
-
-    componentWillMount() {
-      this._unsubscribe();
-
-    }
-
-    _toggle = () => {
-        if (this._subscription) {
-        this._unsubscribe();
-        } else {
-        this._subscribe();
-        }
-    }
-
-      _slow = () => {
-        Gyroscope.setUpdateInterval(1000);
-
-      };
-
-      _fast = () => {
-        Gyroscope.setUpdateInterval(16);
-      };
-
-      _subscribe = () => {
-        this._subscription = Gyroscope.addListener(result => {
-          this.setState({ gyroscopeData: result });
-        //  this.onLevel();
-        let { x, y, z } = result;
-        //console.log(result)
-        if (x > 0.8 || x < -0.8)
+      Gyroscope.addListener(result => {
+        this.setState({ gyroscopeData: result });
+      //  this.onLevel();
+      let { x, y, z } = result;
+      //console.log(result)
+      if (x > 0.8 || x < -0.8)
+          if (Platform.OS === 'ios') {
             Haptic.selection();
+          }
           this.props.onFood(
 
-          );
+        );
 
-      });
-      };
+    });
 
-      _unsubscribe = () => {
-        this._subscription && this._subscription.remove();
-        this._subscription = null;
-      };
+    }
 
-
+    componentWillUnmount() {
+        Gyroscope.removeAllListeners();
+    }
     render() {
-      let { x, y, z } = this.state.gyroscopeData;
         return   (
-              <View style={styles.sensor}>
-              <Text>Gyroscope:</Text>
-              <Text>
-                x: {round(x)} y: {round(y)} z: {round(z)}
-              </Text>
-
+              <View>
       </View>);
     }
 }

@@ -5,6 +5,7 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import Pokemon from './Pokemon';
 import { Haptic } from 'expo';
+import { Vibration, Platform } from 'react-native';
 
 export default class Homescreen extends React.Component {
     static navigationOptions = ({navigation}) => {
@@ -32,9 +33,26 @@ export default class Homescreen extends React.Component {
         const resizeMode = 'center';
         const { navigate } = this.props.navigation;
 
+        let text = <View></View>;
+
+        if (this.state.action == "feed") {
+            text = <Text style={{fontSize: 16, textAlign: 'center', padding: 10, fontWeight: "bold", color: "white"}}>Hold your phone level to feed!</Text>
+        }
+        else if (this.state.action == "clean") {
+            text = <Text style={{fontSize: 16, textAlign: 'center', padding: 10, fontWeight: "bold", color: "white"}}>Rub the sponge on your Pokémon to clean!</Text>
+        }
+        else if (this.state.action == "play") {
+            text = <Text style={{fontSize: 16, textAlign: 'center', padding: 10, fontWeight: "bold", color: "white"}}>Shake your phone to play with your Pokémon!</Text>
+        }
+
         let buttons = <View style={{ flexDirection: "row" }}>
             <TouchableOpacity style={{ padding: 15 }} activeOpacity={0.5} onPress={() => {
-                Haptic.selection();
+                if (Platform.OS === 'android') {
+                  Vibration.vibrate(50);
+                } else if (Platform.OS === 'ios') {
+                  Haptic.selection();
+                }
+
                 if (this.state.action == "feed") {
                     this.setState({ action: "" });
                 }
@@ -47,7 +65,12 @@ export default class Homescreen extends React.Component {
             </TouchableOpacity>
 
             <TouchableOpacity style={{ padding: 15 }} activeOpacity={0.5} onPress={() => {
-                Haptic.selection();
+                if (Platform.OS === 'android') {
+                  Vibration.vibrate(50);
+                } else if (Platform.OS === 'ios') {
+                  Haptic.selection();
+                }
+
                 if (this.state.action == "clean") {
                     this.setState({ action: "" });
                 }
@@ -60,7 +83,12 @@ export default class Homescreen extends React.Component {
             </TouchableOpacity>
 
             <TouchableOpacity style={{ padding: 15 }} activeOpacity={0.5} onPress={() => {
-                Haptic.selection();
+                if (Platform.OS === 'android') {
+                    Vibration.vibrate(50);
+                } else if (Platform.OS === 'ios') {
+                    Haptic.selection();
+                }
+
                 if (this.state.action == "play") {
                     this.setState({ action: "" });
                 }
@@ -73,15 +101,22 @@ export default class Homescreen extends React.Component {
             </TouchableOpacity>
 
             <TouchableOpacity style={{ padding: 15 }} activeOpacity={0.5} onPress={() => {
-                navigate('Fight', { username: "Machi", pokemon: this.state.pokemonId })
-                Haptic.selection();
+                if (Platform.OS === 'android') {
+                  Vibration.vibrate(50);
+                } else if (Platform.OS === 'ios') {
+                  Haptic.selection();
+                }
+
+                navigate('Fight', { username: "Joppe", pokemon: this.state.pokemonId })
             }}>
                 <MaterialCommunityIcons name="sword-cross" size={60} color={this.state.action == "" ? "lightgray": "gray"} />
                 <Text style={{ paddingHorizontal: 15, color: "white" }}>Fight</Text>
             </TouchableOpacity>
         </View>;
 
-
+        if (!this.state.pokemonAlive) {
+            buttons = <View></View>;
+        }
 
         /*if (!this.state.pokemonAlive) {
             buttons = <Button title="New Pokemon" onPress={() => {
@@ -116,6 +151,7 @@ export default class Homescreen extends React.Component {
                 }}>
                     <StatusBar backgroundColor="blue" barStyle="light-content" />
                     <Pokemon style={{ flexGrow: 1 }} id={this.state.pokemonId} action={this.state.action} onAliveChange={(alive) => this.setState({ pokemonAlive: alive })} />
+                    {text}
                     <View style={{ flexDirection: "row", flexShrink: 1, justifyContent: "center" }}>
                         {buttons}
                     </View>

@@ -1,22 +1,21 @@
 import React from 'react';
-import { Text, View, Image, Button, TouchableOpacity } from 'react-native';
+import { Text, View, Image, Button, TouchableOpacity, TouchableHighlight, Platform } from 'react-native';
 import Model from './Model';
 import Sponge from './Sponge';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AsyncStorage } from 'react-native';
 import Food from './Food';
 import Toy from './Toy';
-import { Haptic } from 'expo';
+import { Haptic, Audio } from 'expo';
 
 export default class Pokemon extends React.Component {
     constructor(props) {
         super(props);
-        this.whenDeadUpdate = this.whenDeadUpdate.bind(this);
         this.state = {
             data: {},
-            hunger: 100,
-            cleanliness: 100,
-            fun: 100,
+            hunger: "",
+            cleanliness: "",
+            fun: "",
             alive: true,
             id: "x",
             update: "",
@@ -60,24 +59,23 @@ export default class Pokemon extends React.Component {
                         fun: this.state.fun - 1
                     });
 
-                  if (this.state.hunger == 75) {
-                    this.savePokStats(this.state);
-                  }
-
-                  if (this.state.hunger == 50) {
+                  if (this.state.hunger % 10 == 0) {
                     this.savePokStats(this.state);
                   }
 
                 }
             }
         }, 2000);
-
-        this.print();
     }
 
     //hej hshs hj jfld
 
     componentDidUpdate(prevProps, prevState) {
+        if (this.state.alive != prevState.alive) {
+            if (this.props.onAliveChange) {
+                this.props.onAliveChange(this.state.alive);
+            }
+        }
 
         //om state.update inte är lika med det update i state som var innan setState kördes
         if (this.state.update !== prevState.update) {
@@ -97,7 +95,7 @@ export default class Pokemon extends React.Component {
     }
 
     randomId() {
-        this.setState({ id: Math.floor(Math.random() * 10) + 1 })
+        this.setState({ id: Math.floor(Math.random() * 100) + 1 })
         this.save(this.state.id);
     }
 
@@ -184,6 +182,16 @@ export default class Pokemon extends React.Component {
         }
     }
 
+    async playRecording() {
+
+        const { sound } = await Audio.Sound.createAsync({uri:'https://veekun.com/dex/media/pokemon/cries/' + String(this.state.id) + '.ogg'});
+
+        await sound.playAsync();
+
+       //'https://veekun.com/dex/media/pokemon/cries/1.ogg'
+
+    }
+
 
     componentWillUnmount() {
         clearInterval(this._interval);
@@ -224,7 +232,9 @@ export default class Pokemon extends React.Component {
             justifyContent: 'center',
         }}>
             <Text style={{ fontSize: 24, paddingVertical: 20, fontWeight: "bold" }}>{name}</Text>
+            <TouchableHighlight onPress={() => this.playRecording()}>
             <Image source={{ uri: imageUri }} style={{ width: 200, height: 200, resizeMode: "contain" }} />
+            </TouchableHighlight>
             <Text style={{ fontSize: 18 }}>Hunger: {Math.round(this.state.hunger)}</Text>
             <Text style={{ fontSize: 18 }}>Cleanliness: {Math.round(this.state.cleanliness)}</Text>
             <Text style={{ fontSize: 18 }}>Fun: {Math.round(this.state.fun)}</Text>
@@ -234,7 +244,7 @@ export default class Pokemon extends React.Component {
             buttons =
                 <TouchableOpacity style={{ padding: 15, alignItems: 'center',
                 justifyContent: 'center'}} activeOpacity={0.5} onPress={() => {
-                    let newID = (Math.floor(Math.random() * 10) + 1);
+                    let newID = (Math.floor(Math.random() * 100) + 1);
                     this.save(newID);
                     this.savePokStats(this.state);
 
@@ -242,7 +252,12 @@ export default class Pokemon extends React.Component {
                         id: newID,
                         update: "updated",
                     });
-                    Haptic.selection();
+
+
+                    if (Platform.OS === 'ios') {
+                        Haptic.selection();
+                    }
+
                     name = name + " [DEAD]";
                 }}>
                     <Text style={{ paddingHorizontal: 15, color: "black", fontSize: 20, fontWeight: "bold" }}>Your Pokémon died</Text>
