@@ -260,6 +260,13 @@ export default class Fight extends React.Component {
         this.setState({
           fightState: "pending"
         });
+
+        setTimeout(() => {
+            if (this.state.fightState == "pending") {
+                alert("timeout");
+                this.setState({ fightState: "ready" });
+            }
+        }, 10000);
       }.bind(this)
     );
   }

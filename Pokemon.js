@@ -1,9 +1,9 @@
 import React from 'react';
-import { Text, View, Image, AsyncStorage, Button } from 'react-native';
+import { Text, View, Image } from 'react-native';
 import Model from './Model';
 import Sponge from './Sponge';
+import { AsyncStorage } from 'react-native';
 import Food from './Food';
-
 
 export default class Pokemon extends React.Component {
     constructor(props) {
@@ -14,33 +14,54 @@ export default class Pokemon extends React.Component {
             cleanliness: 100,
             fun: 100,
             alive: true,
-            id: "",
+            id: "x",
         };
-
-
-        /*if (AsyncStorage.getItem("pokemon")) {
-          this.setState({ id: AsyncStorage.getItem("pokemon") });
-        }*/
     }
 
     componentDidMount() {
+        //AsyncStorage.clear();
+        //console.log(typeof this.state.id);
+        //this.print()
+
+        //Working promise example
+        let promisetest = new Promise((resolved, unresolved) => {
+
+            setTimeout(() => {
+                resolved();
+            }, 3000) //3 seconds
+        })
+
+        /*   promisetest.then(() => console.log("Finished"))
+       .then(() => console.log("Finished 2"))
+       .catch(() => console.log("Darnit    , it failed :("))
 
 
-        Model.getPokemonById(this.props.id).then((data) => {
-            this.setState({data: data});
-            console.log("pokemon");
-            console.log(this.state.data.id);
-            //Model.favPok(this.state.data);
-            //AsyncStorage.setItem("pokemon", this.state.data.id)
 
-        });
+       let promisetest = new Promise((resolved, unresolved) => {
+
+           setTimeout(() => {
+               resolved();
+           }, 3000) //3 seconds
+       })*/
+
+        let promise1 = new Promise((resolved, unresolved) => {
+
+            resolved(this.load());
+
+        })
+        promise1.then(() =>
+            console.log(this.state.id))
+            .then(() =>
+                Model.getPokemonById(this.state.id).then((data) => {
+                    this.setState({ data: data });
+                })
+            );
 
         this._interval = setInterval(() => {
             if (this.state.alive) {
                 if (this.state.hunger <= 0 ||
                     this.state.cleanliness <= 0 ||
-                    this.state.fun <= 0)
-                {
+                    this.state.fun <= 0) {
                     this.setState({
                         hunger: 0,
                         cleanliness: 0,
@@ -57,15 +78,67 @@ export default class Pokemon extends React.Component {
                 }
             }
         }, 250);
+    }
 
+    randomId() {
+        this.setState({ id: Math.floor(Math.random() * 10) + 1 })
+        this.save(this.state.id);
+    }
+
+    print = async () => {
+        AsyncStorage.getAllKeys((err, keys) => {
+            AsyncStorage.multiGet(keys, (err, stores) => {
+                stores.map((result, i, store) => {
+                    // get at each store's key/value so you can work with it
+                    let key = store[i][0];
+                    let value = store[i][1];
+                    console.log(key);
+                    console.log(value);
+                });
+            });
+        });
+    }
+
+
+    load = async () => {
+        //console.log("börjar load");
+        const id = await AsyncStorage.getItem("pokemon");
+
+        if (id == "x" || id == null) {
+            this.randomId();
+
+        } else {
+            this.setState({ id: id })
+            //this.state.is = id;
+            this.save(this.state.id);
+
+        }
+        //console.log("load slutar");
+        return "resolved"
+    }
+
+    save = async (id) => {
+        let stringID = String(id);
+        try {
+            await (AsyncStorage.setItem("pokemon", stringID))
+            this.setState({ id: stringID })
+
+        } catch (e) {
+            console.error('Failed to save id.')
+        }
     }
 
     componentWillUnmount() {
         clearInterval(this._interval);
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    /*componentDidUpdate(prevProps, prevState) {
+
         if (this.state.id !== prevState.id) {
+          console.log("prev id");
+          console.log(prevState.id);
+          console.log("i update");
+          console.log(this.state.id);
             Model.getPokemonById(this.state.id).then((data) => {
                 this.setState({
                     data: data,
@@ -77,18 +150,17 @@ export default class Pokemon extends React.Component {
             });
         }
 
-        /*if (prevState.alive != this.state.alive) {
+       if (prevState.alive != this.state.alive) {
             if (this.props.onAliveChange) {
                 this.props.onAliveChange(this.state.alive, prevState.alive);
             };
-        }*/
+        }
 
-      /*  if (!this.state.alive) {
+        if (!this.state.alive) {
           this.setState ({id: Math.floor(Math.random() * 10)+1})
-        }*/
+        }
 
-
-    }
+    }*/
 
     render() {
         let imageUri = "http://pokestadium.com/sprites/xy/" + this.state.data.name + ".gif";
@@ -97,18 +169,18 @@ export default class Pokemon extends React.Component {
             name = name.charAt(0).toUpperCase() + name.slice(1);
         }
 
-        let buttons = <View>
-            <Button title="Feed" onPress={() => { this.setState({hunger: this.state.hunger + 10}) }} />
-            <Button title="Clean" onPress={() => { this.setState({cleanliness: this.state.cleanliness + 10}) }} />
-            <Button title="Play" onPress={() => { this.setState({fun: this.state.fun + 10}) }} />
-        </View>;
+        /*  let buttons = <View>
+              <Button title="Feed" onPress={() => { this.setState({hunger: this.state.hunger + 10}) }} />
+              <Button title="Clean" onPress={() => { this.setState({cleanliness: this.state.cleanliness + 10}) }} />
+              <Button title="Play" onPress={() => { this.setState({fun: this.state.fun + 10}) }} />
+          </View>;*/
 
         if (!this.state.alive) {
-          buttons = <Button title="New Pokemon" onPress={() => {
+          /*buttons = <Button title="New Pokemon" onPress={() => {
             this.setState ({ id: (Math.floor(Math.random() * 10)+1) });
             AsyncStorage.setItem("pokemon", this.state.id);
-          }} />
-          name = name + " [DEAD]";
+          }} />*/
+            name = name + " [DEAD]";
         }
 
         return <View style={{
