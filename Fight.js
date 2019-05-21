@@ -38,7 +38,7 @@ export default class Fight extends React.Component {
       publishKey: "pub-c-ab1f1896-d4ac-4b70-aaf4-ca968c88c2f5",
       secretKey: "sec-c-NjI1MjhlNDEtNmEwYi00NjNmLWJkYTgtNDYwNzFhZDBkNmQz",
       ssl: true,
-      uuid: this.state.username
+      uuid: this.state.username,
     })
 
     this.pubnub.addListener({
@@ -291,6 +291,7 @@ export default class Fight extends React.Component {
     var remote = 'https://pbs.twimg.com/media/DVMT-6OXcAE2rZY.jpg';
     const resizeMode = 'center';
     let content = this.state.users.map(function (user) {
+      console.log("user: ", user)
       if (this.state.username != user)
         return <Button title={user} key={user} onPress={() => { this.FightUser(user) }} />
     }.bind(this));

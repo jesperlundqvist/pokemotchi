@@ -24,7 +24,7 @@ export default class Homescreen extends React.Component {
         console.log('skickar in i fight')
         console.log(this.state.pokemonId)
         let buttons = <View>
-            <Button title="Fight" onPress={() => navigate('Fight', {username: "Lovi", pokemon: this.state.pokemonId})}/>
+            <Button title="Fight" onPress={() => navigate('Fight', {username: "Machi", pokemon: this.state.pokemonId})}/>
         </View>;
 
         /*if (!this.state.pokemonAlive) {
