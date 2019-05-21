@@ -5,8 +5,11 @@ import Pokemon from './Pokemon';
 import Homescreen from './Homescreen'
 import Fight from './Fight'
 import Info from './Info'
+import Start from './getStarted'
+
 
 const MainNavigator = createStackNavigator({
+  Start: {screen: Start},
   Home: {screen: Homescreen},
   Fight: {screen: Fight},
   Info: {screen: Info}
