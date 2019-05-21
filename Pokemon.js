@@ -243,8 +243,8 @@ export default class Pokemon extends React.Component {
             alignItems: 'center',
             justifyContent: 'center',
         }}>
-            {action}
             {buttons}
+            {action}
         </View>;
     }
 }
