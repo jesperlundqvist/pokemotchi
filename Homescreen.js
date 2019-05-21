@@ -15,7 +15,8 @@ export default class Homescreen extends React.Component {
         super(props);
         this.state = {
             pokemonId: Math.floor(Math.random() * 100) + 1,
-            pokemonAlive: true
+            pokemonAlive: true,
+            action: "neutral"
         }
     }
 
@@ -27,7 +28,7 @@ export default class Homescreen extends React.Component {
         console.log(this.state.pokemonId)
         let buttons = <View style={ {flexDirection: "row"}}>
         <TouchableOpacity style={{padding: 15}} activeOpacity={0.5} ><MaterialCommunityIcons name="food-apple" size={60} color="green" /><Text style={{paddingHorizontal: 15}}>Feed</Text></TouchableOpacity>
-        <TouchableOpacity style={{padding: 15}} activeOpacity={0.5} ><Entypo name="water" size={60} color="blue" /><Text style={{paddingHorizontal: 15}}>Clean</Text></TouchableOpacity>
+        <TouchableOpacity style={{padding: 15}} activeOpacity={0.5} ><Entypo name="water" size={60} color="skyblue" /><Text style={{paddingHorizontal: 15}}>Clean</Text></TouchableOpacity>
         <TouchableOpacity style={{padding: 15}} activeOpacity={0.5} ><MaterialCommunityIcons name="basketball" size={60} color="orange" /><Text style={{paddingHorizontal: 15}}>Play</Text></TouchableOpacity>
         <TouchableOpacity style={{padding: 15}} activeOpacity={0.5} onPress={() => navigate('Fight', { username: "Machi", pokemon: this.state.pokemonId })}><MaterialCommunityIcons name="sword-cross" size={60} color="grey" /><Text style={{paddingHorizontal: 15}}>Fight</Text></TouchableOpacity>
 </View>;
