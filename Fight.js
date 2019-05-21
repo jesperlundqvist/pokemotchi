@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Alert, ImageBackground, SafeAreaView, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { Text, View, Button, TextInput, Alert, ImageBackground, SafeAreaView, Image, ActivityIndicator, TouchableOpacity, StatusBar } from 'react-native';
 import Model from './Model';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Arena from './Arena';
@@ -8,11 +8,16 @@ import PubNub from 'pubnub';
 
 
 export default class Fight extends React.Component {
-    static navigationOptions = {
-        headerTransparent: true,
-        headerTintColor: "white",
-        headerRight: <TouchableOpacity style={{marginRight: 10}} activeOpacity={0.5} ><MaterialCommunityIcons name="information-outline" size={30} color="white" /></TouchableOpacity>
-    };
+    static navigationOptions = ({navigation}) => {
+        return {
+            headerTransparent: true,
+            headerTintColor: "white",
+            headerRight:
+            <TouchableOpacity style={{marginRight: 10}} activeOpacity={0.5} onPress={() => navigation.navigate("Info")}>
+                <MaterialCommunityIcons name="information-outline" size={30} color="white" />
+            </TouchableOpacity>
+        }
+    }
 
   constructor(props) {
     super(props);
@@ -330,6 +335,7 @@ export default class Fight extends React.Component {
       }}
       source={{ uri: remote }}
     >
+        <StatusBar backgroundColor="green" barStyle="light-content" />
         <SafeAreaView style={{flex:1, justifyContent: "space-between", flexDirection: 'column', backgroundColor: 'transparent'}}>
             <Text>{this.state.fightState}</Text>
             <View>
