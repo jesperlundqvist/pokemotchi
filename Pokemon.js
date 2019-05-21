@@ -61,6 +61,8 @@ export default class Pokemon extends React.Component {
                 }
             }
         }, 250);
+
+        this.print();
     }
 
 //hej hshs hj jfld
@@ -96,7 +98,9 @@ export default class Pokemon extends React.Component {
                     // get at each store's key/value so you can work with it
                     let key = store[i][0];
                     let value = store[i][1];
+                    console.log("nycklar: ")
                     console.log(key);
+                    console.log("värden: ")
                     console.log(value);
                 });
             });
@@ -104,7 +108,7 @@ export default class Pokemon extends React.Component {
     }
 
     load = async () => {
-        const id = await AsyncStorage.getItem("pokemon");
+        const id = await AsyncStorage.getItem("pokemonID");
         const hunger = await (AsyncStorage.getItem("pokemonHunger"));
         const clean = await (AsyncStorage.getItem("pokemonClean"));
         const fun = await (AsyncStorage.getItem("pokemonFun"));
@@ -136,7 +140,7 @@ export default class Pokemon extends React.Component {
     save = async (id) => {
         let stringID = String(id);
         try {
-            await (AsyncStorage.setItem("pokemon", stringID))
+            await (AsyncStorage.setItem("pokemonID", stringID))
             this.setState({ id: stringID })
 
         } catch (e) {
@@ -146,6 +150,7 @@ export default class Pokemon extends React.Component {
 
 
     savePokStats = async (state) => {
+      console.log("savePokStats");
         let hunger = String(state.hunger);
         let clean = String(state.cleanliness);
         let fun = String(state.fun);
@@ -165,6 +170,7 @@ export default class Pokemon extends React.Component {
 
 
     componentWillUnmount() {
+      console.log("componentWillUnmount");
         clearInterval(this._interval);
         this.savePokStats();
     }
