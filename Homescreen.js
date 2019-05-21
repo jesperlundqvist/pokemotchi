@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native'
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import Pokemon from './Pokemon';
-
+import { Haptic } from 'expo';
 
 export default class Homescreen extends React.Component {
     static navigationOptions = {
@@ -26,12 +26,33 @@ export default class Homescreen extends React.Component {
         console.log('skickar in i fight')
         console.log(this.state.pokemonId)
         let buttons = <View style={ {flexDirection: "row"}}>
-        <TouchableOpacity style={{padding: 15}} activeOpacity={0.5} ><MaterialCommunityIcons name="food-apple" size={60} color="green" /><Text style={{paddingHorizontal: 15}}>Feed</Text></TouchableOpacity>
-        <TouchableOpacity style={{padding: 15}} activeOpacity={0.5} ><Entypo name="water" size={60} color="blue" /><Text style={{paddingHorizontal: 15}}>Clean</Text></TouchableOpacity>
-        <TouchableOpacity style={{padding: 15}} activeOpacity={0.5} ><MaterialCommunityIcons name="basketball" size={60} color="orange" /><Text style={{paddingHorizontal: 15}}>Play</Text></TouchableOpacity>
-        <TouchableOpacity style={{padding: 15}} activeOpacity={0.5} onPress={() => navigate('Fight', { username: "Machi", pokemon: this.state.pokemonId })}><MaterialCommunityIcons name="sword-cross" size={60} color="grey" /><Text style={{paddingHorizontal: 15}}>Fight</Text></TouchableOpacity>
+        <TouchableOpacity style={{padding: 15}} activeOpacity={0.5} onPress={() => {
+            Haptic.selection();
+        }}>
+            <MaterialCommunityIcons name="food-apple" size={60} color="green" />
+            <Text style={{paddingHorizontal: 15}}>Feed</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{padding: 15}} activeOpacity={0.5} onPress={() => {
+            Haptic.selection();
+        }}>
+            <Entypo name="water" size={60} color="blue" />
+            <Text style={{paddingHorizontal: 15}}>Clean</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{padding: 15}} activeOpacity={0.5} onPress={() => {
+            Haptic.selection();
+        }}>
+            <MaterialCommunityIcons name="basketball" size={60} color="orange" />
+            <Text style={{paddingHorizontal: 15}}>Play</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{padding: 15}} activeOpacity={0.5} onPress={() => {
+            navigate('Fight', { username: "Joppe", pokemon: this.state.pokemonId })
+            Haptic.selection();
+        }}>
+            <MaterialCommunityIcons name="sword-cross" size={60} color="grey" />
+            <Text style={{paddingHorizontal: 15}}>Fight</Text>
+        </TouchableOpacity>
 </View>;
-            
+
 
 
         /*if (!this.state.pokemonAlive) {
