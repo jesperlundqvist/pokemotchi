@@ -10,6 +10,7 @@ import { Haptic } from 'expo';
 export default class Start extends React.Component {
   static navigationOptions = {
     title: 'Welcome',
+
   };
     constructor(props) {
         super(props);
@@ -50,8 +51,6 @@ export default class Start extends React.Component {
           value={this.state.text} maxLength={13} placeholder="Enter username" onSubmitEditing={() => {navigate('Home', { username: this.state.text})}}
         />
         
-
-
         {start}
 
         </View>;
