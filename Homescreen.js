@@ -2,7 +2,7 @@ import React from 'react';
 import { SafeAreaView, View, Button, TextInput, Text, ImageBackground, StatusBar } from 'react-native';
 import { TouchableOpacity } from 'react-native'
 import { createStackNavigator, createAppContainer } from 'react-navigation';
-import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
+import { MaterialCommunityIcons, Entypo, FontAwesome } from '@expo/vector-icons';
 import Pokemon from './Pokemon';
 import { Haptic } from 'expo';
 import { Vibration, Platform } from 'react-native';
@@ -16,16 +16,19 @@ export default class Homescreen extends React.Component {
                 <TouchableOpacity style={{ marginRight: 10 }} activeOpacity={0.5} onPress={() => navigation.navigate("Info")}>
                     <MaterialCommunityIcons name="information-outline" size={30} color="white" />
                 </TouchableOpacity>,
-            headerLeft: null
+            headerLeft: <View style={{flexDirection: "row"}}><FontAwesome style={{ marginLeft: 10 }} name="user-o" size={30} color="white" /><Text style={{color: "white", padding: 3}}>Machi</Text></View>
+
         }
     }
 
     constructor(props) {
         super(props);
+        console.log("username: ", this.props.navigation.state.params.username)
         this.state = {
             pokemonId: Math.floor(Math.random() * 100) + 1,
             pokemonAlive: true,
-            action: ""
+            action: "",
+            userName: this.props.navigation.state.params.username
         }
     }
 
@@ -108,7 +111,7 @@ export default class Homescreen extends React.Component {
                     Haptic.selection();
                 }
 
-                navigate('Fight', { username: "Machi", pokemon: this.state.pokemonId })
+                navigate('Fight', { username: this.state.userName, pokemon: this.state.pokemonId })
             }}>
                 <MaterialCommunityIcons name="sword-cross" size={60} color={this.state.action == "" ? "lightgray" : "gray"} />
                 <Text style={{ paddingHorizontal: 15, color: "white" }}>Fight</Text>

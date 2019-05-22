@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, Alert, ImageBackground, SafeAreaView, Image, ActivityIndicator, TouchableOpacity, StatusBar } from 'react-native';
 import Model from './Model';
-import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
+import { MaterialCommunityIcons, Entypo, FontAwesome} from '@expo/vector-icons';
 import Arena from './Arena';
 import PubNub from 'pubnub';
 import ProgressBar from 'react-native-progress/Bar';
@@ -15,7 +15,9 @@ export default class Fight extends React.Component {
       headerRight:
         <TouchableOpacity style={{ marginRight: 10 }} activeOpacity={0.5} onPress={() => navigation.navigate("Info")}>
           <MaterialCommunityIcons name="information-outline" size={30} color="white" />
-        </TouchableOpacity>
+        </TouchableOpacity>,
+      headerLeft: <View style={{flexDirection: "row"}}><FontAwesome style={{ marginLeft: 10 }} name="user-o" size={30} color="white" /><Text style={{color: "white", padding: 3}}>Machi</Text></View>
+
     }
   }
 
