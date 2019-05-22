@@ -79,7 +79,8 @@ export default class Fight extends React.Component {
         var publisher = m.publisher; //The Publisher
 
         if (this.state.fightState == "ready") {
-          if (msg.user == this.state.username && msg.action == "fight") {
+          if (msg.user == this.state.username && msg.action == "fight" && this.state.fightState) {
+            this.setState({ fightState: "pending" });
             Model.getPokemonById(msg.my_pokemon).then((pokemon) => {
               Alert.alert("Fight", "fight från " + publisher + "'s " + pokemon.name, [
                 {
@@ -149,7 +150,7 @@ export default class Fight extends React.Component {
           }
         }
 
-        else if (this.state.fightState = "fight") {
+        else if (this.state.fightState == "fight") {
           if (msg.user == this.state.username && msg.action == "exit") {
             this.setState({ fightState: "ready" });
             this.pubnub.subscribe({

@@ -15,7 +15,8 @@ export default class Homescreen extends React.Component {
             headerRight:
                 <TouchableOpacity style={{ marginRight: 10 }} activeOpacity={0.5} onPress={() => navigation.navigate("Info")}>
                     <MaterialCommunityIcons name="information-outline" size={30} color="white" />
-                </TouchableOpacity>
+                </TouchableOpacity>,
+            headerLeft: null
         }
     }
 
