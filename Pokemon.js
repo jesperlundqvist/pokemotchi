@@ -61,9 +61,9 @@ export default class Pokemon extends React.Component {
                         fun: this.state.fun - 1
                     });
 
-                  if (this.state.hunger % 10 == 0) {
-                    this.savePokStats(this.state);
-                  }
+                    if (this.state.hunger % 10 == 0) {
+                        this.savePokStats(this.state);
+                    }
 
                 }
             }
@@ -142,12 +142,12 @@ export default class Pokemon extends React.Component {
                 alive: alive,
             })
         } else {
-          this.setState({
-              hunger: 100,
-              cleanliness: 100,
-              fun: 100,
-              alive: true,
-          });
+            this.setState({
+                hunger: 100,
+                cleanliness: 100,
+                fun: 100,
+                alive: true,
+            });
         }
 
         return "resolved"
@@ -186,11 +186,11 @@ export default class Pokemon extends React.Component {
 
     async playRecording() {
 
-        const { sound } = await Audio.Sound.createAsync({uri:'https://veekun.com/dex/media/pokemon/cries/' + String(this.state.id) + '.ogg'});
+        const { sound } = await Audio.Sound.createAsync({ uri: 'https://veekun.com/dex/media/pokemon/cries/' + String(this.state.id) + '.ogg' });
 
         await sound.playAsync();
 
-       //'https://veekun.com/dex/media/pokemon/cries/1.ogg'
+        //'https://veekun.com/dex/media/pokemon/cries/1.ogg'
 
     }
 
@@ -211,15 +211,15 @@ export default class Pokemon extends React.Component {
     render() {
         let action = <View></View>;
         if (this.props.action == "clean") {
-            action = <Sponge onClean={() => {this.setState({cleanliness: this.state.cleanliness + 0.2})}}/>
+            action = <Sponge onClean={() => { this.setState({ cleanliness: this.state.cleanliness + 0.2 }) }} />
         }
 
         if (this.props.action == "feed") {
-            action = <Food onFood={() => {this.setState({hunger: this.state.hunger + 0.2})}}/>
+            action = <Food onFood={() => { this.setState({ hunger: this.state.hunger + 0.2 }) }} />
         }
 
         if (this.props.action == "play") {
-            action = <Toy onFun={(speed) => {this.setState({fun: this.state.fun + 0.005 * speed})}}/>
+            action = <Toy onFun={(speed) => { this.setState({ fun: this.state.fun + 0.005 * speed }) }} />
         }
 
         let imageUri = "http://pokestadium.com/sprites/xy/" + this.state.data.name + ".gif";
@@ -228,46 +228,46 @@ export default class Pokemon extends React.Component {
             name = name.charAt(0).toUpperCase() + name.slice(1);
         }
 
-        let color_hunger="green";
-        if (this.state.hunger<75) {
-            color_hunger="greenyellow";
+        let color_hunger = "green";
+        if (this.state.hunger < 75) {
+            color_hunger = "greenyellow";
         }
-        if (this.state.hunger<50) {
-            color_hunger="yellow";
+        if (this.state.hunger < 50) {
+            color_hunger = "yellow";
         }
-        if (this.state.hunger<30) {
-            color_hunger="orange";
+        if (this.state.hunger < 30) {
+            color_hunger = "orange";
         }
-        if (this.state.hunger<20) {
-            color_hunger="red";
-        }
-
-        let color_cleanliness="green";
-        if (this.state.cleanliness<75) {
-            color_cleanliness="greenyellow";
-        }
-        if (this.state.cleanliness<50) {
-            color_cleanliness="yellow";
-        }
-        if (this.state.cleanliness<30) {
-            color_cleanliness="orange";
-        }
-        if (this.state.cleanliness<20) {
-            color_cleanliness="red";
+        if (this.state.hunger < 20) {
+            color_hunger = "red";
         }
 
-        let color_fun="green";
-        if (this.state.fun<75) {
-            color_fun="greenyellow";
+        let color_cleanliness = "green";
+        if (this.state.cleanliness < 75) {
+            color_cleanliness = "greenyellow";
         }
-        if (this.state.fun<50) {
-            color_fun="yellow";
+        if (this.state.cleanliness < 50) {
+            color_cleanliness = "yellow";
         }
-        if (this.state.fun<30) {
-            color_fun="orange";
+        if (this.state.cleanliness < 30) {
+            color_cleanliness = "orange";
         }
-        if (this.state.fun<20) {
-            color_fun="red";
+        if (this.state.cleanliness < 20) {
+            color_cleanliness = "red";
+        }
+
+        let color_fun = "green";
+        if (this.state.fun < 75) {
+            color_fun = "greenyellow";
+        }
+        if (this.state.fun < 50) {
+            color_fun = "yellow";
+        }
+        if (this.state.fun < 30) {
+            color_fun = "orange";
+        }
+        if (this.state.fun < 20) {
+            color_fun = "red";
         }
 
         let buttons = <View style={{
@@ -276,22 +276,24 @@ export default class Pokemon extends React.Component {
             justifyContent: 'center',
 
         }}>
-            <Text style={{ fontSize: 24, paddingVertical: 20, fontWeight: "bold" }}>{name}</Text>
+            <Text style={{ fontSize: 18, fontWeight: "bold" }}>{name}</Text>
             <TouchableHighlight onPress={() => this.playRecording()}>
-            <Image source={{ uri: imageUri }} style={{ width: 200, height: 200, resizeMode: "contain"}} />
+                <Image source={{ uri: imageUri }} style={{ width: 200, height: 200, resizeMode: "contain" }} />
             </TouchableHighlight>
-            <Text style={{ fontSize: 18, paddingTop:15 }}>Hunger: {Math.round(this.state.hunger)}%</Text>
-            <ProgressBar progress={this.state.hunger*0.01} width={200} color={color_hunger}/>
+            <Text style={{ fontSize: 18, paddingTop: 15 }}>Hunger: {Math.round(this.state.hunger)}%</Text>
+            <ProgressBar progress={this.state.hunger * 0.01} width={200} color={color_hunger} />
             <Text style={{ fontSize: 18 }}>Cleanliness: {Math.round(this.state.cleanliness)}%</Text>
-            <ProgressBar progress={this.state.cleanliness*0.01} width={200} color={color_cleanliness}/>
+            <ProgressBar progress={this.state.cleanliness * 0.01} width={200} color={color_cleanliness} />
             <Text style={{ fontSize: 18 }}>Fun: {Math.round(this.state.fun)}%</Text>
-            <ProgressBar progress={this.state.fun*0.01} width={200} color={color_fun}/>
+            <ProgressBar progress={this.state.fun * 0.01} width={200} color={color_fun} />
         </View>;
 
         if (!this.state.alive) {
             buttons =
-                <TouchableOpacity style={{ padding: 15, alignItems: 'center',
-                justifyContent: 'center'}} activeOpacity={0.5} onPress={() => {
+                <TouchableOpacity style={{
+                    padding: 15, alignItems: 'center',
+                    justifyContent: 'center'
+                }} activeOpacity={0.5} onPress={() => {
                     let newID = (Math.floor(Math.random() * 100) + 1);
                     this.save(newID);
                     this.savePokStats(this.state);

@@ -4,20 +4,20 @@ import Model from './Model';
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import Arena from './Arena';
 import PubNub from 'pubnub';
-
+import ProgressBar from 'react-native-progress/Bar';
 
 
 export default class Fight extends React.Component {
-    static navigationOptions = ({navigation}) => {
-        return {
-            headerTransparent: true,
-            headerTintColor: "white",
-            headerRight:
-            <TouchableOpacity style={{marginRight: 10}} activeOpacity={0.5} onPress={() => navigation.navigate("Info")}>
-                <MaterialCommunityIcons name="information-outline" size={30} color="white" />
-            </TouchableOpacity>
-        }
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerTransparent: true,
+      headerTintColor: "white",
+      headerRight:
+        <TouchableOpacity style={{ marginRight: 10 }} activeOpacity={0.5} onPress={() => navigation.navigate("Info")}>
+          <MaterialCommunityIcons name="information-outline" size={30} color="white" />
+        </TouchableOpacity>
     }
+  }
 
   constructor(props) {
     super(props);
@@ -39,7 +39,9 @@ export default class Fight extends React.Component {
       opponent: "",
       opponentPokemonID: 0,
       fightState: "ready",
-      fightChannel: ""
+      fightChannel: "",
+      level: 1,
+      progress_next_level: 0,
     };
 
   }
@@ -274,10 +276,10 @@ export default class Fight extends React.Component {
         });
 
         setTimeout(() => {
-            if (this.state.fightState == "pending") {
-                alert("timeout");
-                this.setState({ fightState: "ready" });
-            }
+          if (this.state.fightState == "pending") {
+            alert("timeout");
+            this.setState({ fightState: "ready" });
+          }
         }, 10000);
       }.bind(this)
     );
@@ -285,6 +287,7 @@ export default class Fight extends React.Component {
 
   victory() {
     alert("Du vann!");
+    
     this.pubnub.publish(
       {
         message: {
@@ -294,8 +297,14 @@ export default class Fight extends React.Component {
         },
         channel: this.state.fightChannel
       });
-
-    this.setState({ fightState: "ready" });
+    let new_progress = this.state.progress_next_level+0.2;
+    if (new_progress == 1) {
+      let new_level = this.state.level+1;
+      this.setState({ level: new_level });
+      alert("You reached the next level!")
+    }
+    
+    this.setState({ fightState: "ready", progress_next_level: new_progress });
 
     this.pubnub.subscribe({
       channels: ["Fight"]
@@ -309,29 +318,30 @@ export default class Fight extends React.Component {
   render() {
     var remote = 'https://pbs.twimg.com/media/DVMT-6OXcAE2rZY.jpg';
     const resizeMode = 'center';
-    users_online= this.state.users.map(function (user) {
+    users_online = this.state.users.map(function (user) {
       console.log("user: ", user)
       if (this.state.username != user)
         return <TouchableOpacity style={{ flexDirection: "row" }} title={user} key={user} onPress={() => { this.FightUser(user) }} >
-        <MaterialCommunityIcons name="sword-cross" size={30} color="lightgray" />
-        <Text style={{fontSize: 25, color: "white", fontWeight: "bold", paddingHorizontal:15}}>{user}</Text>
+          <MaterialCommunityIcons name="sword-cross" size={30} color="lightgray" />
+          <Text style={{ fontSize: 25, color: "white", fontWeight: "bold", paddingHorizontal: 15 }}>{user}</Text>
         </TouchableOpacity>
     }.bind(this));
 
-    let content = <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-    <Text style={{fontSize: 20, color: "white", fontWeight: "bold", paddingVertical:15}}>
-    Press on a user to start a fight!
+    let content = <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text style={{ fontSize: 20, color: "white", fontWeight: "bold", paddingVertical: 15 }}>
+        Press on a user to start a fight!
     </Text>
-    {users_online}
+      {users_online}
     </View>;
 
     console.log("length: ", this.state.users.length)
     if (this.state.users.length <= 1) {
-      content = <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}><Text style={{fontSize: 25, color: "white", fontWeight: "bold"}}>The arena is empty</Text><Entypo name="emoji-sad" size={60} color="white" style={{paddingVertical: 20}}/></View>
+      content = <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}><Text style={{ fontSize: 25, color: "white", fontWeight: "bold" }}>The arena is empty</Text><Entypo name="emoji-sad" size={60} color="white" style={{ paddingVertical: 20 }} /></View>
     }
 
-    if(this.state.fightState == "pending") {
-      content = <ActivityIndicator size="large" color="#ffffff" /> }
+    if (this.state.fightState == "pending") {
+      content = <ActivityIndicator size="large" color="#ffffff" />
+    }
 
     if (this.state.fightState == "fight") {
       content = <Arena myId={this.state.pokemonID} theirId={this.state.opponentPokemonID} onVictory={() => { this.victory() }} />;
@@ -339,24 +349,28 @@ export default class Fight extends React.Component {
 
     return (
       <ImageBackground
-      style={{
-        backgroundColor: '#ccc',
-        flex: 1,
-        resizeMode,
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        justifyContent: 'center',
-      }}
-      source={{ uri: remote }}
-    >
+        style={{
+          backgroundColor: '#ccc',
+          flex: 1,
+          resizeMode,
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          justifyContent: 'center',
+        }}
+        source={{ uri: remote }}
+      >
         <StatusBar backgroundColor="green" barStyle="light-content" />
-        <SafeAreaView style={{flex:1, justifyContent: "space-between", flexDirection: 'column', backgroundColor: 'transparent'}}>
-            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <SafeAreaView style={{ flex: 1, justifyContent: "space-between", flexDirection: 'column', backgroundColor: 'transparent' }}>
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             {content}
+            <View style={{ flexDirection: "column", paddingHorizontal: 30, alignItems: 'center', justifyContent: 'center', padding:30  }}>
+              <ProgressBar progress={this.state.progress_next_level} width={200} height={15} color="midnightblue" />
+              <Text style={{ fontSize: 15 , paddingHorizontal:10}}>Level: {this.state.level}</Text>
             </View>
+          </View>
         </SafeAreaView>
-    </ImageBackground>
+      </ImageBackground>
 
 
     )
