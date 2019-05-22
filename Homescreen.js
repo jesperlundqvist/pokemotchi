@@ -8,14 +8,14 @@ import { Haptic } from 'expo';
 import { Vibration, Platform } from 'react-native';
 
 export default class Homescreen extends React.Component {
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({ navigation }) => {
         return {
             headerTransparent: true,
             headerTintColor: "white",
             headerRight:
-            <TouchableOpacity style={{marginRight: 10}} activeOpacity={0.5} onPress={() => navigation.navigate("Info")}>
-                <MaterialCommunityIcons name="information-outline" size={30} color="white" />
-            </TouchableOpacity>
+                <TouchableOpacity style={{ marginRight: 10 }} activeOpacity={0.5} onPress={() => navigation.navigate("Info")}>
+                    <MaterialCommunityIcons name="information-outline" size={30} color="white" />
+                </TouchableOpacity>
         }
     }
 
@@ -36,39 +36,39 @@ export default class Homescreen extends React.Component {
         let text = <View></View>;
 
         if (this.state.action == "feed") {
-            text = <Text style={{fontSize: 16, textAlign: 'center', padding: 10, fontWeight: "bold", color: "white"}}>Hold your phone level to feed!</Text>
+            text = <Text style={{ fontSize: 16, textAlign: 'center', padding: 10, fontWeight: "bold", color: "white" }}>Hold your phone level to feed!</Text>
         }
         else if (this.state.action == "clean") {
-            text = <Text style={{fontSize: 16, textAlign: 'center', padding: 10, fontWeight: "bold", color: "white"}}>Rub the sponge on your Pokémon to clean!</Text>
+            text = <Text style={{ fontSize: 16, textAlign: 'center', padding: 10, fontWeight: "bold", color: "white" }}>Rub the sponge on your Pokémon to clean!</Text>
         }
         else if (this.state.action == "play") {
-            text = <Text style={{fontSize: 16, textAlign: 'center', padding: 10, fontWeight: "bold", color: "white"}}>Shake your phone to play with your Pokémon!</Text>
+            text = <Text style={{ fontSize: 16, textAlign: 'center', padding: 10, fontWeight: "bold", color: "white" }}>Shake your phone to play with your Pokémon!</Text>
         }
 
         let buttons = <View style={{ flexDirection: "row" }}>
             <TouchableOpacity style={{ padding: 15 }} activeOpacity={0.5} onPress={() => {
                 if (Platform.OS === 'android') {
-                  Vibration.vibrate(50);
+                    Vibration.vibrate(50);
                 } else if (Platform.OS === 'ios') {
-                  Haptic.selection();
+                    Haptic.selection();
                 }
 
                 if (this.state.action == "feed") {
                     this.setState({ action: "" });
                 }
                 else {
-                this.setState({ action: "feed" });
+                    this.setState({ action: "feed" });
                 }
             }}>
-                <MaterialCommunityIcons name="food-apple" size={60} color={this.state.action == "feed" || this.state.action == "" ? "greenyellow": "gray"} />
+                <MaterialCommunityIcons name="food-apple" size={60} color={this.state.action == "feed" || this.state.action == "" ? "greenyellow" : "gray"} />
                 <Text style={{ paddingHorizontal: 15, color: "white" }}>Feed</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={{ padding: 15 }} activeOpacity={0.5} onPress={() => {
                 if (Platform.OS === 'android') {
-                  Vibration.vibrate(50);
+                    Vibration.vibrate(50);
                 } else if (Platform.OS === 'ios') {
-                  Haptic.selection();
+                    Haptic.selection();
                 }
 
                 if (this.state.action == "clean") {
@@ -78,7 +78,7 @@ export default class Homescreen extends React.Component {
                     this.setState({ action: "clean" });
                 }
             }}>
-                <Entypo name="water" size={60} color={this.state.action == "clean" || this.state.action == "" ? "skyblue": "gray"} />
+                <Entypo name="water" size={60} color={this.state.action == "clean" || this.state.action == "" ? "skyblue" : "gray"} />
                 <Text style={{ paddingHorizontal: 15, color: "white" }}>Clean</Text>
             </TouchableOpacity>
 
@@ -96,20 +96,20 @@ export default class Homescreen extends React.Component {
                     this.setState({ action: "play" });
                 }
             }}>
-                <MaterialCommunityIcons name="basketball" size={60} color={this.state.action == "play" || this.state.action == "" ? "orange": "gray"} />
+                <MaterialCommunityIcons name="basketball" size={60} color={this.state.action == "play" || this.state.action == "" ? "orange" : "gray"} />
                 <Text style={{ paddingHorizontal: 15, color: "white" }}>Play</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={{ padding: 15 }} activeOpacity={0.5} onPress={() => {
                 if (Platform.OS === 'android') {
-                  Vibration.vibrate(50);
+                    Vibration.vibrate(50);
                 } else if (Platform.OS === 'ios') {
-                  Haptic.selection();
+                    Haptic.selection();
                 }
 
-                navigate('Fight', { username: "Joppe", pokemon: this.state.pokemonId })
+                navigate('Fight', { username: "Machi", pokemon: this.state.pokemonId })
             }}>
-                <MaterialCommunityIcons name="sword-cross" size={60} color={this.state.action == "" ? "lightgray": "gray"} />
+                <MaterialCommunityIcons name="sword-cross" size={60} color={this.state.action == "" ? "lightgray" : "gray"} />
                 <Text style={{ paddingHorizontal: 15, color: "white" }}>Fight</Text>
             </TouchableOpacity>
         </View>;
@@ -131,6 +131,8 @@ export default class Homescreen extends React.Component {
                 });
             }} />
         }*/
+
+
 
         return (
             <ImageBackground

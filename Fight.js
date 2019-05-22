@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, Button, TextInput, Alert, ImageBackground, SafeAreaView, Image, ActivityIndicator, TouchableOpacity, StatusBar } from 'react-native';
 import Model from './Model';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import Arena from './Arena';
 import PubNub from 'pubnub';
 
@@ -327,7 +327,7 @@ export default class Fight extends React.Component {
 
     console.log("length: ", this.state.users.length)
     if (this.state.users.length <= 1) {
-      content = <Text style={{fontSize: 25, color: "white", fontWeight: "bold"}}>No current user in the arena</Text>
+      content = <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}><Text style={{fontSize: 25, color: "white", fontWeight: "bold"}}>The arena is empty</Text><Entypo name="emoji-sad" size={60} color="white" style={{paddingVertical: 20}}/></View>
     }
 
     if(this.state.fightState == "pending") {
