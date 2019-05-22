@@ -310,9 +310,9 @@ export default class Pokemon extends React.Component {
 
                     name = name + " [DEAD]";
                 }}>
-                    <Text style={{ paddingHorizontal: 15, color: "black", fontSize: 20, fontWeight: "bold" }}>Your Pokémon died</Text>
-                    <MaterialCommunityIcons name="egg" size={150} color="floralwhite" />
-                    <Text style={{ paddingHorizontal: 15, color: "black", fontSize: 20 }}>Press to hatch a new Pokémon</Text>
+                    <Text style={{ paddingHorizontal: 15, color: "black", fontSize: 20, fontWeight: "bold" }}>Oh no! Your Pokémon died!</Text>
+                    <Image style={{ width: 180, height: 180, resizeMode: "contain"}} source={{ uri: "http://33.media.tumblr.com/18a645e8cae6526b567b17919ea65d54/tumblr_n4mlhyk5wT1qa0qrko1_500.gif" }}/>
+                    <Text style={{ paddingHorizontal: 15, color: "black", fontSize: 20, paddingVertical:20 }}>Press to hatch a new Pokémon</Text>
                 </TouchableOpacity>
 
             action = <View></View>;

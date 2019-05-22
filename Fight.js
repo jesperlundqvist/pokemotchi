@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Alert, ImageBackground, SafeAreaView, Image, ActivityIndicator, TouchableOpacity, StatusBar } from 'react-native';
+import { Text, View, Alert, ImageBackground, SafeAreaView, Image, ActivityIndicator, TouchableOpacity, StatusBar } from 'react-native';
 import Model from './Model';
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import Arena from './Arena';
@@ -340,7 +340,7 @@ export default class Fight extends React.Component {
     }
 
     if (this.state.fightState == "pending") {
-      content = <ActivityIndicator size="large" color="#ffffff" />
+      content = <View><Image style={{ width: 180, height: 180, resizeMode: "contain"}} source={{ uri: "http://25.media.tumblr.com/c99a579db3ae0fc164bf4cca148885d3/tumblr_mjgv8kEuMg1s87n79o1_400.gif" }}/><ActivityIndicator size="large" color="#ffffff" /></View>
     }
 
     if (this.state.fightState == "fight") {
