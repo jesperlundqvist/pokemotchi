@@ -7,6 +7,7 @@ import Pokemon from './Pokemon';
 import { Haptic } from 'expo';
 import { Vibration, Platform } from 'react-native';
 import { AsyncStorage } from 'react-native';
+import Start from './getStarted';
 
 
 export default class Homescreen extends React.Component {
@@ -18,7 +19,7 @@ export default class Homescreen extends React.Component {
                 <TouchableOpacity style={{ marginRight: 10 }} activeOpacity={0.5} onPress={() => navigation.navigate("Info")}>
                     <MaterialCommunityIcons name="information-outline" size={30} color="white" />
                 </TouchableOpacity>,
-            headerLeft: <View style={{flexDirection: "row"}}><FontAwesome style={{ marginLeft: 10 }} name="user-o" size={30} color="white" /><Text style={{color: "white", padding: 3}}>{navigation.state.params.username}</Text></View>
+            headerLeft: <View style={{flexDirection: "row"}}><FontAwesome style={{ marginLeft: 10 }} name="user-o" size={30} color="white" /><Text style={{color: "white", padding: 3}}>Username</Text></View>
 
         }
     }
@@ -29,23 +30,40 @@ export default class Homescreen extends React.Component {
             pokemonId: Math.floor(Math.random() * 100) + 1,
             pokemonAlive: true,
             action: "",
-            userName: this.props.navigation.state.params.username
+            userName: "",
+            show: true,
         }
     }
 
     componentDidMount() {
-      this.saveUser(this.state.userName);
-      this.printNAme();
+      //this.removeItemValue();
+      this.loadUsername();
+      //this.saveUser(this.state.userName);
+      //this.printNAme();
     }
 
-    saveUser = async (username) => {
-
+    removeItemValue = async () => {
       try {
-          await (AsyncStorage.setItem("username", username))
-
-      } catch (e) {
-          console.error('Failed to save username.')
+        await AsyncStorage.removeItem("username");
+        return true;
       }
+      catch(exception) {
+        return false;
+      }
+    }
+
+    loadUsername = async () => {
+        const username = await AsyncStorage.getItem("username");
+
+        if (username == null) {
+          //true = visa Start component
+          this.setState({ show: true });
+        } else {
+          //false = inte visa Start component
+            this.setState({ show: false });
+            this.setState({ userName: username });
+        }
+        return "resolved"
     }
 
     printNAme = async () => {
@@ -63,6 +81,7 @@ export default class Homescreen extends React.Component {
             });
         });
     }
+
 
     render() {
         var remote = 'https://i.imgur.com/7SHNBH4.png';
@@ -151,7 +170,7 @@ export default class Homescreen extends React.Component {
         </View>;
 
         if (!this.state.pokemonAlive) {
-            buttons = <View></View>;
+            buttons = <View></View>
         }
 
         /*if (!this.state.pokemonAlive) {
@@ -168,10 +187,32 @@ export default class Homescreen extends React.Component {
             }} />
         }*/
 
+        let user = <View></View>;
 
+        if (this.state.show == false) {
+          user = <SafeAreaView style={{
+                    flex: 1,
+                    flexDirection: 'column',
+                }}>
+                    <StatusBar backgroundColor="blue" barStyle="light-content" />
+                    <Pokemon style={{ flexGrow: 1 }} id={this.state.pokemonId} action={this.state.action}
+                      onAliveChange={(alive) => this.setState({ pokemonAlive: alive })} />
+                    {text}
+                    <View style={{ flexDirection: "row", flexShrink: 1, justifyContent: "center" }}>
+                    {buttons}
+                    </View>
+                </SafeAreaView>
+          }
+
+          else {
+          user = <Start onShow = {() => {
+            console.log(" är i else i homescree nuu vaa");
+            this.setState({ show: false })
+          }} />
+          }
 
         return (
-            <ImageBackground
+          <ImageBackground
                 style={{
                     backgroundColor: '#ccc',
                     flex: 1,
@@ -183,18 +224,9 @@ export default class Homescreen extends React.Component {
                 }}
                 source={{ uri: remote }}
             >
-                <SafeAreaView style={{
-                    flex: 1,
-                    flexDirection: 'column',
-                }}>
-                    <StatusBar backgroundColor="blue" barStyle="light-content" />
-                    <Pokemon style={{ flexGrow: 1 }} id={this.state.pokemonId} action={this.state.action} onAliveChange={(alive) => this.setState({ pokemonAlive: alive })} />
-                    {text}
-                    <View style={{ flexDirection: "row", flexShrink: 1, justifyContent: "center" }}>
-                        {buttons}
-                    </View>
-                </SafeAreaView>
-            </ImageBackground>
-        );
+            {user}
+
+        </ImageBackground>
+        )
     }
 }

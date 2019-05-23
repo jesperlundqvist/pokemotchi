@@ -25,15 +25,10 @@ export default class Pokemon extends React.Component {
     }
 
     componentDidMount() {
-        //AsyncStorage.clear();
-        //console.log(typeof this.state.id);
-        //this.print()
-
         let promise1 = new Promise((resolved, unresolved) => {
-
             resolved(this.load());
-
         })
+
         promise1.then(() =>
             console.log(this.state.id))
             .then(() =>
@@ -69,8 +64,6 @@ export default class Pokemon extends React.Component {
             }
         }, 2000);
     }
-
-    //hej hshs hj jfld
 
     componentDidUpdate(prevProps, prevState) {
         if (this.state.alive != prevState.alive) {
@@ -194,19 +187,9 @@ export default class Pokemon extends React.Component {
 
     }
 
-
     componentWillUnmount() {
         clearInterval(this._interval);
     }
-
-    whenDeadUpdate() {
-        //this.setState ({ id: (Math.floor(Math.random() * 10)+1) });
-        //this.setState ({ update: "updated" });
-        //this.save(this.state.id);
-        this.forceUpdate();
-        console.log("foreced update");
-    }
-
 
     render() {
         let action = <View></View>;
@@ -270,7 +253,7 @@ export default class Pokemon extends React.Component {
             color_fun = "red";
         }
 
-        let buttons = <View style={{
+        let newPokemon = <View style={{
             flex: 1,
             alignItems: 'center',
             justifyContent: 'center',
@@ -289,7 +272,7 @@ export default class Pokemon extends React.Component {
         </View>;
 
         if (!this.state.alive) {
-            buttons =
+            newPokemon =
                 <TouchableOpacity style={{
                     padding: 15, alignItems: 'center',
                     justifyContent: 'center'
@@ -323,7 +306,7 @@ export default class Pokemon extends React.Component {
             alignItems: 'center',
             justifyContent: 'center',
         }}>
-            {buttons}
+            {newPokemon}
             {action}
         </View>;
     }
