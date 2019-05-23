@@ -27,15 +27,7 @@ export default class Pokemon extends React.Component {
     }
 
     componentDidMount() {
-<<<<<<< HEAD
 
-    
-        //AsyncStorage.clear();
-        //console.log(typeof this.state.id);
-        //this.print()
-
-=======
->>>>>>> 3b15b51ff8f340d599077098b157a399fb8621ca
         let promise1 = new Promise((resolved, unresolved) => {
             resolved(this.load());
         })
@@ -79,7 +71,7 @@ export default class Pokemon extends React.Component {
     }
 
 <<<<<<< HEAD
-    
+
 
 =======
 >>>>>>> 3b15b51ff8f340d599077098b157a399fb8621ca
@@ -220,7 +212,7 @@ export default class Pokemon extends React.Component {
 
 
     render() {
-       
+
         let remote = "https://4.bp.blogspot.com/-gchMbKclwIQ/Vsgb1I06qLI/AAAAAAAAAE8/i4L89o19YNQ/s1600/11_iykim2000_2.gif";
 =======
     render() {
@@ -339,7 +331,7 @@ export default class Pokemon extends React.Component {
             action = <View></View>;
 
 <<<<<<< HEAD
-            
+
         }
 
 
@@ -354,13 +346,13 @@ export default class Pokemon extends React.Component {
                         justifyContent: 'center',
                     }}
                     source={{ uri: remote }} >
-    
+
                     <View style={{
                         flex: 1,
                         alignItems: 'center',
                         justifyContent: 'center',
                     }}>
-                    
+
                         {buttons}
                         {action}
                     </View>
@@ -379,23 +371,23 @@ export default class Pokemon extends React.Component {
                         justifyContent: 'center',
                     }}
                     source={{ uri: remote }} >
-    
+
                     <View style={{
                         flex: 1,
                         alignItems: 'center',
                         justifyContent: 'center',
                     }}>
-                    
+
                     <Text>LOADING...</Text>
                     </View>
                 </ImageBackground>);
 
         }
 
-        
 
 
-     
+
+
 =======
         return <View style={{
             flex: 1,
