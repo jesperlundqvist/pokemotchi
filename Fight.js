@@ -53,7 +53,17 @@ export default class Fight extends React.Component {
 
   }
 
+  getPokemonID = async () => {
+    const id = await AsyncStorage.getItem("pokemonID");
+    console.log('synkar med async')
+    console.log({pokemonId: id})
+    this.setState(integer({pokemonID: id}))
+  }
+
+
   componentDidMount() {
+    this.getPokemonID()
+
     this.pubnub = new PubNub({
       subscribeKey: "sub-c-ff0c5120-7702-11e9-945c-2ea711aa6b65",
       publishKey: "pub-c-ab1f1896-d4ac-4b70-aaf4-ca968c88c2f5",
@@ -317,10 +327,6 @@ export default class Fight extends React.Component {
     })
   }
 
-  getPokemonID = async () => {
-    const id = await AsyncStorage.getItem("pokemonID");
-    this.setState ({pokemonID: id})
-  }
 
   render() {
     var remote = 'https://pbs.twimg.com/media/DVMT-6OXcAE2rZY.jpg';
