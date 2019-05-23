@@ -219,6 +219,7 @@ export default class Pokemon extends React.Component {
             }} />
         }
 
+        //if (this.state.data.name.split("-"))
         let imageUri = "http://pokestadium.com/sprites/xy/" + this.state.data.name + ".gif";
         let name = this.state.data.name;
         if (name) {
@@ -293,6 +294,9 @@ export default class Pokemon extends React.Component {
                     justifyContent: 'center'
                 }} activeOpacity={0.5} onPress={() => {
                     let newID = (Math.floor(Math.random() * 100) + 1);
+                    if(newID == 29 || newID == 32){
+                        newID = newID+1;
+                    }
                     this.save(newID);
                     this.savePokStats(this.state);
 
