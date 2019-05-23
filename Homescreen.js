@@ -72,10 +72,10 @@ export default class Homescreen extends React.Component {
         let text = <View></View>;
 
         if (this.state.action == "feed") {
-            text = <Text style={{ fontSize: 16, textAlign: 'center', padding: 10, fontWeight: "bold", color: "white" }}>Hold your phone level to feed!</Text>
+            text = <Text style={{ fontSize: 16, textAlign: 'center', padding: 10, fontWeight: "bold", color: "white" }}>Drag the apple to your Pokémon to feed!</Text>
         }
         else if (this.state.action == "clean") {
-            text = <Text style={{ fontSize: 16, textAlign: 'center', padding: 10, fontWeight: "bold", color: "white" }}>Rub the sponge on your Pokémon to clean!</Text>
+            text = <Text style={{ fontSize: 16, textAlign: 'center', padding: 10, fontWeight: "bold", color: "white" }}>Shower your Pokémon to clean it!</Text>
         }
         else if (this.state.action == "play") {
             text = <Text style={{ fontSize: 16, textAlign: 'center', padding: 10, fontWeight: "bold", color: "white" }}>Shake your phone to play with your Pokémon!</Text>
