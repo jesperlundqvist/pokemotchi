@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, Image, Button, TouchableOpacity, TouchableHighlight, Platform, ImageBackground } from 'react-native';
 import Model from './Model';
-import Sponge from './Sponge';
+import Clean from './Clean';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AsyncStorage } from 'react-native';
 import Food from './Food';
@@ -35,7 +35,7 @@ export default class Pokemon extends React.Component {
 
         })
         promise1.then(() =>
-            console.log(this.state.id))
+            console.log(this.state.alive))
             .then(() =>
                 Model.getPokemonById(this.state.id).then((data) => {
                     this.setState({ data: data });
@@ -48,9 +48,9 @@ export default class Pokemon extends React.Component {
                     this.state.cleanliness <= 0 ||
                     this.state.fun <= 0) {
                     this.setState({
-                        hunger: 0,
-                        cleanliness: 0,
-                        fun: 0,
+                        hunger: "",
+                        cleanliness: "",
+                        fun: "",
                         alive: false
                     });
                 }
@@ -128,13 +128,14 @@ export default class Pokemon extends React.Component {
         if (id == "x" || id == null) {
             this.randomId();
 
+
         } else {
             this.setState({ id: id })
             //this.state.is = id;
             this.save(this.state.id);
         }
-
-        if (hunger !== null) {
+        console.log(hunger)
+        if (hunger != null) {
             this.setState({
                 hunger: hunger,
                 cleanliness: clean,
@@ -142,6 +143,7 @@ export default class Pokemon extends React.Component {
                 alive: alive,
             })
         } else {
+
             this.setState({
                 hunger: 100,
                 cleanliness: 100,
@@ -149,6 +151,8 @@ export default class Pokemon extends React.Component {
                 alive: true,
             });
         }
+
+
 
         return "resolved"
     }
@@ -213,7 +217,7 @@ export default class Pokemon extends React.Component {
         let action = <View></View>;
         if (this.props.action == "clean") {
             remote = "https://i.pinimg.com/originals/62/cb/bf/62cbbf3021778f2f6db1320a261fb88b.gif";
-            action = <Sponge onClean={() => { this.setState({ cleanliness: this.state.cleanliness + 0.2 }) }} />
+            action = <Clean onClean={() => { this.setState({ cleanliness: this.state.cleanliness + 0.2 }) }} />
         }
 
         if (this.props.action == "feed") {
@@ -316,8 +320,8 @@ export default class Pokemon extends React.Component {
                     name = name + " [DEAD]";
                 }}>
                     <Text style={{ paddingHorizontal: 15, color: "black", fontSize: 20, fontWeight: "bold" }}>Oh no! Your Pokémon died!</Text>
-                    <Image style={{ width: 180, height: 180, resizeMode: "contain"}} source={{ uri: "http://33.media.tumblr.com/18a645e8cae6526b567b17919ea65d54/tumblr_n4mlhyk5wT1qa0qrko1_500.gif" }}/>
-                    <Text style={{ paddingHorizontal: 15, color: "black", fontSize: 20, paddingVertical:20 }}>Press to hatch a new Pokémon</Text>
+                    <Image style={{ width: 180, height: 180, resizeMode: "contain" }} source={{ uri: "http://33.media.tumblr.com/18a645e8cae6526b567b17919ea65d54/tumblr_n4mlhyk5wT1qa0qrko1_500.gif" }} />
+                    <Text style={{ paddingHorizontal: 15, color: "black", fontSize: 20, paddingVertical: 20 }}>Press to hatch a new Pokémon</Text>
                 </TouchableOpacity>
 
             action = <View></View>;
@@ -325,23 +329,23 @@ export default class Pokemon extends React.Component {
 
         return (
             <ImageBackground
-            style={{
-                backgroundColor: 'transparent',
-                width: '100%',
-                height: '85%',
-                justifyContent: 'center',
-            }}
-            source={{ uri: remote}} >
-        
-        <View style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-        }}>
-            {buttons}
-            {action}
-        </View>
-        </ImageBackground>);
+                style={{
+                    backgroundColor: 'transparent',
+                    width: '100%',
+                    height: '85%',
+                    justifyContent: 'center',
+                }}
+                source={{ uri: remote }} >
+
+                <View style={{
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}>
+                    {buttons}
+                    {action}
+                </View>
+            </ImageBackground>);
     }
 }
 //

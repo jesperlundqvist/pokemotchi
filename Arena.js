@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, Image, AsyncStorage, Button, TouchableHighlight, ImageBackground } from 'react-native';
 import Model from './Model';
-import Sponge from './Sponge';
+
 
 const remote = 'https://pbs.twimg.com/media/DVMT-6OXcAE2rZY.jpg';
 
