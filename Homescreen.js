@@ -36,30 +36,36 @@ export default class Homescreen extends React.Component {
     }
 
     componentDidMount() {
-      this.loadUsername();
+        this.loadUsername();
+        this.getLifeStatus();
     }
 
     removeItemValue = async (key) => {
-      try {
-        await AsyncStorage.removeItem(key);
-        return true;
-      }
-      catch(exception) {
-        return false;
-      }
+        try {
+            await AsyncStorage.removeItem(key);
+            return true;
+        }
+        catch (exception) {
+            return false;
+        }
+    }
+
+    getLifeStatus = async () => {
+        const life_status = await AsyncStorage.getItem("pokemonAlive");
+        this.setState({ pokemonAlive: life_status })
     }
 
     loadUsername = async () => {
         const username = await AsyncStorage.getItem("username");
 
         if (username == null) {
-          //true = visa Start component
-          this.setState({ show: true });
+            //true = visa Start component
+            this.setState({ show: true });
         } else {
-          //false = inte visa Start component
+            //false = inte visa Start component
             this.setState({
-              show: false,
-              status: "LOADED"
+                show: false,
+                status: "LOADED"
             });
             this.setState({ userName: username });
         }
@@ -162,7 +168,7 @@ export default class Homescreen extends React.Component {
                     Haptic.selection();
                 }
 
-                navigate('Fight', { username: this.state.userName})
+                navigate('Fight', { username: this.state.userName })
             }}>
                 <MaterialCommunityIcons name="sword-cross" size={60} color={this.state.action == "" ? "lightgray" : "gray"} />
                 <Text style={{ paddingHorizontal: 15, color: "white" }}>Fight</Text>
@@ -177,52 +183,52 @@ export default class Homescreen extends React.Component {
 
         if (this.state.status == "LOADED") {
 
-        if (this.state.show == false) {
-          user = <SafeAreaView style={{
+            if (this.state.show == false) {
+                user = <SafeAreaView style={{
                     flex: 1,
                     flexDirection: 'column',
                 }}>
                     <StatusBar backgroundColor="blue" barStyle="light-content" />
                     <Pokemon style={{ flexGrow: 1 }} action={this.state.action}
-                      onAliveChange={(alive) => this.setState({ pokemonAlive: alive })} />
+                        onAliveChange={(alive) => this.setState({ pokemonAlive: alive })} />
                     {text}
                     <View style={{ flexDirection: "row", flexShrink: 1, justifyContent: "center" }}>
-                    {buttons}
+                        {buttons}
                     </View>
                 </SafeAreaView>
-          }
+            }
 
 
-          else {
-          user = <Start onShow = {() => {
-            console.log(" är i else i homescree nuu vaa");
-            this.setState({ show: false })
-          }} />
-          }
+            else {
+                user = <Start onShow={() => {
+                    console.log(" är i else i homescree nuu vaa");
+                    this.setState({ show: false })
+                }} />
+            }
 
-        return (
-          <ImageBackground
-                style={{
-                    backgroundColor: '#ccc',
-                    flex: 1,
-                    resizeMode,
-                    position: 'absolute',
-                    width: '100%',
-                    height: '100%',
-                    justifyContent: 'center',
-                }}
-                source={{ uri: remote }}
-            >
-            {user}
+            return (
+                <ImageBackground
+                    style={{
+                        backgroundColor: '#ccc',
+                        flex: 1,
+                        resizeMode,
+                        position: 'absolute',
+                        width: '100%',
+                        height: '100%',
+                        justifyContent: 'center',
+                    }}
+                    source={{ uri: remote }}
+                >
+                    {user}
 
-        </ImageBackground>
-        )
+                </ImageBackground>
+            )
 
-      }
+        }
 
-      else if (this.state.status == "LOADING") {
+        else if (this.state.status == "LOADING") {
 
-        return <Text>Loading...tjofshdofjs</Text>
-      }
+            return <Text>Loading...tjofshdofjs</Text>
+        }
     }
 }
