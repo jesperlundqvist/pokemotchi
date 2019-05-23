@@ -33,12 +33,10 @@ export default class Pokemon extends React.Component {
         })
 
         promise1.then(() =>
-            console.log(this.state.id))
-            .then(() =>
-                Model.getPokemonById(this.state.id).then((data) => {
-                    this.setState({ data: data });
-                })
-            );
+          Model.getPokemonById(this.state.id).then((data) => {
+            this.setState({ data: data });
+          })
+        );
 
         this._interval = setInterval(() => {
             if (this.state.alive) {
@@ -51,6 +49,7 @@ export default class Pokemon extends React.Component {
                         fun: 0,
                         alive: 'false'
                     });
+                    this.savePokStats(this.state);
                 }
                 else {
                     this.setState({
@@ -59,7 +58,7 @@ export default class Pokemon extends React.Component {
                         fun: this.state.fun - 1,
                     });
 
-                    if (this.state.hunger % 10 == 0) {
+                    if (this.state.hunger % 10 == 0 || this.state.hunger == 99) {
                         this.savePokStats(this.state);
                     }
 
@@ -78,8 +77,6 @@ export default class Pokemon extends React.Component {
 
         //om state.update inte är lika med det update i state som var innan setState kördes
         if (this.state.update !== prevState.update) {
-            console.log("i componentDidUpdate");
-            console.log(this.state.id);
             Model.getPokemonById(this.state.id).then((data) => {
                 this.setState({
                     data: data,
@@ -171,6 +168,7 @@ export default class Pokemon extends React.Component {
         let clean = String(state.cleanliness);
         let fun = String(state.fun);
         let alive = String(state.alive);
+        console.log(this.state.alive);
 
         try {
             await (AsyncStorage.setItem("pokemonHunger", hunger))

@@ -38,6 +38,14 @@ export default class Homescreen extends React.Component {
     componentDidMount() {
         this.loadUsername();
         this.getLifeStatus();
+
+        //this.removeItemValue("pokemonID");
+        //this.removeItemValue("pokemonHunger")
+        //this.removeItemValue("pokemonClean")
+        //this.removeItemValue("pokemonFun")
+        //this.removeItemValue("pokemonAlive")
+        //this.removeItemValue("username")
+
     }
 
     removeItemValue = async (key) => {
