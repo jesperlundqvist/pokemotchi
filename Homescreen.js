@@ -19,7 +19,7 @@ export default class Homescreen extends React.Component {
                 <TouchableOpacity style={{ marginRight: 10 }} activeOpacity={0.5} onPress={() => navigation.navigate("Info")}>
                     <MaterialCommunityIcons name="information-outline" size={30} color="white" />
                 </TouchableOpacity>,
-            headerLeft: <View style={{flexDirection: "row"}}><FontAwesome style={{ marginLeft: 10 }} name="user-o" size={30} color="white" /><Text style={{color: "white", padding: 3}}>Username</Text></View>
+            headerLeft: null
 
         }
     }
@@ -170,7 +170,7 @@ export default class Homescreen extends React.Component {
                     Haptic.selection();
                 }
 
-                navigate('Fight', { username: this.state.userName, pokemon: this.state.pokemonId })
+                navigate('Fight', { username: this.state.userName})
                 console.log('trycker på fight')
                 console.log(this.state.pokemonId)
             }}>

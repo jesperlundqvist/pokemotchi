@@ -40,8 +40,6 @@ export default class Pokemon extends React.Component {
                 })
             );
 
-
-            this.state.contentStatus = "LOADED";
         this._interval = setInterval(() => {
             if (this.state.alive) {
                 if (this.state.hunger <= 0 ||
@@ -51,14 +49,14 @@ export default class Pokemon extends React.Component {
                         hunger: 0,
                         cleanliness: 0,
                         fun: 0,
-                        alive: false
+                        alive: false,
                     });
                 }
                 else {
                     this.setState({
                         hunger: this.state.hunger - 1,
                         cleanliness: this.state.cleanliness - 1,
-                        fun: this.state.fun - 1
+                        fun: this.state.fun - 1,
                     });
 
                     if (this.state.hunger % 10 == 0) {
@@ -89,7 +87,8 @@ export default class Pokemon extends React.Component {
                     cleanliness: 100,
                     fun: 100,
                     alive: true,
-                    update: ""
+                    update: "",
+                    contentStatus: "LOADED"
                 });
             })
         }
@@ -149,6 +148,10 @@ export default class Pokemon extends React.Component {
             });
         }
 
+        this.setState({
+            contentStatus: "LOADED"
+        })
+
         return "resolved"
     }
 
@@ -203,15 +206,27 @@ export default class Pokemon extends React.Component {
 
         let action = <View></View>;
         if (this.props.action == "clean") {
-            action = <Clean onClean={() => { this.setState({ cleanliness: this.state.cleanliness + 0.2 }) }} />
+            action = <Clean onClean={() => {
+                if (this.state.cleanliness < 120) {
+                    this.setState({ cleanliness: this.state.cleanliness + 0.2 })
+                }
+            }} />
         }
 
         if (this.props.action == "feed") {
-            action = <Food onFood={() => { this.setState({ hunger: this.state.hunger + 0.2 }) }} />
+            action = <Food onFood={() => {
+                if (this.state.hunger < 120) {
+                    this.setState({ hunger: this.state.hunger + 0.2 })
+                }
+            }} />
         }
 
         if (this.props.action == "play") {
-            action = <Toy onFun={(speed) => { this.setState({ fun: this.state.fun + 0.005 * speed }) }} />
+            action = <Toy onFun={(speed) => {
+                if (this.state.fun < 120) {
+                    this.setState({ fun: this.state.fun + 0.005 * speed })
+                }
+            }} />
         }
 
         let imageUri = "http://pokestadium.com/sprites/xy/" + this.state.data.name + ".gif";
@@ -272,18 +287,17 @@ export default class Pokemon extends React.Component {
             <TouchableHighlight onPress={() => this.playRecording()}>
                 <Image source={{ uri: imageUri }} style={{ width: 200, height: 200, resizeMode: "contain" }} />
             </TouchableHighlight>
-            <Text style={{ fontSize: 18, paddingTop: 15 }}>Hunger: {Math.round(this.state.hunger)}%</Text>
+            <Text style={{ fontSize: 18, paddingTop: 15 }}>Hunger:</Text>
             <ProgressBar progress={this.state.hunger * 0.01} width={200} color={color_hunger} />
-            <Text style={{ fontSize: 18 }}>Cleanliness: {Math.round(this.state.cleanliness)}%</Text>
+            <Text style={{ fontSize: 18 }}>Cleanliness:</Text>
             <ProgressBar progress={this.state.cleanliness * 0.01} width={200} color={color_cleanliness} />
-            <Text style={{ fontSize: 18 }}>Fun: {Math.round(this.state.fun)}%</Text>
+            <Text style={{ fontSize: 18 }}>Fun:</Text>
             <ProgressBar progress={this.state.fun * 0.01} width={200} color={color_fun} />
         </View>;
 
 
-        if (!this.state.alive) {
+        if (this.state.alive!=true) {
             newPokemon =
-
                 <TouchableOpacity style={{
                     padding: 15, alignItems: 'center',
                     justifyContent: 'center'
@@ -305,8 +319,8 @@ export default class Pokemon extends React.Component {
                     name = name + " [DEAD]";
                 }}>
                     <Text style={{ paddingHorizontal: 15, color: "black", fontSize: 20, fontWeight: "bold" }}>Oh no! Your Pokémon died!</Text>
-                    <Image style={{ width: 180, height: 180, resizeMode: "contain"}} source={{ uri: "http://33.media.tumblr.com/18a645e8cae6526b567b17919ea65d54/tumblr_n4mlhyk5wT1qa0qrko1_500.gif" }}/>
-                    <Text style={{ paddingHorizontal: 15, color: "black", fontSize: 20, paddingVertical:20 }}>Press to hatch a new Pokémon</Text>
+                    <Image style={{ width: 180, height: 180, resizeMode: "contain" }} source={{ uri: "http://33.media.tumblr.com/18a645e8cae6526b567b17919ea65d54/tumblr_n4mlhyk5wT1qa0qrko1_500.gif" }} />
+                    <Text style={{ paddingHorizontal: 15, color: "black", fontSize: 20, paddingVertical: 20 }}>Press to hatch a new Pokémon</Text>
                 </TouchableOpacity>
 
             action = <View></View>;
@@ -329,17 +343,17 @@ export default class Pokemon extends React.Component {
 
         }
 
-        else if (this.state.contentStatus == "LOADING"){
+        else if (this.state.contentStatus == "LOADING") {
 
             return (
-                    <View style={{
-                        flex: 1,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}>
+                <View style={{
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}>
 
                     <Text>LOADING...</Text>
-                    </View>)
+                </View>)
 
         }
     }
