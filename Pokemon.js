@@ -70,11 +70,7 @@ export default class Pokemon extends React.Component {
         }, 2000);
     }
 
-<<<<<<< HEAD
 
-
-=======
->>>>>>> 3b15b51ff8f340d599077098b157a399fb8621ca
     componentDidUpdate(prevProps, prevState) {
         if (this.state.alive != prevState.alive) {
             if (this.props.onAliveChange) {
@@ -201,22 +197,12 @@ export default class Pokemon extends React.Component {
         clearInterval(this._interval);
     }
 
-<<<<<<< HEAD
-    whenDeadUpdate() {
-        //this.setState ({ id: (Math.floor(Math.random() * 10)+1) });
-        //this.setState ({ update: "updated" });
-        //this.save(this.state.id);
-        this.forceUpdate();
-        console.log("forced update");
-    }
-
-
     render() {
 
         let remote = "https://4.bp.blogspot.com/-gchMbKclwIQ/Vsgb1I06qLI/AAAAAAAAAE8/i4L89o19YNQ/s1600/11_iykim2000_2.gif";
-=======
+
     render() {
->>>>>>> 3b15b51ff8f340d599077098b157a399fb8621ca
+
         let action = <View></View>;
         if (this.props.action == "clean") {
             action = <Clean onClean={() => { this.setState({ cleanliness: this.state.cleanliness + 0.2 }) }} />
@@ -296,13 +282,10 @@ export default class Pokemon extends React.Component {
             <ProgressBar progress={this.state.fun * 0.01} width={200} color={color_fun} />
         </View>;
 
-<<<<<<< HEAD
-        if (this.state.alive != true) {
-            buttons =
-=======
+
         if (!this.state.alive) {
             newPokemon =
->>>>>>> 3b15b51ff8f340d599077098b157a399fb8621ca
+
                 <TouchableOpacity style={{
                     padding: 15, alignItems: 'center',
                     justifyContent: 'center'
@@ -330,7 +313,6 @@ export default class Pokemon extends React.Component {
 
             action = <View></View>;
 
-<<<<<<< HEAD
 
         }
 
@@ -384,11 +366,6 @@ export default class Pokemon extends React.Component {
 
         }
 
-
-
-
-
-=======
         return <View style={{
             flex: 1,
             alignItems: 'center',
@@ -397,7 +374,7 @@ export default class Pokemon extends React.Component {
             {newPokemon}
             {action}
         </View>;
->>>>>>> 3b15b51ff8f340d599077098b157a399fb8621ca
+
     }
 }
 //
