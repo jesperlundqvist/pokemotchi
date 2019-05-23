@@ -168,7 +168,6 @@ export default class Pokemon extends React.Component {
         let clean = String(state.cleanliness);
         let fun = String(state.fun);
         let alive = String(state.alive);
-        console.log(this.state.alive);
 
         try {
             await (AsyncStorage.setItem("pokemonHunger", hunger))
