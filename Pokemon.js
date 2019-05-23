@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, Button, TouchableOpacity, TouchableHighlight, Platform, ImageBackground } from 'react-native';
+import { Text, View, Image, Button,ActivityIndicator, TouchableOpacity, TouchableHighlight, Platform, ImageBackground } from 'react-native';
 import Model from './Model';
 import Clean from './Clean';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -19,7 +19,7 @@ export default class Pokemon extends React.Component {
             hunger: "",
             cleanliness: "",
             fun: "",
-            alive: false,
+            alive: 'true',
             id: "x",
             update: "",
             contentStatus: "LOADING",
@@ -49,7 +49,7 @@ export default class Pokemon extends React.Component {
                         hunger: 0,
                         cleanliness: 0,
                         fun: 0,
-                        alive: false,
+                        alive: 'false'
                     });
                 }
                 else {
@@ -86,7 +86,7 @@ export default class Pokemon extends React.Component {
                     hunger: 100,
                     cleanliness: 100,
                     fun: 100,
-                    alive: true,
+                    alive: 'true',
                     update: "",
                     contentStatus: "LOADED"
                 });
@@ -144,13 +144,11 @@ export default class Pokemon extends React.Component {
                 hunger: 100,
                 cleanliness: 100,
                 fun: 100,
-                alive: true,
+                alive: 'true',
             });
         }
 
-        this.setState({
-            contentStatus: "LOADED"
-        })
+        this.setState({contentStatus: "LOADED"})
 
         return "resolved"
     }
@@ -296,7 +294,7 @@ export default class Pokemon extends React.Component {
         </View>;
 
 
-        if (this.state.alive!=true) {
+        if (this.state.alive != 'true') {
             newPokemon =
                 <TouchableOpacity style={{
                     padding: 15, alignItems: 'center',
@@ -352,7 +350,7 @@ export default class Pokemon extends React.Component {
                     justifyContent: 'center',
                 }}>
 
-                    <Text>LOADING...</Text>
+                    <ActivityIndicator size="large" color="#ffffff" />
                 </View>)
 
         }

@@ -27,7 +27,7 @@ export default class Homescreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pokemonAlive: false,
+            pokemonAlive: 'false',
             action: "",
             userName: "",
             show: true,
@@ -37,7 +37,6 @@ export default class Homescreen extends React.Component {
 
     componentDidMount() {
       this.loadUsername();
-      this.getPokemonAlive();
     }
 
     removeItemValue = async (key) => {
@@ -81,11 +80,6 @@ export default class Homescreen extends React.Component {
                 });
             });
         });
-    }
-
-    getPokemonAlive = async () => {
-      const life = await AsyncStorage.getItem("pokemonAlive");
-      this.setState({pokemonAlive: life});
     }
 
 
@@ -189,7 +183,8 @@ export default class Homescreen extends React.Component {
                     flexDirection: 'column',
                 }}>
                     <StatusBar backgroundColor="blue" barStyle="light-content" />
-                    <Pokemon style={{ flexGrow: 1 }} action={this.state.action} />
+                    <Pokemon style={{ flexGrow: 1 }} action={this.state.action}
+                      onAliveChange={(alive) => this.setState({ pokemonAlive: alive })} />
                     {text}
                     <View style={{ flexDirection: "row", flexShrink: 1, justifyContent: "center" }}>
                     {buttons}
