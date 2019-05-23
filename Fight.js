@@ -174,7 +174,6 @@ export default class Fight extends React.Component {
 
         else if (this.state.fightState == "pending") {
           if (msg.user == this.state.username && msg.action == "accept") {
-            alert("Accepted fight");
             this.pubnub.unsubscribe({
               channels: ['Fight']
             })
