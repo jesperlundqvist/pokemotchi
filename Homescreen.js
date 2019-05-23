@@ -6,6 +6,8 @@ import { MaterialCommunityIcons, Entypo, FontAwesome } from '@expo/vector-icons'
 import Pokemon from './Pokemon';
 import { Haptic } from 'expo';
 import { Vibration, Platform } from 'react-native';
+import { AsyncStorage } from 'react-native';
+
 
 export default class Homescreen extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -29,6 +31,37 @@ export default class Homescreen extends React.Component {
             action: "",
             userName: this.props.navigation.state.params.username
         }
+    }
+
+    componentDidMount() {
+      this.saveUser(this.state.userName);
+      this.printNAme();
+    }
+
+    saveUser = async (username) => {
+
+      try {
+          await (AsyncStorage.setItem("username", username))
+
+      } catch (e) {
+          console.error('Failed to save username.')
+      }
+    }
+
+    printNAme = async () => {
+        AsyncStorage.getAllKeys((err, keys) => {
+            AsyncStorage.multiGet(keys, (err, stores) => {
+                stores.map((result, i, store) => {
+                    // get at each store's key/value so you can work with it
+                    let key = store[i][0];
+                    let value = store[i][1];
+                    console.log("nycklar: ")
+                    console.log(key);
+                    console.log("värden: ")
+                    console.log(value);
+                });
+            });
+        });
     }
 
     render() {
