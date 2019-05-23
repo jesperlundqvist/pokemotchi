@@ -17,7 +17,7 @@ export default class Food extends React.Component {
                 if (Platform.OS === 'ios') {
                   Haptic.selection();
                 }
-                this.props.onClean();
+                this.props.onFood();
             }
         });
     }

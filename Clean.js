@@ -31,7 +31,7 @@ export default class Clean extends React.Component {
           if (Platform.OS === 'ios') {
             Haptic.selection();
           }
-          this.props.onFood(
+          this.props.onClean(
 
         );
 
