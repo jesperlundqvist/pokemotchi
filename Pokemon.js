@@ -40,8 +40,6 @@ export default class Pokemon extends React.Component {
                 })
             );
 
-
-        this.state.contentStatus = "LOADED";
         this._interval = setInterval(() => {
             if (this.state.alive) {
                 if (this.state.hunger <= 0 ||
@@ -51,14 +49,16 @@ export default class Pokemon extends React.Component {
                         hunger: 0,
                         cleanliness: 0,
                         fun: 0,
-                        alive: false
+                        alive: false,
+                        contentStatus: "LOADED"
                     });
                 }
                 else {
                     this.setState({
                         hunger: this.state.hunger - 1,
                         cleanliness: this.state.cleanliness - 1,
-                        fun: this.state.fun - 1
+                        fun: this.state.fun - 1,
+                        contentStatus: "LOADED"
                     });
 
                     if (this.state.hunger % 10 == 0) {
@@ -89,7 +89,8 @@ export default class Pokemon extends React.Component {
                     cleanliness: 100,
                     fun: 100,
                     alive: true,
-                    update: ""
+                    update: "",
+                    contentStatus: "LOADED"
                 });
             })
         }
@@ -139,6 +140,7 @@ export default class Pokemon extends React.Component {
                 cleanliness: clean,
                 fun: fun,
                 alive: alive,
+                contentStatus: "LOADED"
             })
         } else {
             this.setState({
@@ -146,6 +148,7 @@ export default class Pokemon extends React.Component {
                 cleanliness: 100,
                 fun: 100,
                 alive: true,
+                contentStatus: "LOADED"
             });
         }
 
