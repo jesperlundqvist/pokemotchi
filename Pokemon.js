@@ -19,7 +19,7 @@ export default class Pokemon extends React.Component {
             hunger: "",
             cleanliness: "",
             fun: "",
-            alive: true,
+            alive: 'true',
             id: "x",
             update: "",
             contentStatus: "LOADING",
@@ -40,8 +40,6 @@ export default class Pokemon extends React.Component {
                 })
             );
 
-
-            this.state.contentStatus = "LOADED";
         this._interval = setInterval(() => {
             if (this.state.alive) {
                 if (this.state.hunger <= 0 ||
@@ -51,7 +49,7 @@ export default class Pokemon extends React.Component {
                         hunger: 0,
                         cleanliness: 0,
                         fun: 0,
-                        alive: false
+                        alive: 'false'
                     });
                 }
                 else {
@@ -72,11 +70,11 @@ export default class Pokemon extends React.Component {
 
 
     componentDidUpdate(prevProps, prevState) {
-        /*if (this.state.alive != prevState.alive) {
+        if (this.state.alive != prevState.alive) {
             if (this.props.onAliveChange) {
                 this.props.onAliveChange(this.state.alive);
             }
-        }*/
+        }
 
         //om state.update inte är lika med det update i state som var innan setState kördes
         if (this.state.update !== prevState.update) {
@@ -88,8 +86,9 @@ export default class Pokemon extends React.Component {
                     hunger: 100,
                     cleanliness: 100,
                     fun: 100,
-                    alive: true,
-                    update: ""
+                    alive: 'true',
+                    update: "",
+                    contentStatus: "LOADED"
                 });
             })
         }
@@ -145,9 +144,11 @@ export default class Pokemon extends React.Component {
                 hunger: 100,
                 cleanliness: 100,
                 fun: 100,
-                alive: true,
+                alive: 'true',
             });
         }
+
+        this.setState({contentStatus: "LOADED"})
 
         return "resolved"
     }
@@ -281,7 +282,7 @@ export default class Pokemon extends React.Component {
         </View>;
 
 
-        if (this.state.alive != true) {
+        if (this.state.alive != 'true') {
             newPokemon =
 
                 <TouchableOpacity style={{

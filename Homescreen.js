@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, View, Button, TextInput, Text, ImageBackground, StatusBar, ActivityIndicator } from 'react-native';
+import { SafeAreaView, View, Button, TextInput, Text, ImageBackground, StatusBar } from 'react-native';
 import { TouchableOpacity } from 'react-native'
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { MaterialCommunityIcons, Entypo, FontAwesome } from '@expo/vector-icons';
@@ -27,7 +27,7 @@ export default class Homescreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pokemonAlive: false,
+            pokemonAlive: 'false',
             action: "",
             userName: "",
             show: true,
@@ -37,7 +37,6 @@ export default class Homescreen extends React.Component {
 
     componentDidMount() {
       this.loadUsername();
-      this.getPokemonAlive();
     }
 
     removeItemValue = async (key) => {
@@ -81,11 +80,6 @@ export default class Homescreen extends React.Component {
                 });
             });
         });
-    }
-
-    getPokemonAlive = async () => {
-      const life = await AsyncStorage.getItem("pokemonAlive");
-      this.setState({pokemonAlive: life});
     }
 
 
@@ -189,7 +183,8 @@ export default class Homescreen extends React.Component {
                     flexDirection: 'column',
                 }}>
                     <StatusBar backgroundColor="blue" barStyle="light-content" />
-                    <Pokemon style={{ flexGrow: 1 }} action={this.state.action} />
+                    <Pokemon style={{ flexGrow: 1 }} action={this.state.action}
+                      onAliveChange={(alive) => this.setState({ pokemonAlive: alive })} />
                     {text}
                     <View style={{ flexDirection: "row", flexShrink: 1, justifyContent: "center" }}>
                     {buttons}
@@ -227,23 +222,7 @@ export default class Homescreen extends React.Component {
 
       else if (this.state.status == "LOADING") {
 
-        return (
-            <ImageBackground
-                  style={{
-                      backgroundColor: '#ccc',
-                      flex: 1,
-                      resizeMode,
-                      position: 'absolute',
-                      width: '100%',
-                      height: '100%',
-                      justifyContent: 'center',
-                  }}
-                  source={{ uri: remote }}
-              >
-              <ActivityIndicator size="large" color="#ffffff" />
-  
-          </ImageBackground>
-          )
+        return <Text>Loading...tjofshdofjs</Text>
       }
     }
 }
