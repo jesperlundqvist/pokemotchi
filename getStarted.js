@@ -58,15 +58,13 @@ export default class Start extends React.Component {
           alignItems: 'center',
         }}>
 
-          <Image style={{ width: 300, height: 300, resizeMode: "contain" }} source={{ uri: "https://fontmeme.com/permalink/190522/b394043e2419f9781e8e5c25b69fd896.png" }} />
+          <Image style={{ width: 350, height: 350, resizeMode: "contain" }} source={{ uri: "https://fontmeme.com/permalink/190522/b394043e2419f9781e8e5c25b69fd896.png" }} />
           <TextInput
             style={{ height: 40, width: 200, borderColor: 'gray', borderWidth: 2, fontSize: 20, backgroundColor: "white" }}
             onChangeText={(new_input) => {
               this.setState({ text: new_input })
             }}
             value={this.state.text} maxLength={13} placeholder="Enter username" onSubmitEditing={(event) => {
-              console.log("inside started: ", event.nativeEvent.text)
-              console.log("from state: ", this.state.text)
               navigate('Home', { username: event.nativeEvent.text })
             }}
           />

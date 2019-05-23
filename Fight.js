@@ -80,8 +80,8 @@ export default class Fight extends React.Component {
         var publisher = m.publisher; //The Publisher
 
         if (this.state.fightState == "ready") {
-          if (msg.user == this.state.username && msg.action == "fight" && this.state.fightState) {
-            this.setState({ fightState: "pending" });
+          if (msg.user == this.state.username && msg.action == "fight" && this.state.fightState) { //Ska det stå && this.state.fighState
+            this.setState({ fightState: "pending" });//Kanske borde ändras? MEst för att man inte ska synas för folk när man fått en request
             Model.getPokemonById(msg.my_pokemon).then((pokemon) => {
               Alert.alert("Fight", "fight från " + publisher + "'s " + pokemon.name, [
                 {
