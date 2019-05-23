@@ -4,8 +4,6 @@ import Model from './Model';
 import { MaterialCommunityIcons, Entypo, FontAwesome} from '@expo/vector-icons';
 import Arena from './Arena';
 import PubNub from 'pubnub';
-import ProgressBar from 'react-native-progress/Bar';
-import { NavigationEvents } from 'react-navigation';
 import { AsyncStorage } from 'react-native';
 
 
@@ -51,7 +49,8 @@ export default class Fight extends React.Component {
       level: 1,
       progress_next_level: 0,
       alerted: false,
-      timeout: false
+      timeout: false,
+      status: "LOADING"
     };
   }
 
@@ -272,7 +271,8 @@ export default class Fight extends React.Component {
 
         this.setState({
           occupancy: response.totalOccupancy,
-          users: users
+          users: users,
+          status: "LOADED"
         })
 
       }.bind(this)
@@ -396,7 +396,7 @@ export default class Fight extends React.Component {
       content = <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}><Text style={{ fontSize: 25, color: "white", fontWeight: "bold" }}>The arena is empty</Text><Entypo name="emoji-sad" size={60} color="white" style={{ paddingVertical: 20 }} /></View>
     }
 
-    if (this.state.fightState == "pending") {
+    if (this.state.fightState == "pending" || this.state.status == "LOADING") {
       content = <View><ActivityIndicator size="large" color="#ffffff" /></View>
     }
 
@@ -427,8 +427,6 @@ export default class Fight extends React.Component {
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             {content}
             <View style={{ flexDirection: "column", paddingHorizontal: 30, alignItems: 'center', justifyContent: 'center', padding:30  }}>
-              <ProgressBar progress={this.state.progress_next_level} width={200} height={15} color="midnightblue" />
-              <Text style={{ fontSize: 15 , paddingHorizontal:10}}>Level: {this.state.level}</Text>
             </View>
           </View>
         </SafeAreaView>
