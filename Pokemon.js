@@ -8,6 +8,7 @@ import Food from './Food';
 import Toy from './Toy';
 import { Haptic, Audio } from 'expo';
 import ProgressBar from 'react-native-progress/Bar';
+import * as Progress from 'react-native-progress';
 
 
 export default class Pokemon extends React.Component {
@@ -21,10 +22,12 @@ export default class Pokemon extends React.Component {
             alive: true,
             id: "x",
             update: "",
+            contentStatus: "LOADING",
         };
     }
 
     componentDidMount() {
+
         let promise1 = new Promise((resolved, unresolved) => {
             resolved(this.load());
         })
@@ -37,6 +40,8 @@ export default class Pokemon extends React.Component {
                 })
             );
 
+
+            this.state.contentStatus = "LOADED";
         this._interval = setInterval(() => {
             if (this.state.alive) {
                 if (this.state.hunger <= 0 ||
@@ -64,6 +69,7 @@ export default class Pokemon extends React.Component {
             }
         }, 2000);
     }
+
 
     componentDidUpdate(prevProps, prevState) {
         if (this.state.alive != prevState.alive) {
@@ -192,6 +198,11 @@ export default class Pokemon extends React.Component {
     }
 
     render() {
+
+        let remote = "https://4.bp.blogspot.com/-gchMbKclwIQ/Vsgb1I06qLI/AAAAAAAAAE8/i4L89o19YNQ/s1600/11_iykim2000_2.gif";
+
+    render() {
+
         let action = <View></View>;
         if (this.props.action == "clean") {
             action = <Clean onClean={() => { this.setState({ cleanliness: this.state.cleanliness + 0.2 }) }} />
@@ -271,8 +282,10 @@ export default class Pokemon extends React.Component {
             <ProgressBar progress={this.state.fun * 0.01} width={200} color={color_fun} />
         </View>;
 
+
         if (!this.state.alive) {
             newPokemon =
+
                 <TouchableOpacity style={{
                     padding: 15, alignItems: 'center',
                     justifyContent: 'center'
@@ -299,6 +312,58 @@ export default class Pokemon extends React.Component {
                 </TouchableOpacity>
 
             action = <View></View>;
+
+
+        }
+
+
+        if (this.state.contentStatus == "LOADED") {
+
+            return (
+                <ImageBackground
+                    style={{
+                        backgroundColor: 'transparent',
+                        width: '100%',
+                        height: '85%',
+                        justifyContent: 'center',
+                    }}
+                    source={{ uri: remote }} >
+
+                    <View style={{
+                        flex: 1,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}>
+
+                        {buttons}
+                        {action}
+                    </View>
+                </ImageBackground>);
+
+        }
+
+        else if (this.state.contentStatus == "LOADING"){
+
+            return (
+                <ImageBackground
+                    style={{
+                        backgroundColor: 'transparent',
+                        width: '100%',
+                        height: '85%',
+                        justifyContent: 'center',
+                    }}
+                    source={{ uri: remote }} >
+
+                    <View style={{
+                        flex: 1,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}>
+
+                    <Text>LOADING...</Text>
+                    </View>
+                </ImageBackground>);
+
         }
 
         return <View style={{
@@ -309,6 +374,7 @@ export default class Pokemon extends React.Component {
             {newPokemon}
             {action}
         </View>;
+
     }
 }
 //
