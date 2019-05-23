@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, Button, TouchableOpacity, TouchableHighlight, Platform } from 'react-native';
+import { Text, View, Image, Button, TouchableOpacity, TouchableHighlight, Platform, ImageBackground } from 'react-native';
 import Model from './Model';
 import Sponge from './Sponge';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -209,8 +209,10 @@ export default class Pokemon extends React.Component {
 
 
     render() {
+        let remote = "https://4.bp.blogspot.com/-gchMbKclwIQ/Vsgb1I06qLI/AAAAAAAAAE8/i4L89o19YNQ/s1600/11_iykim2000_2.gif";
         let action = <View></View>;
         if (this.props.action == "clean") {
+            remote = "https://i.pinimg.com/originals/62/cb/bf/62cbbf3021778f2f6db1320a261fb88b.gif";
             action = <Sponge onClean={() => { this.setState({ cleanliness: this.state.cleanliness + 0.2 }) }} />
         }
 
@@ -226,6 +228,9 @@ export default class Pokemon extends React.Component {
         let name = this.state.data.name;
         if (name) {
             name = name.charAt(0).toUpperCase() + name.slice(1);
+        }
+        else {
+            remote = "https://4.bp.blogspot.com/-gchMbKclwIQ/Vsgb1I06qLI/AAAAAAAAAE8/i4L89o19YNQ/s1600/11_iykim2000_2.gif";
         }
 
         let color_hunger = "green";
@@ -318,14 +323,25 @@ export default class Pokemon extends React.Component {
             action = <View></View>;
         }
 
-        return <View style={{
+        return (
+            <ImageBackground
+            style={{
+                backgroundColor: 'transparent',
+                width: '100%',
+                height: '85%',
+                justifyContent: 'center',
+            }}
+            source={{ uri: remote}} >
+        
+        <View style={{
             flex: 1,
             alignItems: 'center',
             justifyContent: 'center',
         }}>
             {buttons}
             {action}
-        </View>;
+        </View>
+        </ImageBackground>);
     }
 }
 //
