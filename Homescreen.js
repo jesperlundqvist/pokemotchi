@@ -25,7 +25,6 @@ export default class Homescreen extends React.Component {
 
     constructor(props) {
         super(props);
-        //console.log("username: ", this.props.navigation.state.params.username)
         this.state = {
             pokemonId: Math.floor(Math.random() * 100) + 1,
             pokemonAlive: true,
