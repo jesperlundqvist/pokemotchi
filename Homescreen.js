@@ -32,6 +32,7 @@ export default class Homescreen extends React.Component {
             action: "",
             userName: "",
             show: true,
+            status: "LOADING",
         }
     }
 
@@ -64,7 +65,10 @@ export default class Homescreen extends React.Component {
           this.setState({ show: true });
         } else {
           //false = inte visa Start component
-            this.setState({ show: false });
+            this.setState({
+              show: false,
+              status: "LOADED"
+            });
             this.setState({ userName: username });
         }
         return "resolved"
@@ -195,6 +199,8 @@ export default class Homescreen extends React.Component {
 
         let user = <View></View>;
 
+        if (this.state.status == "LOADED") {
+
         if (this.state.show == false) {
           user = <SafeAreaView style={{
                     flex: 1,
@@ -209,6 +215,7 @@ export default class Homescreen extends React.Component {
                     </View>
                 </SafeAreaView>
           }
+
 
           else {
           user = <Start onShow = {() => {
@@ -234,5 +241,12 @@ export default class Homescreen extends React.Component {
 
         </ImageBackground>
         )
+
+      }
+
+      else if (this.state.status == "LOADING") {
+
+        return <Text>Loading...tjofshdofjs</Text>
+      }
     }
 }
