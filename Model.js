@@ -20,8 +20,6 @@ export default class Model extends React.Component{
     }
 
     static favPok(element) {
-      console.log("model");
-      console.log(element.name);
       //AsyncStorage.setItem(key, value)
       AsyncStorage.setItem("pokemon", element);
     }
