@@ -166,7 +166,7 @@ export default class Homescreen extends React.Component {
                     Haptic.selection();
                 }
 
-                navigate('Fight', { username: this.state.userName, pokemon: this.state.pokemonId })
+                navigate('Fight', { username: this.state.userName})
                 console.log('trycker på fight')
                 console.log(this.state.pokemonId)
             }}>

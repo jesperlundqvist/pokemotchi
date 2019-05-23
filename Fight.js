@@ -5,6 +5,7 @@ import { MaterialCommunityIcons, Entypo, FontAwesome} from '@expo/vector-icons';
 import Arena from './Arena';
 import PubNub from 'pubnub';
 import ProgressBar from 'react-native-progress/Bar';
+import { AsyncStorage } from 'react-native';
 
 
 export default class Fight extends React.Component {
@@ -42,7 +43,7 @@ export default class Fight extends React.Component {
       back: this.props.navigation,
       inArena: false,
       username: this.props.navigation.getParam("username", "Username"),
-      pokemonID: "",
+      pokemonID: null,
       opponent: "",
       opponentPokemonID: 0,
       fightState: "ready",
@@ -57,7 +58,7 @@ export default class Fight extends React.Component {
     const id = await AsyncStorage.getItem("pokemonID");
     console.log('synkar med async')
     console.log({pokemonId: id})
-    this.setState(integer({pokemonID: id}))
+    this.setState(parseInt({pokemonID: id}))
   }
 
 
