@@ -213,29 +213,10 @@ export default class Pokemon extends React.Component {
 
 
     render() {
-        let remote = "https://4.bp.blogspot.com/-gchMbKclwIQ/Vsgb1I06qLI/AAAAAAAAAE8/i4L89o19YNQ/s1600/11_iykim2000_2.gif";
+        
         let action = <View></View>;
-        if (this.props.action == "clean") {
-            remote = "https://i.pinimg.com/originals/62/cb/bf/62cbbf3021778f2f6db1320a261fb88b.gif";
-            action = <Clean onClean={() => { this.setState({ cleanliness: this.state.cleanliness + 0.2 }) }} />
-        }
-
-        if (this.props.action == "feed") {
-            action = <Food onFood={() => { this.setState({ hunger: this.state.hunger + 0.2 }) }} />
-        }
-
-        if (this.props.action == "play") {
-            action = <Toy onFun={(speed) => { this.setState({ fun: this.state.fun + 0.005 * speed }) }} />
-        }
-
         let imageUri = "http://pokestadium.com/sprites/xy/" + this.state.data.name + ".gif";
         let name = this.state.data.name;
-        if (name) {
-            name = name.charAt(0).toUpperCase() + name.slice(1);
-        }
-        else {
-            remote = "https://4.bp.blogspot.com/-gchMbKclwIQ/Vsgb1I06qLI/AAAAAAAAAE8/i4L89o19YNQ/s1600/11_iykim2000_2.gif";
-        }
 
         let color_hunger = "green";
         if (this.state.hunger < 75) {
@@ -327,25 +308,42 @@ export default class Pokemon extends React.Component {
             action = <View></View>;
         }
 
-        return (
-            <ImageBackground
-                style={{
-                    backgroundColor: 'transparent',
-                    width: '100%',
-                    height: '85%',
-                    justifyContent: 'center',
-                }}
-                source={{ uri: remote }} >
+        
+        if (this.props.action == "feed") {
+            action = <Food onFood={() => { this.setState({ hunger: this.state.hunger + 0.2 }) }} />
+        }
 
+        if (this.props.action == "play") {
+            action = <Toy onFun={(speed) => { this.setState({ fun: this.state.fun + 0.005 * speed }) }} />
+        }
+
+        
+        if (name) {
+            name = name.charAt(0).toUpperCase() + name.slice(1);
+        }
+        
+        remote = <View>{buttons}{action}</View>;
+
+        if (this.props.action == "clean") {
+            action = <Clean onClean={() => { this.setState({ cleanliness: this.state.cleanliness + 0.2 }) }} />
+            var remote = <ImageBackground
+            style={{
+                backgroundColor: 'transparent',
+                width: '100%',
+                height: '85%',
+                justifyContent: 'center',
+            }}
+            source={{ uri: "https://i.pinimg.com/originals/62/cb/bf/62cbbf3021778f2f6db1320a261fb88b.gif" }} >{buttons}{action}</ImageBackground>
+        }
+
+        return (
                 <View style={{
                     flex: 1,
                     alignItems: 'center',
                     justifyContent: 'center',
                 }}>
-                    {buttons}
-                    {action}
-                </View>
-            </ImageBackground>);
+                    {remote}
+                </View>)
     }
 }
 //
