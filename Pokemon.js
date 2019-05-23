@@ -19,7 +19,7 @@ export default class Pokemon extends React.Component {
             hunger: "",
             cleanliness: "",
             fun: "",
-            alive: true,
+            alive: false,
             id: "x",
             update: "",
             contentStatus: "LOADING",

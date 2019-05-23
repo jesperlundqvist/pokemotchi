@@ -27,8 +27,7 @@ export default class Homescreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pokemonId: Math.floor(Math.random() * 100) + 1,
-            pokemonAlive: true,
+            pokemonAlive: false,
             action: "",
             userName: "",
             show: true,
@@ -37,14 +36,7 @@ export default class Homescreen extends React.Component {
     }
 
     componentDidMount() {
-    /*  this.removeItemValue("username");
-      this.removeItemValue("pokemonID");
-      this.removeItemValue("pokemonHunger");
-      this.removeItemValue("pokemonClean");
-      this.removeItemValue("pokemonFun");
-      this.removeItemValue("pokemonAlive");*/
       this.loadUsername();
-      //this.printNAme();
     }
 
     removeItemValue = async (key) => {
@@ -171,31 +163,15 @@ export default class Homescreen extends React.Component {
                 }
 
                 navigate('Fight', { username: this.state.userName})
-                console.log('trycker på fight')
-                console.log(this.state.pokemonId)
             }}>
                 <MaterialCommunityIcons name="sword-cross" size={60} color={this.state.action == "" ? "lightgray" : "gray"} />
                 <Text style={{ paddingHorizontal: 15, color: "white" }}>Fight</Text>
             </TouchableOpacity>
         </View>;
 
-        if (!this.state.pokemonAlive) {
+        if (this.state.pokemonAlive==false) {
             buttons = <View></View>
         }
-
-        /*if (!this.state.pokemonAlive) {
-            buttons = <Button title="New Pokemon" onPress={() => {
-                let newPokemon = Math.floor(Math.random() * 10)+1;
-
-                while (newPokemon == this.state.pokemonId) {
-                    newPokemon = Math.floor(Math.random() * 10)+1;
-                }
-
-                this.setState({
-                    pokemonId: newPokemon
-                });
-            }} />
-        }*/
 
         let user = <View></View>;
 
@@ -207,8 +183,7 @@ export default class Homescreen extends React.Component {
                     flexDirection: 'column',
                 }}>
                     <StatusBar backgroundColor="blue" barStyle="light-content" />
-                    <Pokemon style={{ flexGrow: 1 }} id={this.state.pokemonId} action={this.state.action}
-                      onAliveChange={(alive) => this.setState({ pokemonAlive: alive })} />
+                    <Pokemon style={{ flexGrow: 1 }} action={this.state.action} />
                     {text}
                     <View style={{ flexDirection: "row", flexShrink: 1, justifyContent: "center" }}>
                     {buttons}
