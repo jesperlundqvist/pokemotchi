@@ -36,7 +36,7 @@ export default class Fight extends React.Component {
       back: this.props.navigation,
       inArena: false,
       username: this.props.navigation.getParam("username", "Username"),
-      pokemonID: this.props.navigation.getParam("pokemon", "1"),
+      pokemonID: "",
       opponent: "",
       opponentPokemonID: 0,
       fightState: "ready",
@@ -283,7 +283,7 @@ export default class Fight extends React.Component {
 
   victory() {
     alert("Du vann!");
-    
+
     this.pubnub.publish(
       {
         message: {
@@ -299,7 +299,7 @@ export default class Fight extends React.Component {
       this.setState({ level: new_level });
       alert("You reached the next level!")
     }
-    
+
     this.setState({ fightState: "ready", progress_next_level: new_progress });
 
     this.pubnub.subscribe({
@@ -309,6 +309,11 @@ export default class Fight extends React.Component {
     this.pubnub.unsubscribe({
       channels: [this.state.fightChannel]
     })
+  }
+
+  getPokemonID = async () => {
+    const id = await AsyncStorage.getItem("pokemonID");
+    this.setState ({pokemonID: id})
   }
 
   render() {
