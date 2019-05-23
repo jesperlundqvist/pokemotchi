@@ -58,8 +58,8 @@ export default class Fight extends React.Component {
   getPokemonID = async () => {
     const id = await AsyncStorage.getItem("pokemonID");
     console.log('synkar med async')
-    console.log({pokemonId: id})
-    this.setState(parseInt({pokemonID: id}))
+    console.log()
+    this.setState({pokemonID: parseInt(id)});
   }
 
 
