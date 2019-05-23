@@ -9,7 +9,6 @@ import Start from './getStarted'
 
 
 const MainNavigator = createStackNavigator({
-  Start: {screen: Start},
   Home: {screen: Homescreen},
   Fight: {screen: Fight},
   Info: {screen: Info}

@@ -1,85 +1,55 @@
 import React from 'react';
-import { Gyroscope, Haptic } from 'expo';
-import { StyleSheet, Text, TouchableOpacity, View, Platform } from 'react-native';
-
-
+import { PanResponder, View, Animated, Platform, Vibration, Image } from 'react-native';
+import { Haptic } from 'expo';
+import { MaterialCommunityIcons, Entypo, FontAwesome } from '@expo/vector-icons';
 
 export default class Clean extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { gyroscopeData: {},
-
-        };
-    }
-
-    componentDidMount() {
-    /*  this.state.pan.addListener((value) => {
-          if (value.x > -100 && value.x < 100 && value.y < -150 && value.y > -400) {
-              this.props.onFood();
-
-          }
-      });*/
-
-      Gyroscope.setUpdateInterval(16);
-
-      Gyroscope.addListener(result => {
-        this.setState({ gyroscopeData: result });
-      //  this.onLevel();
-      let { x, y, z } = result;
-      //console.log(result)
-      if (x < 0.1 || x > -0.1)
-          if (Platform.OS === 'ios') {
-            Haptic.selection();
-          }
-          this.props.onClean(
-
-        );
-
-    });
-
-    }
-
-    componentWillUnmount() {
-        Gyroscope.removeAllListeners();
-    }
-    render() {
-        return   (
-              <View>
-      </View>);
-    }
-}
-
-function round(n) {
-  if (!n) {
-    return 0;
+  constructor(props) {
+    super(props);
+    this.state = {
+      pan: new Animated.ValueXY(),
+      size: new Animated.Value(1)
+    };
   }
 
-  return Math.floor(n * 100) / 100;
-}
+  componentDidMount() {
+    this.state.pan.addListener((value) => {
+      if (value.x > -100 && value.x < 100 && value.y < -150 && value.y > -400) {
+        if (Platform.OS === 'ios') {
+          Haptic.selection();
+        }
+        this.props.onClean();
+      }
+    });
+  }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    alignItems: 'stretch',
-    marginTop: 15,
-  },
-  button: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#eee',
-    padding: 10,
-  },
-  middleButton: {
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    borderColor: '#ccc',
-  },
-  sensor: {
-    marginTop: 15,
-    paddingHorizontal: 10,
-  },
-});
+  componentWillMount() {
+    this.panResponder = PanResponder.create({
+      onPanResponderStart: () => {
+        Animated.spring(this.state.size, { toValue: 1.2 }).start();
+      },
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderMove: Animated.event([null, { // <--- When moving
+        dx: this.state.pan.x,
+        dy: this.state.pan.y,
+        useNativeDriver: true
+      }]),
+      onPanResponderRelease: (e, gesture) => {
+        Animated.spring(
+          this.state.pan,
+          { toValue: { x: 0, y: 0 } },
+        ).start();
+
+        Animated.spring(this.state.size, { toValue: 1.0 }).start();
+      } // <--- callback when dropped
+    });
+  }
+
+  render() {
+    return <Animated.View
+      {...this.panResponder.panHandlers}
+      style={[this.state.pan.getLayout()]}>
+      <Image style={{ width: 150, height: 150, resizeMode: "contain", alignSelf: "center" }} source={{ uri: "https://media.giphy.com/media/1NUO9YAFVnisomak1q/giphy.gif" }} />
+    </Animated.View>;
+  }
+}
