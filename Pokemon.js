@@ -349,7 +349,6 @@ export default class Pokemon extends React.Component {
                     alignItems: 'center',
                     justifyContent: 'center',
                 }}>
-
                     <ActivityIndicator size="large" color="#ffffff" />
                 </View>)
 
