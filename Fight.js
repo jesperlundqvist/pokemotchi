@@ -14,9 +14,9 @@ export default class Fight extends React.Component {
       headerTintColor: "white",
       headerRight:
       <View style={{flexDirection: "row"}}>
-      <View style={{flexDirection: "row", alignContent: "center"}}>
+      <View style={{flexDirection: "row", paddingEnd: 60, paddingTop: 4}}>
         <FontAwesome style={{ marginLeft: 10 }} name="user-o" size={30} color="white" />
-        <Text style={{color: "white", padding: 3}}>{navigation.state.params.username}</Text>
+        <Text style={{color: "white", padding: 5, fontSize: 15, fontWeight: "bold"}}>{navigation.state.params.username}</Text>
         </View>
         <TouchableOpacity style={{ marginRight: 10 }} activeOpacity={0.5} onPress={() => navigation.navigate("Info")}>
           <MaterialCommunityIcons name="information-outline" size={30} color="white" />
