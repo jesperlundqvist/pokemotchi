@@ -132,7 +132,7 @@ export default class Fight extends React.Component {
 
         else if (this.state.fightState == "pending") {
           if (msg.user == this.state.username && msg.action == "accept") {
-            alert("accepted fight");
+            alert("Accepted fight");
             this.pubnub.unsubscribe({
               channels: ['Fight']
             })
@@ -146,7 +146,7 @@ export default class Fight extends React.Component {
             this.setState({ fightState: "fight", opponentPokemonID: msg.my_pokemon, opponent: publisher, fightChannel: channelName });
           }
           else if (msg.user == this.state.username && msg.action == "decline") {
-            alert("declined fight");
+            alert("Declined fight");
             this.setState({ fightState: "ready" });
           }
         }
@@ -283,7 +283,7 @@ export default class Fight extends React.Component {
 
   victory() {
     alert("Du vann!");
-    
+
     this.pubnub.publish(
       {
         message: {
@@ -299,7 +299,7 @@ export default class Fight extends React.Component {
       this.setState({ level: new_level });
       alert("You reached the next level!")
     }
-    
+
     this.setState({ fightState: "ready", progress_next_level: new_progress });
 
     this.pubnub.subscribe({
@@ -340,7 +340,12 @@ export default class Fight extends React.Component {
     }
 
     if (this.state.fightState == "fight") {
+      console.log('skickas in i fight')
+      console.log(this.state.pokemonID)
+      console.log(this.state.opponentPokemonID)
       content = <Arena myId={this.state.pokemonID} theirId={this.state.opponentPokemonID} onVictory={() => { this.victory() }} />;
+
+
     }
 
     return (

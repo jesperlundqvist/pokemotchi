@@ -27,7 +27,7 @@ export default class Clean extends React.Component {
       //  this.onLevel();
       let { x, y, z } = result;
       //console.log(result)
-      if (x > 0.8 || x < -0.8)
+      if (x < 0.1 || x > -0.1)
           if (Platform.OS === 'ios') {
             Haptic.selection();
           }

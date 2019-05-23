@@ -144,6 +144,8 @@ export default class Homescreen extends React.Component {
                 }
 
                 navigate('Fight', { username: this.state.userName, pokemon: this.state.pokemonId })
+                console.log('trycker på fight')
+                console.log(this.state.pokemonId)
             }}>
                 <MaterialCommunityIcons name="sword-cross" size={60} color={this.state.action == "" ? "lightgray" : "gray"} />
                 <Text style={{ paddingHorizontal: 15, color: "white" }}>Fight</Text>
