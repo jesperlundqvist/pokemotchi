@@ -175,10 +175,6 @@ export default class Fight extends React.Component {
         }
       }.bind(this),
       presence: function (p) {
-        console.log(p)
-        console.log("kör presence")
-        console.log("users: ", p.uuid)
-        console.log("action: ", p.action)
         // handle presence
         var action = p.action; // Can be join, leave, state-change or timeout
         var channelName = p.channel; // The channel for which the message belongs
@@ -256,8 +252,6 @@ export default class Fight extends React.Component {
   }
 
   FightUser(p) {
-    console.log("inne i fight: ", p)
-    console.log("pokemonID: ", this.state.pokemonID)
     this.pubnub.publish(
       {
         message: {
