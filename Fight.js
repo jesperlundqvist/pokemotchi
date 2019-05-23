@@ -4,8 +4,6 @@ import Model from './Model';
 import { MaterialCommunityIcons, Entypo, FontAwesome} from '@expo/vector-icons';
 import Arena from './Arena';
 import PubNub from 'pubnub';
-import ProgressBar from 'react-native-progress/Bar';
-import { NavigationEvents } from 'react-navigation';
 import { AsyncStorage } from 'react-native';
 
 
@@ -29,8 +27,6 @@ export default class Fight extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log("fight")
-    console.log("component...")
 
     this.state = {
       data: {},
@@ -51,14 +47,13 @@ export default class Fight extends React.Component {
       level: 1,
       progress_next_level: 0,
       alerted: false,
-      timeout: false
+      timeout: false,
+      status: "LOADING"
     };
   }
 
   getPokemonID = async () => {
     const id = await AsyncStorage.getItem("pokemonID");
-    console.log('synkar med async')
-    console.log()
     this.setState({pokemonID: parseInt(id)});
   }
 
@@ -76,8 +71,6 @@ export default class Fight extends React.Component {
 
     this.pubnub.addListener({
       status: function (s) {
-        console.log("status")
-        console.log(s);
         if (s.category === "PNConnectedCategory") {
           ready = true;
         }
@@ -89,8 +82,6 @@ export default class Fight extends React.Component {
       },
       message: function (m) {
         // handle message
-        console.log("message")
-        console.log(m)
         var channelName = m.channel; // The channel for which the message belongs
         var channelGroup = m.subscription; // The channel group or wildcard subscription match (if exists)
         var pubTT = m.timetoken; // Publish timetoken
@@ -272,7 +263,8 @@ export default class Fight extends React.Component {
 
         this.setState({
           occupancy: response.totalOccupancy,
-          users: users
+          users: users,
+          status: "LOADED"
         })
 
       }.bind(this)
@@ -376,7 +368,6 @@ export default class Fight extends React.Component {
     var remote = 'https://pbs.twimg.com/media/DVMT-6OXcAE2rZY.jpg';
     const resizeMode = 'center';
     users_online = this.state.users.map(function (user) {
-      console.log("user: ", user)
       if (this.state.username != user)
         return <TouchableOpacity style={{ flexDirection: "row" }} title={user} key={user} onPress={() => { this.FightUser(user) }} >
           <MaterialCommunityIcons name="sword-cross" size={30} color="lightgray" />
@@ -390,20 +381,15 @@ export default class Fight extends React.Component {
     </Text>
       {users_online}
     </View>;
-
-    console.log("length: ", this.state.users.length)
     if (this.state.users.length <= 1) {
       content = <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}><Text style={{ fontSize: 25, color: "white", fontWeight: "bold" }}>The arena is empty</Text><Entypo name="emoji-sad" size={60} color="white" style={{ paddingVertical: 20 }} /></View>
     }
 
-    if (this.state.fightState == "pending") {
+    if (this.state.fightState == "pending" || this.state.status == "LOADING") {
       content = <View><ActivityIndicator size="large" color="#ffffff" /></View>
     }
 
     if (this.state.fightState == "fight") {
-      console.log('skickas in i fight')
-      console.log(this.state.pokemonID)
-      console.log(this.state.opponentPokemonID)
       content = <Arena myId={this.state.pokemonID} theirId={this.state.opponentPokemonID} onVictory={() => { this.victory() }} />;
 
 
@@ -427,8 +413,6 @@ export default class Fight extends React.Component {
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             {content}
             <View style={{ flexDirection: "column", paddingHorizontal: 30, alignItems: 'center', justifyContent: 'center', padding:30  }}>
-              <ProgressBar progress={this.state.progress_next_level} width={200} height={15} color="midnightblue" />
-              <Text style={{ fontSize: 15 , paddingHorizontal:10}}>Level: {this.state.level}</Text>
             </View>
           </View>
         </SafeAreaView>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, AsyncStorage, Button, TouchableHighlight, ImageBackground } from 'react-native';
+import { Text, View, Image, TouchableHighlight, ImageBackground } from 'react-native';
 import Model from './Model';
 
 
@@ -34,7 +34,6 @@ export default class Arena extends React.Component {
         this.setState({
             count: this.state.count + 1
         })
-        console.log(this.state.count)
 
         if (this.state.count == 20)
             this.props.onVictory()
@@ -49,8 +48,9 @@ export default class Arena extends React.Component {
 
         return (
             <View style={{
-                paddingTop: 175
+                paddingTop: 105
             }}>
+            <Text style={{ fontSize: 20, color: "white", paddingBottom: 65, textAlign: "center" }}>Tap on the opponents pokémon as fast as possible!</Text>
                 <TouchableHighlight underlayColor={"transparent"} style={{ alignSelf: 'flex-end' }} onPress={this.onPress}><Image source={{ uri: theirImageUri }} style={{ width: 125, height: 125, resizeMode: "contain" }} /></TouchableHighlight>
                 <Image source={{ uri: myImageUri }} style={{ width: 250, height: 250, resizeMode: "contain", alignSelf: 'flex-start' }} />
             </View>
