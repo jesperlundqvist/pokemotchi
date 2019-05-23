@@ -37,6 +37,7 @@ export default class Homescreen extends React.Component {
 
     componentDidMount() {
       this.loadUsername();
+      this.getPokemonAlive();
     }
 
     removeItemValue = async (key) => {
@@ -80,6 +81,11 @@ export default class Homescreen extends React.Component {
                 });
             });
         });
+    }
+
+    getPokemonAlive = async () => {
+      const life = await AsyncStorage.getItem("pokemonAlive");
+      this.setState({pokemonAlive: life});
     }
 
 
@@ -169,7 +175,7 @@ export default class Homescreen extends React.Component {
             </TouchableOpacity>
         </View>;
 
-        if (this.state.pokemonAlive==false) {
+        if (this.state.pokemonAlive == 'false') {
             buttons = <View></View>
         }
 

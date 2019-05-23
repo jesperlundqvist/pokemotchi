@@ -19,7 +19,7 @@ export default class Pokemon extends React.Component {
             hunger: "",
             cleanliness: "",
             fun: "",
-            alive: false,
+            alive: true,
             id: "x",
             update: "",
             contentStatus: "LOADING",
@@ -318,29 +318,29 @@ export default class Pokemon extends React.Component {
         if (this.state.contentStatus == "LOADED") {
 
             return (
-                <View style={{
-                    flex: 1,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}>
-                    {newPokemon}
-                    {action}
-                </View>)
+              <View style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+              }}>
+                  {newPokemon}
+                  {action}
+              </View>
+            );
 
         }
 
         else if (this.state.contentStatus == "LOADING"){
 
             return (
-                    <View style={{
-                        flex: 1,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}>
-
-                    <Text>LOADING...</Text>
-                    </View>)
-
+              <View style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+              }}>
+                  <Text>Loading...</Text>
+              </View>
+            )
         }
     }
 }
