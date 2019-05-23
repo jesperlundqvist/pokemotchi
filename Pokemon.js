@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, Image, Button, TouchableOpacity, TouchableHighlight, Platform } from 'react-native';
 import Model from './Model';
-import Sponge from './Sponge';
+import Clean from './Clean';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AsyncStorage } from 'react-native';
 import Food from './Food';
@@ -142,8 +142,8 @@ export default class Pokemon extends React.Component {
                 fun: fun,
                 alive: alive,
             })
-        } 
-        
+        }
+
         else if (hunger != null && hunger == '0') {
 
             this.setState({
@@ -154,9 +154,9 @@ export default class Pokemon extends React.Component {
             })
 
         }
-        
+
         else {
-            
+
             this.setState({
                 hunger: 100,
                 cleanliness: 100,
@@ -164,9 +164,9 @@ export default class Pokemon extends React.Component {
                 alive: true,
             });
         }
-        
 
-        
+
+
         return "resolved"
     }
 
@@ -228,7 +228,7 @@ export default class Pokemon extends React.Component {
     render() {
         let action = <View></View>;
         if (this.props.action == "clean") {
-            action = <Sponge onClean={() => { this.setState({ cleanliness: this.state.cleanliness + 0.2 }) }} />
+            action = <Clean onClean={() => { this.setState({ cleanliness: this.state.cleanliness + 0.2 }) }} />
         }
 
         if (this.props.action == "feed") {
