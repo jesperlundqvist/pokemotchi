@@ -135,27 +135,14 @@ export default class Pokemon extends React.Component {
             this.save(this.state.id);
         }
         console.log(hunger)
-        if (hunger != null && hunger != '0' && hunger != 0) {
+        if (hunger != null) {
             this.setState({
                 hunger: hunger,
                 cleanliness: clean,
                 fun: fun,
                 alive: alive,
             })
-        }
-
-        else if (hunger != null && hunger == '0') {
-
-            this.setState({
-                hunger: hunger,
-                cleanliness: clean,
-                fun: fun,
-                alive: false,
-            })
-
-        }
-
-        else {
+        } else {
 
             this.setState({
                 hunger: 100,
