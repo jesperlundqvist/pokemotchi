@@ -88,7 +88,6 @@ export default class Pokemon extends React.Component {
                     fun: 100,
                     alive: 'true',
                     update: "",
-                    contentStatus: "LOADED"
                 });
             })
         }

@@ -60,7 +60,8 @@ export default class Homescreen extends React.Component {
 
         if (username == null) {
             //true = visa Start component
-            this.setState({ show: true });
+            this.setState({ show: true,
+            status: "LOADED" });
         } else {
             //false = inte visa Start component
             this.setState({
@@ -199,6 +200,8 @@ export default class Homescreen extends React.Component {
                 user = <Start onShow={() => {
                     this.setState({ show: false })
                 }} />
+
+                remote = "http://miniwallist.com/wp-content/uploads/2016/07/pokemon-go-pokeball-mobile-wallpaper-minimalist-2160x3840.jpg";
             }
 
             return (
