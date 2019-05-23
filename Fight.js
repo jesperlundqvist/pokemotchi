@@ -5,7 +5,7 @@ import { MaterialCommunityIcons, Entypo, FontAwesome} from '@expo/vector-icons';
 import Arena from './Arena';
 import PubNub from 'pubnub';
 import ProgressBar from 'react-native-progress/Bar';
-
+import { NavigationEvents } from 'react-navigation';
 
 export default class Fight extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -43,11 +43,12 @@ export default class Fight extends React.Component {
       fightChannel: "",
       level: 1,
       progress_next_level: 0,
+      alerted: false,
+      timeout: false
     };
-
   }
 
-  componentDidMount() {
+  start() {
     this.pubnub = new PubNub({
       subscribeKey: "sub-c-ff0c5120-7702-11e9-945c-2ea711aa6b65",
       publishKey: "pub-c-ab1f1896-d4ac-4b70-aaf4-ca968c88c2f5",
@@ -80,41 +81,68 @@ export default class Fight extends React.Component {
         var publisher = m.publisher; //The Publisher
 
         if (this.state.fightState == "ready") {
-          if (msg.user == this.state.username && msg.action == "fight" && this.state.fightState) { //Ska det stå && this.state.fighState
-            this.setState({ fightState: "pending" });//Kanske borde ändras? MEst för att man inte ska synas för folk när man fått en request
+          if (msg.user == this.state.username && msg.action == "fight") {
+              setTimeout(() => {
+                  this.setState({ timeout: true });
+              }, 10000);
             Model.getPokemonById(msg.my_pokemon).then((pokemon) => {
-              Alert.alert("Fight", "fight från " + publisher + "'s " + pokemon.name, [
+                if (!this.state.alerted)
                 {
-                  text: "Yes!", onPress: (() => {
+                    this.setState({alerted: true});
+                    Alert.alert("Fight", "Fight från " + publisher + "'s " + pokemon.name, [
+                    {
+                      text: "Yes!", onPress: (() => {
+                          if (!this.state.timeout)
+                          {
+                            this.pubnub.publish(
+                              {
+                                message: {
+                                  action: 'accept',
+                                  my_pokemon: this.state.pokemonID,
+                                  user: publisher
+                                },
+                                channel: 'Fight'
+                              });
+
+                            this.pubnub.unsubscribe({
+                              channels: ['Fight']
+                            })
+
+                            let channelName = publisher + this.state.username;
+
+                            this.pubnub.subscribe({
+                              channels: [channelName]
+                            });
+
+                            this.setState({ fightState: "fight", opponentPokemonID: msg.my_pokemon, opponent: publisher, fightChannel: channelName, alerted: false });
+                        }
+                        else {
+                            alert("Too slow!");
+                            this.setState({fightState: "ready", timeout: false, alerted: false});
+                        }
+                      }).bind(this)
+                    },
+                    {
+                      text: "No!", onPress: (() => {
+                        this.pubnub.publish(
+                          {
+                            message: {
+                              action: 'decline',
+                              my_pokemon: this.state.pokemonID,
+                              user: publisher
+                            },
+                            channel: 'Fight'
+                          });
+
+                        this.setState({ fightState: "ready", alerted: false });
+                      }).bind(this)
+                    }]);
+                }
+                else {
                     this.pubnub.publish(
                       {
                         message: {
-                          action: 'accept',
-                          my_pokemon: this.state.pokemonID,
-                          user: publisher
-                        },
-                        channel: 'Fight'
-                      });
-
-                    this.pubnub.unsubscribe({
-                      channels: ['Fight']
-                    })
-
-                    let channelName = publisher + this.state.username;
-
-                    this.pubnub.subscribe({
-                      channels: [channelName]
-                    });
-
-                    this.setState({ fightState: "fight", opponentPokemonID: msg.my_pokemon, opponent: publisher, fightChannel: channelName });
-                  }).bind(this)
-                },
-                {
-                  text: "No!", onPress: (() => {
-                    this.pubnub.publish(
-                      {
-                        message: {
-                          action: 'decline',
+                          action: 'busy',
                           my_pokemon: this.state.pokemonID,
                           user: publisher
                         },
@@ -122,17 +150,13 @@ export default class Fight extends React.Component {
                       });
 
                     this.setState({ fightState: "ready" });
-                  }).bind(this)
-                }]);
-
-
+                }
             });
           }
         }
 
         else if (this.state.fightState == "pending") {
           if (msg.user == this.state.username && msg.action == "accept") {
-            alert("accepted fight");
             this.pubnub.unsubscribe({
               channels: ['Fight']
             })
@@ -146,24 +170,33 @@ export default class Fight extends React.Component {
             this.setState({ fightState: "fight", opponentPokemonID: msg.my_pokemon, opponent: publisher, fightChannel: channelName });
           }
           else if (msg.user == this.state.username && msg.action == "decline") {
-            alert("declined fight");
+            alert("Declined fight");
             this.setState({ fightState: "ready" });
+          }
+          else if (msg.action == "accept" && publisher == this.state.opponent) {
+            alert("Declined fight");
+            this.setState({ fightState: "ready" });
+          }
+          else if (msg.user == this.state.username && msg.action == "busy") {
+              alert("Opponent busy");
+              this.setState({ fightState: "ready" });
           }
         }
 
         else if (this.state.fightState == "fight") {
           if (msg.user == this.state.username && msg.action == "exit") {
-            this.setState({ fightState: "ready" });
-            this.pubnub.subscribe({
-              channels: ["Fight"]
-            });
-            this.pubnub.unsubscribe({
-              channels: this.state.fightChannel
-            });
+              alert("Opponent exited");
+              this.setState({ fightState: "ready" });
+              this.pubnub.subscribe({
+                channels: ["Fight"]
+              });
+              this.pubnub.unsubscribe({
+                channels: [this.state.fightChannel]
+              });
           }
 
           else if (msg.user == this.state.username && msg.action == "victory") {
-            alert("Du förlorade :(");
+            alert("You lost! :(");
             this.setState({ fightState: "ready" });
             this.pubnub.subscribe({
               channels: ["Fight"]
@@ -228,7 +261,7 @@ export default class Fight extends React.Component {
     );
   }
 
-  componentWillUnmount() {
+  exit() {
     if (this.state.fightState == "fight") {
       this.pubnub.publish(
         {
@@ -237,12 +270,14 @@ export default class Fight extends React.Component {
             my_pokemon: this.state.pokemonID,
             user: this.state.opponent
           },
-          channel: 'Fight'
-        });
+          channel: this.state.fightChannel
+      }).then(() => {
+          this.pubnub.unsubscribe({
+            channels: [this.state.fightChannel]
+          })
+      });
 
-      this.pubnub.unsubscribe({
-        channels: [this.state.fightChannel]
-      })
+
     }
     else {
       this.pubnub.unsubscribe({
@@ -273,7 +308,7 @@ export default class Fight extends React.Component {
 
         setTimeout(() => {
           if (this.state.fightState == "pending") {
-            alert("timeout");
+            alert("No answer!");
             this.setState({ fightState: "ready" });
           }
         }, 10000);
@@ -282,8 +317,8 @@ export default class Fight extends React.Component {
   }
 
   victory() {
-    alert("Du vann!");
-    
+    alert("Victory!");
+
     this.pubnub.publish(
       {
         message: {
@@ -299,7 +334,7 @@ export default class Fight extends React.Component {
       this.setState({ level: new_level });
       alert("You reached the next level!")
     }
-    
+
     this.setState({ fightState: "ready", progress_next_level: new_progress });
 
     this.pubnub.subscribe({
@@ -309,6 +344,14 @@ export default class Fight extends React.Component {
     this.pubnub.unsubscribe({
       channels: [this.state.fightChannel]
     })
+  }
+
+  componentDidMount() {
+      this.start();
+  }
+
+  componentWillUnmount() {
+      this.exit();
   }
 
   render() {
