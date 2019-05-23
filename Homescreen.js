@@ -36,16 +36,18 @@ export default class Homescreen extends React.Component {
     }
 
     componentDidMount() {
-        this.loadUsername();
-        this.getLifeStatus();
+      this.loadUsername();
+      this.getLifeStatus();
 
-        //this.removeItemValue("pokemonID");
-        //this.removeItemValue("pokemonHunger")
-        //this.removeItemValue("pokemonClean")
-        //this.removeItemValue("pokemonFun")
-        //this.removeItemValue("pokemonAlive")
-        //this.removeItemValue("username")
-
+      //för att rensa storage!!!! kommetera bort de två ovanstående raderna
+      /*
+      this.removeItemValue("pokemonID");
+        this.removeItemValue("pokemonHunger")
+        this.removeItemValue("pokemonClean")
+        this.removeItemValue("pokemonFun")
+        this.removeItemValue("pokemonAlive")
+        this.removeItemValue("username")
+        */
     }
 
     removeItemValue = async (key) => {
