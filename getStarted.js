@@ -19,13 +19,6 @@ export default class Start extends React.Component {
     this.state = { text: "" };
   }
 
-  componentDidMount() {
-
-  }
-
-  pickUserName() {
-
-  }
 
   render() {
     const { navigate } = this.props.navigation;
