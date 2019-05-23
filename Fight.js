@@ -53,7 +53,17 @@ export default class Fight extends React.Component {
 
   }
 
+  getPokemonID = async () => {
+    const id = await AsyncStorage.getItem("pokemonID");
+    console.log('synkar med async')
+    console.log({pokemonId: id})
+    this.setState(integer({pokemonID: id}))
+  }
+
+
   componentDidMount() {
+    this.getPokemonID()
+
     this.pubnub = new PubNub({
       subscribeKey: "sub-c-ff0c5120-7702-11e9-945c-2ea711aa6b65",
       publishKey: "pub-c-ab1f1896-d4ac-4b70-aaf4-ca968c88c2f5",
@@ -138,7 +148,7 @@ export default class Fight extends React.Component {
 
         else if (this.state.fightState == "pending") {
           if (msg.user == this.state.username && msg.action == "accept") {
-            alert("accepted fight");
+            alert("Accepted fight");
             this.pubnub.unsubscribe({
               channels: ['Fight']
             })
@@ -152,7 +162,7 @@ export default class Fight extends React.Component {
             this.setState({ fightState: "fight", opponentPokemonID: msg.my_pokemon, opponent: publisher, fightChannel: channelName });
           }
           else if (msg.user == this.state.username && msg.action == "decline") {
-            alert("declined fight");
+            alert("Declined fight");
             this.setState({ fightState: "ready" });
           }
         }
@@ -317,10 +327,6 @@ export default class Fight extends React.Component {
     })
   }
 
-  getPokemonID = async () => {
-    const id = await AsyncStorage.getItem("pokemonID");
-    this.setState ({pokemonID: id})
-  }
 
   render() {
     var remote = 'https://pbs.twimg.com/media/DVMT-6OXcAE2rZY.jpg';
@@ -351,7 +357,12 @@ export default class Fight extends React.Component {
     }
 
     if (this.state.fightState == "fight") {
+      console.log('skickas in i fight')
+      console.log(this.state.pokemonID)
+      console.log(this.state.opponentPokemonID)
       content = <Arena myId={this.state.pokemonID} theirId={this.state.opponentPokemonID} onVictory={() => { this.victory() }} />;
+
+
     }
 
     return (

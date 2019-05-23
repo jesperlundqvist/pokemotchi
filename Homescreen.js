@@ -19,7 +19,7 @@ export default class Homescreen extends React.Component {
                 <TouchableOpacity style={{ marginRight: 10 }} activeOpacity={0.5} onPress={() => navigation.navigate("Info")}>
                     <MaterialCommunityIcons name="information-outline" size={30} color="white" />
                 </TouchableOpacity>,
-            headerLeft: null
+            headerLeft: <View style={{flexDirection: "row"}}><FontAwesome style={{ marginLeft: 10 }} name="user-o" size={30} color="white" /><Text style={{color: "white", padding: 3}}>Username</Text></View>
 
         }
     }
@@ -36,15 +36,19 @@ export default class Homescreen extends React.Component {
     }
 
     componentDidMount() {
-      //this.removeItemValue();
+    /*  this.removeItemValue("username");
+      this.removeItemValue("pokemonID");
+      this.removeItemValue("pokemonHunger");
+      this.removeItemValue("pokemonClean");
+      this.removeItemValue("pokemonFun");
+      this.removeItemValue("pokemonAlive");*/
       this.loadUsername();
-      //this.saveUser(this.state.userName);
       //this.printNAme();
     }
 
-    removeItemValue = async () => {
+    removeItemValue = async (key) => {
       try {
-        await AsyncStorage.removeItem("username");
+        await AsyncStorage.removeItem(key);
         return true;
       }
       catch(exception) {
@@ -163,6 +167,8 @@ export default class Homescreen extends React.Component {
                 }
 
                 navigate('Fight', { username: this.state.userName, pokemon: this.state.pokemonId })
+                console.log('trycker på fight')
+                console.log(this.state.pokemonId)
             }}>
                 <MaterialCommunityIcons name="sword-cross" size={60} color={this.state.action == "" ? "lightgray" : "gray"} />
                 <Text style={{ paddingHorizontal: 15, color: "white" }}>Fight</Text>
