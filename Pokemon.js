@@ -35,7 +35,7 @@ export default class Pokemon extends React.Component {
 
         })
         promise1.then(() =>
-            console.log(this.state.id))
+            console.log(this.state.alive))
             .then(() =>
                 Model.getPokemonById(this.state.id).then((data) => {
                     this.setState({ data: data });
@@ -48,9 +48,9 @@ export default class Pokemon extends React.Component {
                     this.state.cleanliness <= 0 ||
                     this.state.fun <= 0) {
                     this.setState({
-                        hunger: 0,
-                        cleanliness: 0,
-                        fun: 0,
+                        hunger: "",
+                        cleanliness: "",
+                        fun: "",
                         alive: false
                     });
                 }
@@ -128,20 +128,35 @@ export default class Pokemon extends React.Component {
         if (id == "x" || id == null) {
             this.randomId();
 
+
         } else {
             this.setState({ id: id })
             //this.state.is = id;
             this.save(this.state.id);
         }
-
-        if (hunger !== null) {
+        console.log(hunger)
+        if (hunger != null && hunger != '0' && hunger != 0) {
             this.setState({
                 hunger: hunger,
                 cleanliness: clean,
                 fun: fun,
                 alive: alive,
             })
-        } else {
+        } 
+        
+        else if (hunger != null && hunger == '0') {
+
+            this.setState({
+                hunger: hunger,
+                cleanliness: clean,
+                fun: fun,
+                alive: false,
+            })
+
+        }
+        
+        else {
+            
             this.setState({
                 hunger: 100,
                 cleanliness: 100,
@@ -149,7 +164,9 @@ export default class Pokemon extends React.Component {
                 alive: true,
             });
         }
+        
 
+        
         return "resolved"
     }
 
