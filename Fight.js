@@ -23,8 +23,7 @@ export default class Fight extends React.Component {
           <MaterialCommunityIcons name="information-outline" size={30} color="white" />
         </TouchableOpacity>
         </View>
-        ,
-    }
+      }
   }
 
   constructor(props) {
@@ -354,7 +353,7 @@ export default class Fight extends React.Component {
     }
 
     if (this.state.fightState == "pending") {
-      content = <View><Image style={{ width: 180, height: 180, resizeMode: "contain"}} source={{ uri: "http://25.media.tumblr.com/c99a579db3ae0fc164bf4cca148885d3/tumblr_mjgv8kEuMg1s87n79o1_400.gif" }}/><ActivityIndicator size="large" color="#ffffff" /></View>
+      content = <View><ActivityIndicator size="large" color="#ffffff" /></View>
     }
 
     if (this.state.fightState == "fight") {

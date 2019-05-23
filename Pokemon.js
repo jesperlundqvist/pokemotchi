@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, Button, TouchableOpacity, TouchableHighlight, Platform, ImageBackground } from 'react-native';
+import { Text, View, Image, Button,ActivityIndicator, TouchableOpacity, TouchableHighlight, Platform, ImageBackground } from 'react-native';
 import Model from './Model';
 import Clean from './Clean';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -70,11 +70,11 @@ export default class Pokemon extends React.Component {
 
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.state.alive != prevState.alive) {
+        /*if (this.state.alive != prevState.alive) {
             if (this.props.onAliveChange) {
                 this.props.onAliveChange(this.state.alive);
             }
-        }
+        }*/
 
         //om state.update inte är lika med det update i state som var innan setState kördes
         if (this.state.update !== prevState.update) {
@@ -296,7 +296,7 @@ export default class Pokemon extends React.Component {
         </View>;
 
 
-        if (this.state.alive!=true) {
+        if (this.state.alive != true) {
             newPokemon =
                 <TouchableOpacity style={{
                     padding: 15, alignItems: 'center',
@@ -352,7 +352,7 @@ export default class Pokemon extends React.Component {
                     justifyContent: 'center',
                 }}>
 
-                    <Text>LOADING...</Text>
+                    <ActivityIndicator size="large" color="#ffffff" />
                 </View>)
 
         }

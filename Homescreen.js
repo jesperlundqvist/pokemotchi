@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, View, Button, TextInput, Text, ImageBackground, StatusBar } from 'react-native';
+import { SafeAreaView, View, Button, TextInput, Text, ImageBackground, StatusBar, ActivityIndicator } from 'react-native';
 import { TouchableOpacity } from 'react-native'
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { MaterialCommunityIcons, Entypo, FontAwesome } from '@expo/vector-icons';
@@ -221,7 +221,23 @@ export default class Homescreen extends React.Component {
 
       else if (this.state.status == "LOADING") {
 
-        return <Text>Loading...tjofshdofjs</Text>
+        return (
+            <ImageBackground
+                  style={{
+                      backgroundColor: '#ccc',
+                      flex: 1,
+                      resizeMode,
+                      position: 'absolute',
+                      width: '100%',
+                      height: '100%',
+                      justifyContent: 'center',
+                  }}
+                  source={{ uri: remote }}
+              >
+              <ActivityIndicator size="large" color="#ffffff" />
+  
+          </ImageBackground>
+          )
       }
     }
 }
