@@ -99,6 +99,7 @@ export default class Fight extends React.Component {
 
         if (this.state.fightState == "ready") {
           if (msg.user == this.state.username && msg.action == "fight") {
+              this.setState({ timeout: false });
               setTimeout(() => {
                   this.setState({ timeout: true });
               }, 10000);
@@ -131,7 +132,7 @@ export default class Fight extends React.Component {
                               channels: [channelName]
                             });
 
-                            this.setState({ fightState: "fight", opponentPokemonID: msg.my_pokemon, opponent: publisher, fightChannel: channelName, alerted: false });
+                            this.setState({ fightState: "fight", opponentPokemonID: msg.my_pokemon, opponent: publisher, fightChannel: channelName, alerted: false, timeout: false });
                         }
                         else {
                             alert("Too slow!");
@@ -151,7 +152,7 @@ export default class Fight extends React.Component {
                             channel: 'Fight'
                           });
 
-                        this.setState({ fightState: "ready", alerted: false });
+                        this.setState({ fightState: "ready", alerted: false, timeout: false });
                       }).bind(this)
                     }]);
                 }
@@ -166,7 +167,7 @@ export default class Fight extends React.Component {
                         channel: 'Fight'
                       });
 
-                    this.setState({ fightState: "ready" });
+                    this.setState({ fightState: "ready", timeout: false });
                 }
             });
           }
@@ -174,7 +175,6 @@ export default class Fight extends React.Component {
 
         else if (this.state.fightState == "pending") {
           if (msg.user == this.state.username && msg.action == "accept") {
-            alert("Accepted fight");
             this.pubnub.unsubscribe({
               channels: ['Fight']
             })
