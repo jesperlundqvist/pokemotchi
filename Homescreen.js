@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, View, Button, TextInput, Text, ImageBackground, StatusBar } from 'react-native';
+import { SafeAreaView, View, Button, TextInput, Text, ImageBackground, StatusBar, ActivityIndicator } from 'react-native';
 import { TouchableOpacity } from 'react-native'
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { MaterialCommunityIcons, Entypo, FontAwesome } from '@expo/vector-icons';
@@ -79,10 +79,6 @@ export default class Homescreen extends React.Component {
                     // get at each store's key/value so you can work with it
                     let key = store[i][0];
                     let value = store[i][1];
-                    console.log("nycklar: ")
-                    console.log(key);
-                    console.log("värden: ")
-                    console.log(value);
                 });
             });
         });
@@ -201,7 +197,6 @@ export default class Homescreen extends React.Component {
 
             else {
                 user = <Start onShow={() => {
-                    console.log(" är i else i homescree nuu vaa");
                     this.setState({ show: false })
                 }} />
             }
@@ -228,7 +223,23 @@ export default class Homescreen extends React.Component {
 
         else if (this.state.status == "LOADING") {
 
-            return <Text>Loading...tjofshdofjs</Text>
+            return (
+                <ImageBackground
+                    style={{
+                        backgroundColor: '#ccc',
+                        flex: 1,
+                        resizeMode,
+                        position: 'absolute',
+                        width: '100%',
+                        height: '100%',
+                        justifyContent: 'center',
+                    }}
+                    source={{ uri: remote }}
+                >
+                    <ActivityIndicator size="large" color="#ffffff" />
+
+                </ImageBackground>
+            )
         }
     }
 }
