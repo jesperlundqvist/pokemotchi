@@ -201,8 +201,6 @@ export default class Pokemon extends React.Component {
 
         let remote = "https://4.bp.blogspot.com/-gchMbKclwIQ/Vsgb1I06qLI/AAAAAAAAAE8/i4L89o19YNQ/s1600/11_iykim2000_2.gif";
 
-    render() {
-
         let action = <View></View>;
         if (this.props.action == "clean") {
             action = <Clean onClean={() => { this.setState({ cleanliness: this.state.cleanliness + 0.2 }) }} />
@@ -320,40 +318,20 @@ export default class Pokemon extends React.Component {
         if (this.state.contentStatus == "LOADED") {
 
             return (
-                <ImageBackground
-                    style={{
-                        backgroundColor: 'transparent',
-                        width: '100%',
-                        height: '85%',
-                        justifyContent: 'center',
-                    }}
-                    source={{ uri: remote }} >
-
-                    <View style={{
-                        flex: 1,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}>
-
-                        {buttons}
-                        {action}
-                    </View>
-                </ImageBackground>);
+                <View style={{
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}>
+                    {newPokemon}
+                    {action}
+                </View>)
 
         }
 
         else if (this.state.contentStatus == "LOADING"){
 
             return (
-                <ImageBackground
-                    style={{
-                        backgroundColor: 'transparent',
-                        width: '100%',
-                        height: '85%',
-                        justifyContent: 'center',
-                    }}
-                    source={{ uri: remote }} >
-
                     <View style={{
                         flex: 1,
                         alignItems: 'center',
@@ -361,20 +339,9 @@ export default class Pokemon extends React.Component {
                     }}>
 
                     <Text>LOADING...</Text>
-                    </View>
-                </ImageBackground>);
+                    </View>)
 
         }
-
-        return <View style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-        }}>
-            {newPokemon}
-            {action}
-        </View>;
-
     }
 }
 //
