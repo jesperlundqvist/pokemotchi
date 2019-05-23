@@ -27,11 +27,11 @@ export default class Info extends React.Component {
             You can also interact with your friends in the battle arena where you can fight against their pokémon.</Text>
             <View style={{flexDirection: "row", textAlign: "center", padding: 10}}>
             <MaterialCommunityIcons name="food-apple" size={20} color="greenyellow"/>
-            <Text style={{fontSize: 15, fontWeight: "bold", paddingHorizontal: 5}}>Feed your pokémon by holding your phone level.</Text>
+            <Text style={{fontSize: 15, fontWeight: "bold", paddingHorizontal: 10}}>Feed your pokémon by dragging the apple over the pokémon.</Text>
             </View>
             <View style={{flexDirection: "row", textAlign: "center", padding: 10}}>
             <Entypo name="water" size={20} color="skyblue" />
-            <Text style={{fontSize: 15, fontWeight: "bold", textAlign: "center",paddingHorizontal: 5}}>Clean your pokémon by dragging the blue cirkle over the pokémon.</Text>
+            <Text style={{fontSize: 15, fontWeight: "bold", textAlign: "center",paddingHorizontal: 5}}>Clean your pokémon by dragging the shower over the pokémon.</Text>
             </View>
             <View style={{flexDirection: "row", textAlign: "center", padding: 10}}>
             <MaterialCommunityIcons name="basketball" size={20} color="orange" />
@@ -45,7 +45,7 @@ export default class Info extends React.Component {
             <MaterialCommunityIcons name="sword-cross" size={20} color="lightgray" />
             <Text style={{fontSize: 17, fontWeight: "bold", paddingHorizontal: 5}}>Fight</Text>
             </View>
-            <Text style={{fontSize: 15, paddingHorizontal: 10}}>To fight other users, press on the other users pokémon as fast as possible. The user who's the fastest win!</Text>
+            <Text style={{fontSize: 15, paddingHorizontal: 10}}>To fight other users, press on another users username. You can see your own username at the very top of the page in the figting arena. To win a fight, press on the other users pokémon as fast as possible. The user who's the fastest win!</Text>
         </SafeAreaView>);
     }
 }
