@@ -50,7 +50,6 @@ export default class Pokemon extends React.Component {
                         cleanliness: 0,
                         fun: 0,
                         alive: false,
-                        contentStatus: "LOADED"
                     });
                 }
                 else {
@@ -58,7 +57,6 @@ export default class Pokemon extends React.Component {
                         hunger: this.state.hunger - 1,
                         cleanliness: this.state.cleanliness - 1,
                         fun: this.state.fun - 1,
-                        contentStatus: "LOADED"
                     });
 
                     if (this.state.hunger % 10 == 0) {
@@ -140,7 +138,6 @@ export default class Pokemon extends React.Component {
                 cleanliness: clean,
                 fun: fun,
                 alive: alive,
-                contentStatus: "LOADED"
             })
         } else {
             this.setState({
@@ -148,9 +145,12 @@ export default class Pokemon extends React.Component {
                 cleanliness: 100,
                 fun: 100,
                 alive: true,
-                contentStatus: "LOADED"
             });
         }
+
+        this.setState({
+            contentStatus: "LOADED"
+        })
 
         return "resolved"
     }
@@ -296,9 +296,8 @@ export default class Pokemon extends React.Component {
         </View>;
 
 
-        if (!this.state.alive) {
+        if (this.state.alive!=true) {
             newPokemon =
-
                 <TouchableOpacity style={{
                     padding: 15, alignItems: 'center',
                     justifyContent: 'center'
