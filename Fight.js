@@ -6,6 +6,8 @@ import Arena from './Arena';
 import PubNub from 'pubnub';
 import ProgressBar from 'react-native-progress/Bar';
 import { NavigationEvents } from 'react-navigation';
+import { AsyncStorage } from 'react-native';
+
 
 export default class Fight extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -13,11 +15,16 @@ export default class Fight extends React.Component {
       headerTransparent: true,
       headerTintColor: "white",
       headerRight:
+      <View style={{flexDirection: "row"}}>
+      <View style={{flexDirection: "row", paddingEnd: 60, paddingTop: 4}}>
+        <FontAwesome style={{ marginLeft: 10 }} name="user-o" size={30} color="white" />
+        <Text style={{color: "white", padding: 5, fontSize: 15, fontWeight: "bold"}}>{navigation.state.params.username}</Text>
+        </View>
         <TouchableOpacity style={{ marginRight: 10 }} activeOpacity={0.5} onPress={() => navigation.navigate("Info")}>
           <MaterialCommunityIcons name="information-outline" size={30} color="white" />
-        </TouchableOpacity>,
-      headerLeft: <View style={{flexDirection: "row"}}><FontAwesome style={{ marginLeft: 10 }} name="user-o" size={30} color="white" /><Text style={{color: "white", padding: 3}}>{navigation.state.params.username}</Text></View>
-    }
+        </TouchableOpacity>
+        </View>
+      }
   }
 
   constructor(props) {
@@ -36,7 +43,7 @@ export default class Fight extends React.Component {
       back: this.props.navigation,
       inArena: false,
       username: this.props.navigation.getParam("username", "Username"),
-      pokemonID: this.props.navigation.getParam("pokemon", "1"),
+      pokemonID: null,
       opponent: "",
       opponentPokemonID: 0,
       fightState: "ready",
@@ -48,7 +55,17 @@ export default class Fight extends React.Component {
     };
   }
 
+  getPokemonID = async () => {
+    const id = await AsyncStorage.getItem("pokemonID");
+    console.log('synkar med async')
+    console.log({pokemonId: id})
+    this.setState(parseInt({pokemonID: id}))
+  }
+
+
   start() {
+    this.getPokemonID()
+
     this.pubnub = new PubNub({
       subscribeKey: "sub-c-ff0c5120-7702-11e9-945c-2ea711aa6b65",
       publishKey: "pub-c-ab1f1896-d4ac-4b70-aaf4-ca968c88c2f5",
@@ -157,6 +174,7 @@ export default class Fight extends React.Component {
 
         else if (this.state.fightState == "pending") {
           if (msg.user == this.state.username && msg.action == "accept") {
+            alert("Accepted fight");
             this.pubnub.unsubscribe({
               channels: ['Fight']
             })
@@ -379,11 +397,16 @@ export default class Fight extends React.Component {
     }
 
     if (this.state.fightState == "pending") {
-      content = <View><Image style={{ width: 180, height: 180, resizeMode: "contain"}} source={{ uri: "http://25.media.tumblr.com/c99a579db3ae0fc164bf4cca148885d3/tumblr_mjgv8kEuMg1s87n79o1_400.gif" }}/><ActivityIndicator size="large" color="#ffffff" /></View>
+      content = <View><ActivityIndicator size="large" color="#ffffff" /></View>
     }
 
     if (this.state.fightState == "fight") {
+      console.log('skickas in i fight')
+      console.log(this.state.pokemonID)
+      console.log(this.state.opponentPokemonID)
       content = <Arena myId={this.state.pokemonID} theirId={this.state.opponentPokemonID} onVictory={() => { this.victory() }} />;
+
+
     }
 
     return (

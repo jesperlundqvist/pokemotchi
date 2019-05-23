@@ -7,6 +7,7 @@ import Pokemon from './Pokemon';
 import { Haptic } from 'expo';
 import { Vibration, Platform } from 'react-native';
 import { AsyncStorage } from 'react-native';
+import Start from './getStarted';
 
 
 export default class Homescreen extends React.Component {
@@ -18,7 +19,7 @@ export default class Homescreen extends React.Component {
                 <TouchableOpacity style={{ marginRight: 10 }} activeOpacity={0.5} onPress={() => navigation.navigate("Info")}>
                     <MaterialCommunityIcons name="information-outline" size={30} color="white" />
                 </TouchableOpacity>,
-            headerLeft: <View style={{flexDirection: "row"}}><FontAwesome style={{ marginLeft: 10 }} name="user-o" size={30} color="white" /><Text style={{color: "white", padding: 3}}>{navigation.state.params.username}</Text></View>
+            headerLeft: null
 
         }
     }
@@ -26,26 +27,49 @@ export default class Homescreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pokemonId: Math.floor(Math.random() * 100) + 1,
-            pokemonAlive: true,
+            pokemonAlive: 'false',
             action: "",
-            userName: this.props.navigation.state.params.username
+            userName: "",
+            show: true,
+            status: "LOADING",
         }
     }
 
     componentDidMount() {
-      this.saveUser(this.state.userName);
-      this.printNAme();
+        this.loadUsername();
+        this.getLifeStatus();
     }
 
-    saveUser = async (username) => {
+    removeItemValue = async (key) => {
+        try {
+            await AsyncStorage.removeItem(key);
+            return true;
+        }
+        catch (exception) {
+            return false;
+        }
+    }
 
-      try {
-          await (AsyncStorage.setItem("username", username))
+    getLifeStatus = async () => {
+        const life_status = await AsyncStorage.getItem("pokemonAlive");
+        this.setState({ pokemonAlive: life_status })
+    }
 
-      } catch (e) {
-          console.error('Failed to save username.')
-      }
+    loadUsername = async () => {
+        const username = await AsyncStorage.getItem("username");
+
+        if (username == null) {
+            //true = visa Start component
+            this.setState({ show: true });
+        } else {
+            //false = inte visa Start component
+            this.setState({
+                show: false,
+                status: "LOADED"
+            });
+            this.setState({ userName: username });
+        }
+        return "resolved"
     }
 
     printNAme = async () => {
@@ -64,6 +88,7 @@ export default class Homescreen extends React.Component {
         });
     }
 
+
     render() {
         var remote = 'https://i.imgur.com/7SHNBH4.png';
         const resizeMode = 'center';
@@ -72,10 +97,10 @@ export default class Homescreen extends React.Component {
         let text = <View></View>;
 
         if (this.state.action == "feed") {
-            text = <Text style={{ fontSize: 16, textAlign: 'center', padding: 10, fontWeight: "bold", color: "white" }}>Hold your phone level to feed!</Text>
+            text = <Text style={{ fontSize: 16, textAlign: 'center', padding: 10, fontWeight: "bold", color: "white" }}>Drag the apple to your Pokémon to feed!</Text>
         }
         else if (this.state.action == "clean") {
-            text = <Text style={{ fontSize: 16, textAlign: 'center', padding: 10, fontWeight: "bold", color: "white" }}>Rub the sponge on your Pokémon to clean!</Text>
+            text = <Text style={{ fontSize: 16, textAlign: 'center', padding: 10, fontWeight: "bold", color: "white" }}>Shower your Pokémon to clean it!</Text>
         }
         else if (this.state.action == "play") {
             text = <Text style={{ fontSize: 16, textAlign: 'center', padding: 10, fontWeight: "bold", color: "white" }}>Shake your phone to play with your Pokémon!</Text>
@@ -143,58 +168,67 @@ export default class Homescreen extends React.Component {
                     Haptic.selection();
                 }
 
-                navigate('Fight', { username: this.state.userName, pokemon: this.state.pokemonId })
+                navigate('Fight', { username: this.state.userName })
             }}>
                 <MaterialCommunityIcons name="sword-cross" size={60} color={this.state.action == "" ? "lightgray" : "gray"} />
                 <Text style={{ paddingHorizontal: 15, color: "white" }}>Fight</Text>
             </TouchableOpacity>
         </View>;
 
-        if (!this.state.pokemonAlive) {
-            buttons = <View></View>;
+        if (this.state.pokemonAlive == 'false') {
+            buttons = <View></View>
         }
 
-        /*if (!this.state.pokemonAlive) {
-            buttons = <Button title="New Pokemon" onPress={() => {
-                let newPokemon = Math.floor(Math.random() * 10)+1;
+        let user = <View></View>;
 
-                while (newPokemon == this.state.pokemonId) {
-                    newPokemon = Math.floor(Math.random() * 10)+1;
-                }
+        if (this.state.status == "LOADED") {
 
-                this.setState({
-                    pokemonId: newPokemon
-                });
-            }} />
-        }*/
-
-
-
-        return (
-            <ImageBackground
-                style={{
-                    backgroundColor: '#ccc',
-                    flex: 1,
-                    resizeMode,
-                    position: 'absolute',
-                    width: '100%',
-                    height: '100%',
-                    justifyContent: 'center',
-                }}
-                source={{ uri: remote }}
-            >
-                <SafeAreaView style={{
+            if (this.state.show == false) {
+                user = <SafeAreaView style={{
                     flex: 1,
                     flexDirection: 'column',
                 }}>
                     <StatusBar backgroundColor="blue" barStyle="light-content" />
-                    <Pokemon style={{ flexGrow: 1 }} id={this.state.pokemonId} action={this.state.action} onAliveChange={(alive) => this.setState({ pokemonAlive: alive })} />
+                    <Pokemon style={{ flexGrow: 1 }} action={this.state.action}
+                        onAliveChange={(alive) => this.setState({ pokemonAlive: alive })} />
                     {text}
                     <View style={{ flexDirection: "row", flexShrink: 1, justifyContent: "center" }}>
                         {buttons}
                     </View>
                 </SafeAreaView>
-            </ImageBackground>
-        );
+            }
+
+
+            else {
+                user = <Start onShow={() => {
+                    console.log(" är i else i homescree nuu vaa");
+                    this.setState({ show: false })
+                }} />
+            }
+
+            return (
+                <ImageBackground
+                    style={{
+                        backgroundColor: '#ccc',
+                        flex: 1,
+                        resizeMode,
+                        position: 'absolute',
+                        width: '100%',
+                        height: '100%',
+                        justifyContent: 'center',
+                    }}
+                    source={{ uri: remote }}
+                >
+                    {user}
+
+                </ImageBackground>
+            )
+
+        }
+
+        else if (this.state.status == "LOADING") {
+
+            return <Text>Loading...tjofshdofjs</Text>
+        }
     }
 }
