@@ -10,12 +10,9 @@ In this version there's unfortunately a bug and to avoid it you have to refresh 
 
 TWO SIMPLE STEPS:
 
-    ´´´
     npm install
-    ´´´
 
 AND THEN
 
-´´´
     npm start
-´´´
+
