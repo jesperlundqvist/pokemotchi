@@ -38,7 +38,7 @@ export default class Fight extends React.Component {
       users: [],
       back: this.props.navigation,
       inArena: false,
-      username: this.props.navigation.getParam("username", "Username"),
+      username: "",
       pokemonID: null,
       opponent: "",
       opponentPokemonID: 0,
@@ -57,9 +57,15 @@ export default class Fight extends React.Component {
     this.setState({pokemonID: parseInt(id)});
   }
 
+  getUsername = async () => {
+    const name = await AsyncStorage.getItem("username");
+    this.setState({username: name });
+  }
+
 
   start() {
-    this.getPokemonID()
+    this.getPokemonID();
+    this.getUsername();
 
     this.pubnub = new PubNub({
       subscribeKey: "sub-c-ff0c5120-7702-11e9-945c-2ea711aa6b65",

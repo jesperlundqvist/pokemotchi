@@ -47,7 +47,8 @@ export default class Homescreen extends React.Component {
         this.removeItemValue("pokemonFun")
         this.removeItemValue("pokemonAlive")
         this.removeItemValue("username")
-        */
+      */
+
     }
 
     removeItemValue = async (key) => {
