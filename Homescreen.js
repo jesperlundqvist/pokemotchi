@@ -36,8 +36,17 @@ export default class Homescreen extends React.Component {
     }
 
     componentDidMount() {
-      this.loadUsername();
-      this.getLifeStatus();
+
+      let promise = new Promise((resolved, unresolved) => {
+          resolved(this.loadUsername());
+      })
+
+      promise.then(() =>
+        this.getLifeStatus()
+      );
+
+      //this.loadUsername();
+      //this.getLifeStatus();
 
       //för att rensa storage!!!! kommetera bort de två ovanstående raderna
       /*
