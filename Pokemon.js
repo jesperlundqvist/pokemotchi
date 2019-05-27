@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, Button,ActivityIndicator, TouchableOpacity, TouchableHighlight, Platform, ImageBackground } from 'react-native';
+import { Text, View, Image, Button, ActivityIndicator, TouchableOpacity, TouchableHighlight, Platform, ImageBackground } from 'react-native';
 import Model from './Model';
 import Clean from './Clean';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -33,9 +33,9 @@ export default class Pokemon extends React.Component {
         })
 
         promise1.then(() =>
-          Model.getPokemonById(this.state.id).then((data) => {
-            this.setState({ data: data });
-          })
+            Model.getPokemonById(this.state.id).then((data) => {
+                this.setState({ data: data });
+            })
         );
 
         this._interval = setInterval(() => {
@@ -91,7 +91,12 @@ export default class Pokemon extends React.Component {
     }
 
     randomId() {
-        this.setState({ id: Math.floor(Math.random() * 100) + 1 })
+        let newID = (Math.floor(Math.random() * 100) + 1);
+        if (newID == 29 || newID == 32) {
+            console.log("Ooops där blev det fel! ", newID);
+            newID = newID + 1;
+        }
+        this.setState({ id: newID })
         this.save(this.state.id);
     }
 
@@ -140,7 +145,7 @@ export default class Pokemon extends React.Component {
             });
         }
 
-        this.setState({contentStatus: "LOADED"})
+        this.setState({ contentStatus: "LOADED" })
 
         return "resolved"
     }
@@ -294,8 +299,10 @@ export default class Pokemon extends React.Component {
                     justifyContent: 'center'
                 }} activeOpacity={0.5} onPress={() => {
                     let newID = (Math.floor(Math.random() * 100) + 1);
-                    if(newID == 29 || newID == 32){
-                        newID = newID+1;
+                    console.log("id: ", newID)
+                    if (newID == 29 || newID == 32) {
+                        console.log("Ooops där blev det fel! ", newID);
+                        newID = newID + 1;
                     }
                     this.save(newID);
                     this.savePokStats(this.state);

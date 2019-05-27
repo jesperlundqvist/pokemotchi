@@ -174,7 +174,7 @@ export default class Homescreen extends React.Component {
                 } else if (Platform.OS === 'ios') {
                     Haptic.selection();
                 }
-
+                console.log(this.state.userName)
                 navigate('Fight', { username: this.state.userName })
             }}>
                 <MaterialCommunityIcons name="sword-cross" size={60} color={this.state.action == "" ? "lightgray" : "gray"} />

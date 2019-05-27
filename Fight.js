@@ -27,7 +27,7 @@ export default class Fight extends React.Component {
 
   constructor(props) {
     super(props);
-
+    console.log(this.props.navigation.getParam("username", "Username"))
     this.state = {
       data: {},
       hunger: 100,
