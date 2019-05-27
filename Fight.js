@@ -38,7 +38,7 @@ export default class Fight extends React.Component {
       users: [],
       back: this.props.navigation,
       inArena: false,
-      username: "",
+      username: this.props.navigation.getParam("username", "Username"),
       pokemonID: null,
       opponent: "",
       opponentPokemonID: 0,
@@ -59,13 +59,15 @@ export default class Fight extends React.Component {
 
   getUsername = async () => {
     const name = await AsyncStorage.getItem("username");
+    console.log("getUsername: ", name)
     this.setState({username: name });
   }
 
 
   start() {
     this.getPokemonID();
-    this.getUsername();
+    //this.getUsername();
+    console.log("i start: ",this.state.username)
 
     this.pubnub = new PubNub({
       subscribeKey: "sub-c-ff0c5120-7702-11e9-945c-2ea711aa6b65",
@@ -93,6 +95,7 @@ export default class Fight extends React.Component {
         var pubTT = m.timetoken; // Publish timetoken
         var msg = m.message; // The Payload
         var publisher = m.publisher; //The Publisher
+        console.log("publisher: ", publisher)
 
         if (this.state.fightState == "ready") {
           if (msg.user == this.state.username && msg.action == "fight") {
@@ -363,6 +366,7 @@ export default class Fight extends React.Component {
   }
 
   componentDidMount() {
+    console.log("did mount")
       this.start();
   }
 
@@ -374,6 +378,7 @@ export default class Fight extends React.Component {
     var remote = 'https://pbs.twimg.com/media/DVMT-6OXcAE2rZY.jpg';
     const resizeMode = 'center';
     users_online = this.state.users.map(function (user) {
+      console.log("user: ", user)
       if (this.state.username != user)
         return <TouchableOpacity style={{ flexDirection: "row" }} title={user} key={user} onPress={() => { this.FightUser(user) }} >
           <MaterialCommunityIcons name="sword-cross" size={30} color="lightgray" />
