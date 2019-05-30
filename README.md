@@ -17,10 +17,14 @@ AND THEN
     npm start
 
 
-## Caring for your pokémon
+### Care for your pokémon
 
 ![life](https://media.giphy.com/media/8YTvPjfauF6UarvSX8/giphy.gif)
 
+### Hatch new pokémon
+
 ![life](https://media.giphy.com/media/PPiqYPpNnB4xu6aJ3T/giphy.gif)
+
+### Fight other users
 
 ![life](https://media.giphy.com/media/vcdz2ZU3MC1tQ4Mx25/giphy.gif)
