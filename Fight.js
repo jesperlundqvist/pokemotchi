@@ -16,7 +16,7 @@ export default class Fight extends React.Component {
       <View style={{flexDirection: "row"}}>
       <View style={{flexDirection: "row", paddingEnd: 60, paddingTop: 4}}>
         <FontAwesome style={{ marginLeft: 10 }} name="user-o" size={30} color="white" />
-        <Text style={{color: "white", padding: 5, fontSize: 15, fontWeight: "bold"}}>{navigation.state.params.username}</Text>
+        <Text style={{color: "white", padding: 5, fontSize: 15, fontWeight: "bold"}}></Text>
         </View>
         <TouchableOpacity style={{ marginRight: 10 }} activeOpacity={0.5} onPress={() => navigation.navigate("Info")}>
           <MaterialCommunityIcons name="information-outline" size={30} color="white" />
@@ -26,8 +26,9 @@ export default class Fight extends React.Component {
   }
 
   constructor(props) {
+    //navigation.state.params.username
     super(props);
-    console.log(this.props.navigation.getParam("username", "Username"))
+    //console.log(this.props.navigation.getParam("username", "Username"))
     this.state = {
       data: {},
       hunger: 100,
@@ -38,7 +39,8 @@ export default class Fight extends React.Component {
       users: [],
       back: this.props.navigation,
       inArena: false,
-      username: this.props.navigation.getParam("username", "Username"),
+      //username: this.props.navigation.getParam("username", "Username"),
+      username: "",
       pokemonID: null,
       opponent: "",
       opponentPokemonID: 0,
@@ -52,22 +54,32 @@ export default class Fight extends React.Component {
     };
   }
 
-  getPokemonID = async () => {
+  componentDidMount() {
+    //console.log("did mount")
+    let promise1 = new Promise((resolved, unresolved) => {
+        resolved(this.getIdAndUser());
+    })
+
+    promise1.then(() =>
+      this.start()
+    );
+  }
+
+  getIdAndUser = async () => {
     const id = await AsyncStorage.getItem("pokemonID");
-    this.setState({pokemonID: parseInt(id)});
-  }
+    const user = await AsyncStorage.getItem("username");
+    this.setState({
+      pokemonID: parseInt(id),
+      username: user,
+    });
 
-  getUsername = async () => {
-    const name = await AsyncStorage.getItem("username");
-    console.log("getUsername: ", name)
-    this.setState({username: name });
+    return "resolved"
   }
-
 
   start() {
-    this.getPokemonID();
+    //this.getPokemonID();
     //this.getUsername();
-    console.log("i start: ",this.state.username)
+    //console.log("i start: ",this.state.username)
 
     this.pubnub = new PubNub({
       subscribeKey: "sub-c-ff0c5120-7702-11e9-945c-2ea711aa6b65",
@@ -363,11 +375,6 @@ export default class Fight extends React.Component {
     this.pubnub.unsubscribe({
       channels: [this.state.fightChannel]
     })
-  }
-
-  componentDidMount() {
-    console.log("did mount")
-      this.start();
   }
 
   componentWillUnmount() {
