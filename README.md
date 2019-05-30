@@ -1,3 +1,5 @@
+![Pokemotchi](https://fontmeme.com/permalink/190522/b394043e2419f9781e8e5c25b69fd896.png)
+
 # Pokémotchi
 
 This a mobile app called Pokémotchi. The app is a combination between pokémon and tamaguchi so the idea is that you take care of your pokemon and battle with your pokémon against other users.
