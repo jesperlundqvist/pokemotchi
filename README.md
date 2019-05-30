@@ -1,6 +1,6 @@
 # Pokémotchi
 
-This a mobile app called Pokémotchi. (description here).
+This a mobile app called Pokémotchi. The app is a combination between pokémon and tamaguchi so the idea is that you take care of your pokemon and battle with your pokémon against other users.
 We used React native and Expo to develop this app.
 
 ## How to Pokemotchi
