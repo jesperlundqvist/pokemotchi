@@ -16,3 +16,7 @@ AND THEN
 
     npm start
 
+
+## Caring for your pokémon
+
+![life](https://gph.is/g/4DAeLkO)
