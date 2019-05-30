@@ -20,7 +20,7 @@ TWO SIMPLE STEPS:
 
 if you don't have expo installed you will have to install that aswell
 
-    npm install expo
+    npm install -g expo-cli
 
 AND THEN
 
