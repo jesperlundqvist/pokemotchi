@@ -20,3 +20,7 @@ AND THEN
 ## Caring for your pokémon
 
 ![life](https://media.giphy.com/media/8YTvPjfauF6UarvSX8/giphy.gif)
+
+![life](https://media.giphy.com/media/PPiqYPpNnB4xu6aJ3T/giphy.gif)
+
+![life](https://media.giphy.com/media/vcdz2ZU3MC1tQ4Mx25/giphy.gif)
