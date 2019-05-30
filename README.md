@@ -19,4 +19,4 @@ AND THEN
 
 ## Caring for your pokémon
 
-![life](https://gph.is/g/4DAeLkO)
+![life](https://media.giphy.com/media/8YTvPjfauF6UarvSX8/giphy.gif)
