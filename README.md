@@ -3,6 +3,15 @@
 This a mobile app called Pokémotchi. The app is a combination between pokémon and tamaguchi so the idea is that you take care of your pokemon and battle with your pokémon against other users.
 We used React native and Expo to develop this app.
 
+#### Care for your pokémon
+
+![life](https://media.giphy.com/media/8YTvPjfauF6UarvSX8/giphy.gif)
+
+#### Fight other users
+
+![life](https://media.giphy.com/media/vcdz2ZU3MC1tQ4Mx25/giphy.gif)
+
+
 ## How to Pokemotchi
 
 In this version there's unfortunately a bug and to avoid it you have to refresh the app as soon as you create an account for the first time. This is because when we fetch from asyncstorage for the first time an empty string is being fetched as the username. We will look into this problem as soon as we have time!
@@ -17,14 +26,3 @@ AND THEN
     npm start
 
 
-### Care for your pokémon
-
-![life](https://media.giphy.com/media/8YTvPjfauF6UarvSX8/giphy.gif)
-
-### Hatch new pokémon
-
-![life](https://media.giphy.com/media/PPiqYPpNnB4xu6aJ3T/giphy.gif)
-
-### Fight other users
-
-![life](https://media.giphy.com/media/vcdz2ZU3MC1tQ4Mx25/giphy.gif)
